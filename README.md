@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -76,19 +76,9 @@ width: 100%;
 justify-content: center;
 }
 
-.app-title-with-key .key-input {
-width: 100%;
-padding: 4px 8px;
-border: 1px solid #d4ebe2;
-border-radius: 6px;
-font-size: 11px;
-text-align: center;
-background: white;
-}
-
-.app-title-with-key .key-input::placeholder {
-font-size: 10px;
-color: #888;
+.app-title-with-key .title-row i {
+color: #9C27B0;
+font-size: 14px;
 }
 
 /* مجموعة الأزرار */
@@ -1308,15 +1298,12 @@ user-select: none;
 
 <div class="control-bar">
     <div class="right-section">
-        <!-- العنوان مع حقل مفتاح Gemini -->
+        <!-- العنوان المعدل -->
         <div class="app-title-with-key">
             <div class="title-row">
-                <i class="fas fa-user-tie"></i>
-                <span>تنفيذ: المعلم فهد الخالدي</span>
+                <i class="fas fa-robot" style="color: #9C27B0;"></i>
+                <span>مدعوم بـ Gemini 2.5 Flash Lite</span>
             </div>
-            <input type="password" id="geminiKey" class="key-input" 
-                   placeholder="مفتاح Gemini API (gemini-2.5-flash-lite)" 
-                   onchange="saveGeminiKey()">
         </div>
         
         <!-- مجموعة الأزرار المعدلة -->
@@ -1358,11 +1345,6 @@ user-select: none;
 <div class="notification" id="saveNotification">
 <i class="fas fa-check-circle"></i>
 <span>تم حفظ بيانات المعلم بنجاح!</span>
-</div>
-
-<div class="notification help-notification" id="aiHelp">
-<i class="fas fa-info-circle"></i>
-<span>للحصول على مفتاح Gemini API:\n1. زر developers.google.com\n2. أنشئ مشروع جديد\n3. تفعيل Gemini API\n4. إنشاء مفتاح API</span>
 </div>
 
 <!-- نافذة الدعم الفني -->
@@ -1964,28 +1946,6 @@ const defaultTexts = {
 let counters = {goal:0,summary:0,steps:0,strategies:0,strengths:0,improve:0,recomm:0};
 let currentReportType = "";
 
-// متغير لتخزين مفتاح API
-let geminiApiKey = '';
-
-// حفظ مفتاح Gemini
-function saveGeminiKey() {
-    const key = document.getElementById('geminiKey').value.trim();
-    if (key) {
-        localStorage.setItem('geminiApiKey', key);
-        geminiApiKey = key;
-        showNotification('تم حفظ مفتاح API بنجاح!');
-    }
-}
-
-// تحميل مفتاح Gemini عند بدء التشغيل
-function loadGeminiKey() {
-    const savedKey = localStorage.getItem('geminiApiKey');
-    if (savedKey) {
-        document.getElementById('geminiKey').value = savedKey;
-        geminiApiKey = savedKey;
-    }
-}
-
 function getCurrentTexts() {
     const reportType = document.getElementById('reportType').value;
     return autoTextsByReportType[reportType] || defaultTexts;
@@ -2357,16 +2317,12 @@ function loadTeacherData() {
     }
 }
 
-// ==================== دوال الذكاء الاصطناعي المحسنة ====================
+// ==================== دوال الذكاء الاصطناعي مع البرومبت المهني ====================
 
 // دالة تعبئة الحقول باستخدام الذكاء الاصطناعي
 async function fillWithAI() {
-    // التحقق من وجود المفتاح
-    if (!geminiApiKey) {
-        alert('الرجاء إدخال مفتاح Gemini API أولاً في الحقل المخصص بالأعلى');
-        document.getElementById('geminiKey').focus();
-        return;
-    }
+    // المفتاح المدمج مباشرة في التطبيق
+    const geminiApiKey = 'AIzaSyC5u2ka2F-R_i6nktTHeltBk8P_l5V1ghs';
     
     // الحصول على نوع التقرير
     const reportType = getReportTypeText();
@@ -2374,6 +2330,14 @@ async function fillWithAI() {
         alert('الرجاء اختيار أو إدخال نوع التقرير أولاً');
         return;
     }
+    
+    // الحصول على معلومات إضافية
+    const subject = document.getElementById('subject').value || '';
+    const lesson = document.getElementById('lesson').value || '';
+    const grade = document.getElementById('grade').value || '';
+    const target = document.getElementById('target').value || '';
+    const place = document.getElementById('place').value || '';
+    const count = document.getElementById('count').value || '';
     
     // التحقق من اتصال الإنترنت
     if (!navigator.onLine) {
@@ -2392,26 +2356,40 @@ async function fillWithAI() {
     aiButton.disabled = true;
     
     try {
-        // إعداد النص المطلوب للذكاء الاصطناعي - محسن للتنبيه بعدم كتابة العناوين
-        const prompt = `أنت معلم خبير في المجال التربوي. 
-        
-أطلب منك كتابة محتوى لتقرير تربوي بعنوان: "${reportType}"
-        
-المطلوب كتابة محتوى للحقول التالية بشرطين مهمين:
+        // إعداد النص المطلوب للذكاء الاصطناعي - البرومبت المهني
+        const prompt = `أنت خبير تربوي تعليمي محترف تمتلك خبرة ميدانية واسعة في التعليم العام.  
+اعتمد منظورًا تربويًا مهنيًا احترافيًا يركّز على تحسين جودة التعليم، ودعم المعلم، وتعزيز بيئة التعلّم، وخدمة القيادة المدرسية.  
 
-**الشرط الأول:** لا تكتب أبداً عنوان الحقل في المحتوى (مثل "الهدف التربوي هو:" أو "النبذة المختصرة:")، فقط اكتب المحتوى النقي.
+التقرير المطلوب: "${reportType}"
+${subject ? `المادة: ${subject}` : ''}
+${lesson ? `الدرس: ${lesson}` : ''}
+${grade ? `الصف: ${grade}` : ''}
+${target ? `المستهدفون: ${target}` : ''}
+${place ? `مكان التنفيذ: ${place}` : ''}
+${count ? `عدد الحضور: ${count}` : ''}
 
-**الشرط الثاني:** كل حقل يجب أن يحتوي على 25 كلمة تقريباً.
+**توجيهات مهنية:**
+- كن موضوعيًا ومتزنًا وبنّاءً  
+- قدّم الملاحظات بصيغة تطويرية غير نقدية  
+- راعِ واقع الميدان التعليمي وسياق المدرسة  
+- اربط بين المعلم والطالب والمنهج والبيئة الصفية والقيادة المدرسية  
+- ركّز على جودة التعليم وأثر الممارسات على تعلم الطلاب  
+- التزم بلغة عربية فصيحة سليمة وخالية من الأخطاء  
 
-الحقول المطلوبة بالترتيب:
+**شروط المحتوى:**
+1. لا تكتب أبداً عنوان الحقل في المحتوى (مثل "الهدف التربوي هو:" أو "النبذة المختصرة:")
+2. كل حقل يجب أن يحتوي على 25 كلمة تقريباً
+3. المحتوى النهائي يجب أن يُصدر من قبل (المعلم)
+4. اجعل الهدف النهائي هو تحسين الممارسة التعليمية ودعم التطوير المهني المستدام
 
-1. الهدف التربوي: الهدف الرئيسي من هذا التقرير التربوي
-2. نبذة مختصرة: ملخص موجز عن التقرير
-3. إجراءات التنفيذ: الخطوات العملية التي تم تنفيذها
-4. الاستراتيجيات: الاستراتيجيات التعليمية المستخدمة
-5. نقاط القوة: الجوانب الإيجابية في التنفيذ
-6. نقاط التحسين: الجوانب التي تحتاج تحسين
-7. التوصيات: توصيات مستقبلية
+**الحقول المطلوبة:**
+1. الهدف التربوي
+2. نبذة مختصرة  
+3. إجراءات التنفيذ
+4. الاستراتيجيات
+5. نقاط القوة
+6. نقاط التحسين
+7. التوصيات
 
 يرجى تقديم الإجابة باللغة العربية الفصحى، وتنظيمها بحيث يكون كل حقل في سطر منفصل يبدأ برقمه فقط دون ذكر العنوان.`;
 
@@ -2429,7 +2407,7 @@ async function fillWithAI() {
                 }],
                 generationConfig: {
                     temperature: 0.7,
-                    maxOutputTokens: 800, // زيادة الرمزية للمحتوى الطويل
+                    maxOutputTokens: 1000, // زيادة الرمزية للمحتوى المهني
                 }
             })
         });
@@ -2448,13 +2426,13 @@ async function fillWithAI() {
         const aiResponse = data.candidates[0].content.parts[0].text;
         
         // تحليل الإجابة وتعيينها للحقول
-        parseAIResponseEnhanced(aiResponse);
+        parseAIResponseProfessional(aiResponse);
         
-        showNotification('تم تعبئة الحقول باستخدام الذكاء الاصطناعي بنجاح! ✓');
+        showNotification('تم تعبئة الحقول باستخدام الذكاء الاصطناعي المهني بنجاح! ✓');
         
     } catch (error) {
         console.error('خطأ في الذكاء الاصطناعي:', error);
-        alert(`خطأ: ${error.message}\n\nتأكد من:\n1. صحة مفتاح API\n2. اتصال الإنترنت\n3. أن النموذج متاح (gemini-2.5-flash-lite)\n4. أن المفتاح مفعل للاستخدام`);
+        alert(`خطأ: ${error.message}\n\nتأكد من:\n1. اتصال الإنترنت\n2. أن النموذج متاح (gemini-2.5-flash-lite)`);
     } finally {
         // استعادة الحالة الأصلية
         aiButton.querySelector('.btn-text').textContent = originalText;
@@ -2464,8 +2442,8 @@ async function fillWithAI() {
     }
 }
 
-// دالة محسنة لتحليل استجابة الذكاء الاصطناعي
-function parseAIResponseEnhanced(response) {
+// دالة محسنة لتحليل استجابة الذكاء الاصطناعي المهنية
+function parseAIResponseProfessional(response) {
     const lines = response.split('\n').filter(line => line.trim());
     
     // حقل التعيينات
@@ -2497,6 +2475,9 @@ function parseAIResponseEnhanced(response) {
                 // تأكد من أن المحتوى يحتوي على كلمات كافية
                 content = ensureWordCount(content, 25);
                 
+                // إضافة لمسة مهنية إذا كان المحتوى قصيراً
+                content = addProfessionalTouch(content, fieldId);
+                
                 document.getElementById(fieldId).value = content;
                 foundFields++;
             }
@@ -2505,7 +2486,7 @@ function parseAIResponseEnhanced(response) {
     
     // إذا لم يتم التحليل بنجاح، استخدم نهج بديل
     if (foundFields < 3) {
-        fallbackEnhancedAIParsing(response);
+        fallbackProfessionalAIParsing(response);
     }
     
     // تحديث التقرير
@@ -2522,7 +2503,9 @@ function removeFieldTitles(content) {
         'نقاط القوة', 'نقاط', 'القوة',
         'نقاط التحسين', 'تحسين',
         'التوصيات', 'توصيات',
-        'هو:', 'تشمل:', 'تشمل', 'يتضمن:', 'يتضمن'
+        'هو:', 'تشمل:', 'تشمل', 'يتضمن:', 'يتضمن',
+        'يتمثل في', 'يتمثل', 'يمثل', 'يتم',
+        'يشمل', 'تحتوي', 'تتضمن'
     ];
     
     let cleanedContent = content;
@@ -2543,7 +2526,7 @@ function removeFieldTitles(content) {
     return cleanedContent || content; // إرجاع المحتوى الأصلي إذا أصبح فارغاً
 }
 
-// دالة لتأكيد عدد الكلمات
+// دالة لتأكيد عدد الكلمات مع لمسة مهنية
 function ensureWordCount(content, targetWords) {
     const words = content.split(' ');
     
@@ -2552,19 +2535,20 @@ function ensureWordCount(content, targetWords) {
     }
     
     if (words.length < targetWords - 5) {
-        // إضافة كلمات لتكملة العدد المطلوب
-        const additionalPhrases = [
-            'مع مراعاة الجوانب التربوية والتعليمية المهمة',
-            'وذلك لتحقيق أفضل النتائج التعليمية المطلوبة',
-            'مع التركيز على تنمية المهارات والمعارف الأساسية',
-            'بما يناسب القدرات والمستويات المختلفة للطلاب',
-            'لضمان تحقيق الأهداف التعليمية المرجوة بشكل كامل',
-            'مع الاستفادة من التقنيات والوسائل التعليمية الحديثة'
+        // إضافة كلمات تربوية مهنية لتكملة العدد المطلوب
+        const professionalPhrases = [
+            'مع التركيز على تحقيق أهداف التعلم وتنمية المهارات الأساسية',
+            'بما يسهم في رفع مستوى التحصيل الدراسي وتحسين المخرجات التعليمية',
+            'وذلك لتحقيق التكامل بين الجوانب المعرفية والمهارية والوجدانية',
+            'مع مراعاة الفروق الفردية وتنويع أساليب التدريس لتناسب جميع الطلاب',
+            'لضمان تحقيق رؤية التعليم وتطوير العملية التعليمية بصورة شاملة',
+            'مع الاستفادة من أفضل الممارسات التربوية والتقنيات التعليمية الحديثة',
+            'بما يعزز من دور المعلم كميسر للتعلم وموجه للطالب نحو التميز'
         ];
         
         let extendedContent = content;
         while (extendedContent.split(' ').length < targetWords) {
-            const randomPhrase = additionalPhrases[Math.floor(Math.random() * additionalPhrases.length)];
+            const randomPhrase = professionalPhrases[Math.floor(Math.random() * professionalPhrases.length)];
             extendedContent += ' ' + randomPhrase;
         }
         
@@ -2585,13 +2569,35 @@ function ensureWordCount(content, targetWords) {
     return content;
 }
 
-// نهج بديل محسن لتحليل الاستجابة
-function fallbackEnhancedAIParsing(response) {
+// دالة لإضافة لمسة مهنية للمحتوى
+function addProfessionalTouch(content, fieldId) {
+    const words = content.split(' ');
+    if (words.length >= 20) return content; // المحتوى كافٍ
+    
+    const professionalAdditions = {
+        'goal': ' بما يعزز من جودة التعليم ويدعم تحقيق رؤية المدرسة التعليمية',
+        'summary': ' مع التركيز على الأثر الإيجابي في تحسين الممارسات التعليمية',
+        'steps': ' ومراعاة الجوانب التربوية والنفسية للطلاب في جميع المراحل',
+        'strategies': ' بما يناسب البيئة الصفية ويحقق أقصى استفادة تعليمية',
+        'strengths': ' مما يسهم في تحقيق بيئة تعلم إيجابية ومنتجة',
+        'improve': ' مع وضع خطط تطويرية قابلة للتنفيذ في الفصول القادمة',
+        'recomm': ' بما يدعم التطوير المهني المستمر ويعزز جودة التعليم'
+    };
+    
+    if (professionalAdditions[fieldId]) {
+        return content + professionalAdditions[fieldId];
+    }
+    
+    return content;
+}
+
+// نهج بديل محسن لتحليل الاستجابة المهنية
+function fallbackProfessionalAIParsing(response) {
     // تقسيم النص إلى جمل
     const sentences = response.split(/[\.\n]/).filter(s => {
         const trimmed = s.trim();
         return trimmed.length > 20 && 
-               !trimmed.match(/الهدف التربوي|نبذة مختصرة|إجراءات التنفيذ|الاستراتيجيات|نقاط القوة|نقاط التحسين|التوصيات/i);
+               !trimmed.match(/الهدف التربوي|نبذة مختصرة|إجراءات التنفيذ|الاستراتيجيات|نقاط القوة|نقاط التحسين|التوصيات|الحقل|المطلوب|يجب|يرجى/i);
     });
     
     // تعيين الحقول بالترتيب
@@ -2608,14 +2614,17 @@ function fallbackEnhancedAIParsing(response) {
             // التأكد من أن النص مناسب الطول (25 كلمة)
             content = ensureWordCount(content, 25);
             
+            // إضافة لمسة مهنية
+            content = addProfessionalTouch(content, field);
+            
             document.getElementById(field).value = content;
             sentenceIndex++;
         } else if (sentenceIndex > 0) {
-            // إذا نفدت الجمل، أعد استخدام الجملة السابقة مع تعديل بسيط
+            // إذا نفدت الجمل، أعد استخدام الجملة السابقة مع تعديل مهني
             const previousContent = document.getElementById(fields[sentenceIndex-1]).value;
             if (previousContent) {
                 const words = previousContent.split(' ');
-                const modifiedContent = words.slice(5).join(' ') + ' مع التركيز على جوانب أخرى مهمة في العملية التعليمية';
+                const modifiedContent = words.slice(5).join(' ') + ' مع التركيز على تطوير الممارسات التعليمية وتحسين جودة التعلم';
                 document.getElementById(field).value = ensureWordCount(modifiedContent, 25);
             }
         }
@@ -2815,7 +2824,6 @@ async function loadDates(){
 window.onload = function() {
     loadDates();
     loadTeacherData();
-    loadGeminiKey(); // تحميل مفتاح Gemini
     updateReport();
     
     // تحسين تجربة اللمس
@@ -2854,27 +2862,6 @@ window.onload = function() {
             updateReport();
             document.getElementById('searchResults').style.display = 'none';
             document.getElementById('reportSearch').value = '';
-        }
-    });
-    
-    // إضافة مستمعات لحقل مفتاح Gemini
-    document.getElementById('geminiKey').addEventListener('focus', function() {
-        document.getElementById('aiHelp').style.display = 'flex';
-        setTimeout(() => {
-            document.getElementById('aiHelp').classList.add('show');
-        }, 100);
-    });
-
-    document.getElementById('geminiKey').addEventListener('blur', function() {
-        document.getElementById('aiHelp').classList.remove('show');
-        setTimeout(() => {
-            document.getElementById('aiHelp').style.display = 'none';
-        }, 400);
-    });
-
-    document.getElementById('geminiKey').addEventListener('input', function() {
-        if (this.value.trim()) {
-            saveGeminiKey();
         }
     });
     
