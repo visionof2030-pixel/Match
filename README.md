@@ -158,6 +158,10 @@ font-size: 11px !important;
 #whatsappBtn{background:linear-gradient(135deg, #25D366 0%, #128C7E 100%);}
 #whatsappBtn:hover{background:linear-gradient(135deg, #128C7E 0%, #075E54 100%);}
 
+/* زر تغيير التاريخ */
+#changeDateBtn{background:linear-gradient(135deg, #FF9800 0%, #F57C00 100%);}
+#changeDateBtn:hover{background:linear-gradient(135deg, #F57C00 0%, #EF6C00 100%);}
+
 /* ========== تحسين واجهة الإدخال - تصميم عصري 2026 ========== */
 .input-section{
 background:#ffffff;padding:25px;border-radius:20px;margin-top:120px;
@@ -530,6 +534,110 @@ display: none;
 
 .tool-checkbox.checked .checkmark {
 display: inline-block;
+}
+
+/* نافذة تغيير التاريخ */
+.date-modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.7);
+z-index: 1001;
+justify-content: center;
+align-items: center;
+padding: 15px;
+}
+
+.date-content {
+background: white;
+border-radius: 15px;
+padding: 25px;
+width: 100%;
+max-width: 400px;
+box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+position: relative;
+}
+
+.date-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+padding-bottom: 15px;
+border-bottom: 2px solid #e0f0ea;
+}
+
+.date-header h3 {
+color: #044a35;
+font-size: 20px;
+font-weight: 800;
+}
+
+.close-date {
+background: none;
+border: none;
+font-size: 24px;
+color: #066d4d;
+cursor: pointer;
+width: 30px;
+height: 30px;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 50%;
+transition: all 0.3s;
+}
+
+.close-date:hover {
+background-color: #e8f4f0;
+}
+
+.date-form .form-group {
+margin-bottom: 15px;
+}
+
+.date-actions {
+display: flex;
+gap: 15px;
+margin-top: 25px;
+}
+
+.date-action-btn {
+flex: 1;
+padding: 12px;
+border-radius: 10px;
+border: none;
+color: white;
+font-weight: 700;
+font-size: 14px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+transition: all 0.3s;
+box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.save-date-btn {
+background: linear-gradient(135deg, #066d4d 0%, #044a35 100%);
+}
+
+.save-date-btn:hover {
+background: linear-gradient(135deg, #044a35 0%, #033020 100%);
+transform: translateY(-3px);
+}
+
+.reset-date-btn {
+background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+}
+
+.reset-date-btn:hover {
+background: linear-gradient(135deg, #F57C00 0%, #EF6C00 100%);
+transform: translateY(-3px);
 }
 
 /* ==================== تحسينات للهواتف المحمولة ==================== */
@@ -1298,15 +1406,15 @@ user-select: none;
 
 <div class="control-bar">
     <div class="right-section">
-        <!-- العنوان المعدل -->
+        <!-- العنوان المعدل مع اسم المعلم -->
         <div class="app-title-with-key">
             <div class="title-row">
-                <i class="fas fa-robot" style="color: #9C27B0;"></i>
-                <span>مدعوم بـ Gemini 2.5 Flash Lite</span>
+                <i class="fas fa-user-tie" style="color: #066d4d;"></i>
+                <span>تنفيذ: المعلم فهد الخالدي</span>
             </div>
         </div>
         
-        <!-- مجموعة الأزرار المعدلة -->
+        <!-- مجموعة الأزرار المعدلة مع زر تغيير التاريخ -->
         <div class="btn-group">
             <!-- زوج الأزرار الصغيرة -->
             <div class="btn-pair">
@@ -1314,9 +1422,9 @@ user-select: none;
                     <i class="fas fa-chalkboard-teacher btn-icon"></i>
                     <span class="btn-text">حفظ بيانات المعلم</span>
                 </button>
-                <button class="main-btn half-btn" id="clearBtn" onclick="clearData()" title="مسح جميع البيانات المدخلة">
-                    <i class="fas fa-trash-alt btn-icon"></i>
-                    <span class="btn-text">مسح</span>
+                <button class="main-btn half-btn" id="changeDateBtn" onclick="openDateModal()" title="تغيير التاريخ اليدوي في التقرير">
+                    <i class="fas fa-calendar-alt btn-icon"></i>
+                    <span class="btn-text">تغيير التاريخ</span>
                 </button>
             </div>
             
@@ -1325,7 +1433,11 @@ user-select: none;
                 <i class="fas fa-headset btn-icon"></i>
                 <span class="btn-text">الدعم الفني</span>
             </button>
-            <button class="main-btn" id="aiFillBtn" onclick="fillWithAI()" title="تعبئة جميع الحقول باستخدام الذكاء الاصطناعي Gemini:\n1. الهدف التربوي\n2. النبذة المختصرة\n3. إجراءات التنفيذ\n4. الاستراتيجيات\n5. نقاط القوة\n6. نقاط التحسين\n7. التوصيات">
+            <button class="main-btn" id="clearBtn" onclick="clearData()" title="مسح جميع البيانات المدخلة">
+                <i class="fas fa-trash-alt btn-icon"></i>
+                <span class="btn-text">مسح</span>
+            </button>
+            <button class="main-btn" id="aiFillBtn" onclick="fillWithAI()" title="تعبئة جميع الحقول باستخدام الذكاء الاصطناعي عبر الخادم الوسيط:\n1. الهدف التربوي\n2. النبذة المختصرة\n3. إجراءات التنفيذ\n4. الاستراتيجيات\n5. نقاط القوة\n6. نقاط التحسين\n7. التوصيات">
                 <i class="fas fa-robot btn-icon"></i>
                 <span class="btn-text">تعبئة بالذكاء الاصطناعي</span>
             </button>
@@ -1345,6 +1457,39 @@ user-select: none;
 <div class="notification" id="saveNotification">
 <i class="fas fa-check-circle"></i>
 <span>تم حفظ بيانات المعلم بنجاح!</span>
+</div>
+
+<!-- نافذة تغيير التاريخ -->
+<div class="date-modal" id="dateModal">
+<div class="date-content">
+<div class="date-header">
+<h3><i class="fas fa-calendar-alt" style="margin-left:10px;"></i>تغيير التاريخ اليدوي</h3>
+<button class="close-date" onclick="closeDateModal()">×</button>
+</div>
+
+<div class="date-form">
+<div class="form-group">
+<label for="customHijriDate"><i class="fas fa-moon"></i>التاريخ الهجري</label>
+<input type="text" id="customHijriDate" placeholder="مثال: الأربعاء 15 رمضان 1445 هـ">
+<small style="color:#666; font-size:12px; display:block; margin-top:5px;">ملاحظة: اكتب التاريخ الهجري بالصيغة المطلوبة</small>
+</div>
+
+<div class="form-group">
+<label for="customGregorianDate"><i class="fas fa-sun"></i>التاريخ الميلادي</label>
+<input type="text" id="customGregorianDate" placeholder="مثال: 24 أبريل 2024 م">
+<small style="color:#666; font-size:12px; display:block; margin-top:5px;">ملاحظة: اكتب التاريخ الميلادي بالصيغة المطلوبة</small>
+</div>
+
+<div class="date-actions">
+<button class="date-action-btn reset-date-btn" onclick="resetDates()">
+<i class="fas fa-redo"></i>رجوع للتاريخ الحالي
+</button>
+<button class="date-action-btn save-date-btn" onclick="saveCustomDates()">
+<i class="fas fa-save"></i>حفظ التاريخ الجديد
+</button>
+</div>
+</div>
+</div>
 </div>
 
 <!-- نافذة الدعم الفني -->
@@ -1946,6 +2091,13 @@ const defaultTexts = {
 let counters = {goal:0,summary:0,steps:0,strategies:0,strengths:0,improve:0,recomm:0};
 let currentReportType = "";
 
+// متغيرات للتاريخ اليدوي
+let customHijriDate = "";
+let customGregorianDate = "";
+
+// رابط Backend Proxy
+const BACKEND_PROXY_URL = 'https://gemini-backend-x1r2.onrender.com/ask';
+
 function getCurrentTexts() {
     const reportType = document.getElementById('reportType').value;
     return autoTextsByReportType[reportType] || defaultTexts;
@@ -2317,13 +2469,10 @@ function loadTeacherData() {
     }
 }
 
-// ==================== دوال الذكاء الاصطناعي مع البرومبت المهني ====================
+// ==================== دوال الذكاء الاصطناعي مع Backend Proxy ====================
 
-// دالة تعبئة الحقول باستخدام الذكاء الاصطناعي
+// دالة تعبئة الحقول باستخدام الذكاء الاصطناعي عبر Backend Proxy
 async function fillWithAI() {
-    // المفتاح المدمج مباشرة في التطبيق
-    const geminiApiKey = 'AIzaSyC5u2ka2F-R_i6nktTHeltBk8P_l5V1ghs';
-    
     // الحصول على نوع التقرير
     const reportType = getReportTypeText();
     if (!reportType || reportType === 'تقرير') {
@@ -2393,37 +2542,29 @@ ${count ? `عدد الحضور: ${count}` : ''}
 
 يرجى تقديم الإجابة باللغة العربية الفصحى، وتنظيمها بحيث يكون كل حقل في سطر منفصل يبدأ برقمه فقط دون ذكر العنوان.`;
 
-        // استدعاء واجهة Gemini API
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${geminiApiKey}`, {
+        // استدعاء Backend Proxy بدلاً من Gemini API مباشرة
+        const response = await fetch(BACKEND_PROXY_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                contents: [{
-                    parts: [{
-                        text: prompt
-                    }]
-                }],
-                generationConfig: {
-                    temperature: 0.7,
-                    maxOutputTokens: 1000, // زيادة الرمزية للمحتوى المهني
-                }
+                prompt: prompt
             })
         });
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(`خطأ في الاتصال بالخادم: ${response.status} - ${errorData.error?.message || 'يرجى التحقق من المفتاح'}`);
+            throw new Error(`خطأ في الخادم الوسيط: ${response.status} - ${errorData.error?.message || 'يرجى المحاولة لاحقاً'}`);
         }
 
         const data = await response.json();
         
-        if (!data.candidates || !data.candidates[0] || !data.candidates[0].content || !data.candidates[0].content.parts[0].text) {
+        if (!data.response) {
             throw new Error('لم يتم الحصول على إجابة من الذكاء الاصطناعي');
         }
         
-        const aiResponse = data.candidates[0].content.parts[0].text;
+        const aiResponse = data.response;
         
         // تحليل الإجابة وتعيينها للحقول
         parseAIResponseProfessional(aiResponse);
@@ -2432,7 +2573,7 @@ ${count ? `عدد الحضور: ${count}` : ''}
         
     } catch (error) {
         console.error('خطأ في الذكاء الاصطناعي:', error);
-        alert(`خطأ: ${error.message}\n\nتأكد من:\n1. اتصال الإنترنت\n2. أن النموذج متاح (gemini-2.5-flash-lite)`);
+        alert(`خطأ: ${error.message}\n\nتأكد من:\n1. اتصال الإنترنت\n2. أن الخادم الوسيط يعمل\n3. المحاولة مرة أخرى بعد قليل`);
     } finally {
         // استعادة الحالة الأصلية
         aiButton.querySelector('.btn-text').textContent = originalText;
@@ -2631,7 +2772,89 @@ function fallbackProfessionalAIParsing(response) {
     });
 }
 
-// وظائف الدعم الفني
+// ==================== دوال تغيير التاريخ ====================
+
+// فتح نافذة تغيير التاريخ
+function openDateModal() {
+    document.getElementById('dateModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    
+    // تعبئة الحقول بالقيم الحالية إذا كانت موجودة
+    const savedHijri = localStorage.getItem('customHijriDate');
+    const savedGregorian = localStorage.getItem('customGregorianDate');
+    
+    if (savedHijri) {
+        document.getElementById('customHijriDate').value = savedHijri;
+    }
+    if (savedGregorian) {
+        document.getElementById('customGregorianDate').value = savedGregorian;
+    }
+}
+
+// إغلاق نافذة تغيير التاريخ
+function closeDateModal() {
+    document.getElementById('dateModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// حفظ التاريخ المخصص
+function saveCustomDates() {
+    const hijriDate = document.getElementById('customHijriDate').value.trim();
+    const gregorianDate = document.getElementById('customGregorianDate').value.trim();
+    
+    if (!hijriDate || !gregorianDate) {
+        alert('الرجاء إدخال كلا التاريخين (الهجري والميلادي)');
+        return;
+    }
+    
+    // حفظ التاريخين في localStorage
+    localStorage.setItem('customHijriDate', hijriDate);
+    localStorage.setItem('customGregorianDate', gregorianDate);
+    
+    // تحديث المتغيرات
+    customHijriDate = hijriDate;
+    customGregorianDate = gregorianDate;
+    
+    // تحديث العرض في PDF
+    updateDatesDisplay();
+    
+    showNotification('تم حفظ التاريخ الجديد بنجاح!');
+    closeDateModal();
+}
+
+// إعادة ضبط التاريخ إلى الحالي
+function resetDates() {
+    // مسح التاريخ المخصص
+    localStorage.removeItem('customHijriDate');
+    localStorage.removeItem('customGregorianDate');
+    
+    // مسح الحقول
+    document.getElementById('customHijriDate').value = '';
+    document.getElementById('customGregorianDate').value = '';
+    
+    // إعادة ضبط المتغيرات
+    customHijriDate = "";
+    customGregorianDate = "";
+    
+    // تحميل التاريخ الحالي
+    loadDates();
+    showNotification('تم إعادة ضبط التاريخ إلى التاريخ الحالي!');
+}
+
+// تحديث عرض التواريخ في PDF
+function updateDatesDisplay() {
+    if (customHijriDate && customGregorianDate) {
+        // استخدام التاريخ المخصص
+        document.getElementById('hDate').innerText = customHijriDate;
+        document.getElementById('gDate').innerText = customGregorianDate;
+    } else {
+        // استخدام التاريخ الحالي
+        loadDates();
+    }
+}
+
+// ==================== دوال الدعم الفني ====================
+
 function openSupportModal() {
     document.getElementById('supportModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
@@ -2645,6 +2868,13 @@ function closeSupportModal() {
 document.getElementById('supportModal').addEventListener('click', function(e) {
     if (e.target === this) {
         closeSupportModal();
+    }
+});
+
+// نفس الشيء لتاريخ
+document.getElementById('dateModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeDateModal();
     }
 });
 
@@ -2808,13 +3038,30 @@ async function sharePDFWhatsApp(){
 }
 
 async function loadDates(){
+    // التحقق أولاً من وجود تاريخ مخصص
+    const savedHijri = localStorage.getItem('customHijriDate');
+    const savedGregorian = localStorage.getItem('customGregorianDate');
+    
+    if (savedHijri && savedGregorian) {
+        // استخدام التاريخ المخصص
+        customHijriDate = savedHijri;
+        customGregorianDate = savedGregorian;
+        document.getElementById('hDate').innerText = customHijriDate;
+        document.getElementById('gDate').innerText = customGregorianDate;
+        return;
+    }
+    
+    // إذا لم يكن هناك تاريخ مخصص، استخدم التاريخ الحالي
     let g = new Date();
-    document.getElementById('gDate').innerText = g.toLocaleDateString('ar-EG') + " م";
+    const gregorianText = g.toLocaleDateString('ar-EG') + " م";
+    document.getElementById('gDate').innerText = gregorianText;
+    
     try {
         let r = await fetch(`https://api.aladhan.com/v1/gToH?date=${g.getDate()}-${g.getMonth()+1}-${g.getFullYear()}`);
         let j = await r.json();
         let h = j.data.hijri;
-        document.getElementById('hDate').innerText = `${h.weekday.ar} ${h.day} ${h.month.ar} ${h.year} هـ`;
+        const hijriText = `${h.weekday.ar} ${h.day} ${h.month.ar} ${h.year} هـ`;
+        document.getElementById('hDate').innerText = hijriText;
     } catch {
         document.getElementById('hDate').innerText = "--";
     }
