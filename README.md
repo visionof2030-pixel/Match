@@ -49,8 +49,8 @@ flex: 1;
 flex-wrap: wrap;
 }
 
-/* تاريخ التحويل - جديد */
-.date-toggle-container {
+/* تاريخ التحويل - تم التعديل هنا */
+.date-manual-container {
 display: flex;
 flex-direction: column;
 gap: 4px;
@@ -63,26 +63,24 @@ box-shadow: 0 3px 8px rgba(6, 109, 77, 0.15);
 min-width: 180px;
 }
 
-.date-toggle-btn {
-background: linear-gradient(135deg, #066d4d 0%, #05553d 100%);
-color: white;
-border: none;
+.date-input {
+width: 100%;
 padding: 4px 8px;
+border: 1px solid #cce7dd;
 border-radius: 6px;
 font-size: 11px;
-cursor: pointer;
-display: flex;
-align-items: center;
-gap: 5px;
-transition: all 0.3s;
+background: white;
+text-align: center;
+color: #044a35;
 }
 
-.date-toggle-btn:hover {
-background: linear-gradient(135deg, #05553d 0%, #044a35 100%);
-transform: translateY(-2px);
+.date-input:focus {
+outline: none;
+border-color: #066d4d;
+box-shadow: 0 0 0 2px rgba(6, 109, 77, 0.2);
 }
 
-.date-display {
+.date-label {
 font-weight: 700;
 color: #044a35;
 text-align: center;
@@ -90,7 +88,7 @@ font-size: 11px;
 padding: 2px 0;
 }
 
-/* تصميم عنوان التطبيق المعدل */
+/* تصميم عنوان التطبيق المعدل - تم توسيطه */
 .app-title {
 background: linear-gradient(135deg, #e8f4f0 0%, #d4ebe2 100%);
 color: #044a35;
@@ -101,9 +99,12 @@ font-weight: 800;
 border-right: 4px solid #ffd166;
 display: flex;
 align-items: center;
+justify-content: center; /* تم التعديل هنا للتوسيط */
 gap: 8px;
 box-shadow: 0 3px 8px rgba(6, 109, 77, 0.15);
 min-width: 200px;
+flex: 1; /* تم التعديل هنا */
+text-align: center; /* تم التعديل هنا */
 }
 
 /* مجموعة الأزرار المعدلة - مرتبة في صفين */
@@ -578,7 +579,7 @@ flex-direction: column;
 gap: 10px;
 }
 
-.date-toggle-container {
+.date-manual-container {
 width: 100%;
 max-width: 100%;
 order: 2;
@@ -691,7 +692,7 @@ font-size: 10px;
 padding: 5px 8px;
 }
 
-.date-toggle-container {
+.date-manual-container {
 font-size: 11px;
 padding: 5px 8px;
 }
@@ -898,7 +899,7 @@ padding: 4px 8px;
 min-width: 180px;
 }
 
-.date-toggle-container {
+.date-manual-container {
 max-width: 180px;
 min-width: 150px;
 }
@@ -1315,21 +1316,16 @@ user-select: none;
 
 <div class="control-bar">
     <div class="header-controls">
-        <!-- العنوان بدون مفتاح Gemini -->
+        <!-- حاوية التاريخ الجديدة مع الإدخال اليدوي -->
+        <div class="date-manual-container">
+            <div class="date-label">التاريخ</div>
+            <input type="text" class="date-input" id="manualDateInput" placeholder="أدخل التاريخ يدوياً">
+        </div>
+        
+        <!-- العنوان المعدل - تم توسيطه -->
         <div class="app-title">
             <i class="fas fa-user-tie"></i>
             <span>تنفيذ: المعلم فهد الخالدي</span>
-        </div>
-        
-        <!-- حاوية التاريخ الجديدة -->
-        <div class="date-toggle-container">
-            <div class="date-display" id="currentDateDisplay">
-                تحميل التاريخ...
-            </div>
-            <button class="date-toggle-btn" onclick="toggleDate()">
-                <i class="fas fa-sync-alt"></i>
-                <span>تبديل التاريخ</span>
-            </button>
         </div>
         
         <!-- مجموعة الأزرار المعدلة والمرتبة في صفين -->
@@ -1938,13 +1934,8 @@ const defaultTexts = {
 let counters = {goal:0,summary:0,steps:0,strategies:0,strengths:0,improve:0,recomm:0};
 let currentReportType = "";
 
-// متغيرات للتحكم بالتاريخ
-let dateMode = 'hijri'; // hijri أو gregorian
-let currentHijriDate = '';
-let currentGregorianDate = '';
-
-// رابط خادم الذكاء الاصطناعي B الصحيح
-const backendAIUrl = 'https://gemini-backend-x1r2.onrender.com/ask';
+// متغير للتحكم بالتاريخ اليدوي
+let manualDate = '';
 
 function getCurrentTexts() {
     const reportType = document.getElementById('reportType').value;
@@ -2158,6 +2149,9 @@ function updateReport(){
     
     // تحديث الأدوات والوسائل التعليمية
     updateToolsDisplay();
+    
+    // تحديث التاريخ في PDF
+    updatePDFDate();
 }
 
 function getReportTypeText() {
@@ -2248,6 +2242,8 @@ function saveTeacherData(){
         term: document.getElementById('term').value,
         count: document.getElementById('count').value,
         manualTitle: document.getElementById('manualReportTitle').value,
+        // حفظ التاريخ اليدوي
+        manualDate: document.getElementById('manualDateInput').value,
         // حفظ الأدوات المختارة
         tools: []
     };
@@ -2303,6 +2299,7 @@ function loadTeacherData() {
         document.getElementById('term').value = teacherData.term || '';
         document.getElementById('count').value = teacherData.count || '';
         document.getElementById('manualReportTitle').value = teacherData.manualTitle || '';
+        document.getElementById('manualDateInput').value = teacherData.manualDate || '';
         
         // تحميل النصوص
         const textFields = ['goal', 'summary', 'steps', 'strategies', 'strengths', 'improve', 'recomm'];
@@ -2330,24 +2327,17 @@ function loadTeacherData() {
         }
         
         updateReport();
+        updatePDFDate();
         console.log('بيانات المعلم المحملة:', teacherData);
     }
 }
 
-// ==================== دالة تبديل التاريخ ====================
-function toggleDate() {
-    dateMode = dateMode === 'hijri' ? 'gregorian' : 'hijri';
-    updateDateDisplay();
-}
-
-// دالة تحديث عرض التاريخ
-function updateDateDisplay() {
-    const dateDisplay = document.getElementById('currentDateDisplay');
-    
-    if (dateMode === 'hijri') {
-        dateDisplay.textContent = currentHijriDate || 'تحميل التاريخ...';
-    } else {
-        dateDisplay.textContent = currentGregorianDate || 'تحميل التاريخ...';
+// ==================== دالة تحديث التاريخ في PDF ====================
+function updatePDFDate() {
+    const manualDate = document.getElementById('manualDateInput').value;
+    if (manualDate) {
+        document.getElementById('hDate').innerText = manualDate;
+        document.getElementById('gDate').innerText = manualDate;
     }
 }
 
@@ -2820,29 +2810,35 @@ async function sharePDFWhatsApp(){
     });
 }
 
+// ==================== دالة تحميل التواريخ ====================
 async function loadDates(){
     let g = new Date();
-    currentGregorianDate = g.toLocaleDateString('ar-EG') + " م";
+    let gregorianDate = g.toLocaleDateString('ar-EG') + " م";
     
     try {
         let r = await fetch(`https://api.aladhan.com/v1/gToH?date=${g.getDate()}-${g.getMonth()+1}-${g.getFullYear()}`);
         let j = await r.json();
         let h = j.data.hijri;
-        currentHijriDate = `${h.weekday.ar} ${h.day} ${h.month.ar} ${h.year} هـ`;
+        let hijriDate = `${h.weekday.ar} ${h.day} ${h.month.ar} ${h.year} هـ`;
         
-        // تحديث العرض في الهيدر
-        document.getElementById('currentDateDisplay').textContent = currentHijriDate;
+        // تعيين التاريخ الافتراضي في حقل الإدخال (التاريخ الهجري)
+        document.getElementById('manualDateInput').value = hijriDate;
         
         // تحديث التواريخ في PDF
-        document.getElementById('gDate').innerText = currentGregorianDate;
-        document.getElementById('hDate').innerText = currentHijriDate;
+        document.getElementById('gDate').innerText = gregorianDate;
+        document.getElementById('hDate').innerText = hijriDate;
     } catch {
-        currentHijriDate = "--";
-        document.getElementById('currentDateDisplay').textContent = "تعذر تحميل التاريخ";
-        document.getElementById('gDate').innerText = currentGregorianDate;
-        document.getElementById('hDate').innerText = "--";
+        // في حالة فشل الاتصال، ضع تاريخ افتراضي
+        document.getElementById('manualDateInput').value = '--';
+        document.getElementById('gDate').innerText = gregorianDate;
+        document.getElementById('hDate').innerText = '--';
     }
 }
+
+// ==================== حدث عند تغيير التاريخ اليدوي ====================
+document.getElementById('manualDateInput').addEventListener('input', function() {
+    updatePDFDate();
+});
 
 // عند تحميل الصفحة
 window.onload = function() {
