@@ -49,8 +49,8 @@ flex: 1;
 flex-wrap: wrap;
 }
 
-/* تاريخ التحويل - تم التعديل هنا */
-.date-manual-container {
+/* تاريخ التحويل - جديد */
+.date-toggle-container {
 display: flex;
 flex-direction: column;
 gap: 4px;
@@ -60,35 +60,37 @@ border-radius: 10px;
 font-size: 12px;
 border-right: 4px solid #ffd166;
 box-shadow: 0 3px 8px rgba(6, 109, 77, 0.15);
-min-width: 180px;
+min-width: 220px;
 }
 
-.date-input {
-width: 100%;
+.date-toggle-btn {
+background: linear-gradient(135deg, #066d4d 0%, #05553d 100%);
+color: white;
+border: none;
 padding: 4px 8px;
-border: 1px solid #cce7dd;
 border-radius: 6px;
 font-size: 11px;
-background: white;
-text-align: center;
-color: #044a35;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 5px;
+transition: all 0.3s;
 }
 
-.date-input:focus {
-outline: none;
-border-color: #066d4d;
-box-shadow: 0 0 0 2px rgba(6, 109, 77, 0.2);
+.date-toggle-btn:hover {
+background: linear-gradient(135deg, #05553d 0%, #044a35 100%);
+transform: translateY(-2px);
 }
 
-.date-label {
+.date-display {
 font-weight: 700;
 color: #044a35;
 text-align: center;
-font-size: 11px;
-padding: 2px 0;
+font-size: 12px;
+margin-bottom: 5px;
 }
 
-/* تصميم عنوان التطبيق المعدل - تم توسيطه */
+/* تصميم عنوان التطبيق المعدل */
 .app-title {
 background: linear-gradient(135deg, #e8f4f0 0%, #d4ebe2 100%);
 color: #044a35;
@@ -99,12 +101,11 @@ font-weight: 800;
 border-right: 4px solid #ffd166;
 display: flex;
 align-items: center;
-justify-content: center; /* تم التعديل هنا للتوسيط */
 gap: 8px;
 box-shadow: 0 3px 8px rgba(6, 109, 77, 0.15);
-min-width: 200px;
-flex: 1; /* تم التعديل هنا */
-text-align: center; /* تم التعديل هنا */
+flex: 1;
+text-align: center;
+justify-content: center;
 }
 
 /* مجموعة الأزرار المعدلة - مرتبة في صفين */
@@ -161,7 +162,7 @@ button.main-btn:active{transform:translateY(-1px);}
 #clearBtn:hover{background:linear-gradient(135deg, #ec971f 0%, #d58512 100%);}
 
 /* زر الذكاء الاصطناعي المعدل - الأصفر والأزرق */
-#aiFillBtn{background:linear-gradient(135deg, #ffd166 0%, #4d96ff 100%);}
+#aiFillBtn{background:linear-gradient(135deg, #ffd166 0%, #4d96ff 100%); position: relative;}
 #aiFillBtn:hover{background:linear-gradient(135deg, #ffc145 0%, #2d7dfd 100%);}
 
 /* تصميم خاص لأزرار PDF وواتساب */
@@ -579,7 +580,7 @@ flex-direction: column;
 gap: 10px;
 }
 
-.date-manual-container {
+.date-toggle-container {
 width: 100%;
 max-width: 100%;
 order: 2;
@@ -692,7 +693,7 @@ font-size: 10px;
 padding: 5px 8px;
 }
 
-.date-manual-container {
+.date-toggle-container {
 font-size: 11px;
 padding: 5px 8px;
 }
@@ -899,7 +900,7 @@ padding: 4px 8px;
 min-width: 180px;
 }
 
-.date-manual-container {
+.date-toggle-container {
 max-width: 180px;
 min-width: 150px;
 }
@@ -1281,26 +1282,41 @@ user-select: none;
     }
 }
 
-/* مؤشر التحميل */
-.ai-loading {
-    position: relative;
-    overflow: hidden;
-}
-
-.ai-loading::after {
-    content: '';
+/* مؤشر التحميل للذكاء الاصطناعي */
+.ai-loading-indicator {
+    display: none;
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    animation: loadingShine 1.5s infinite;
+    top: -5px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    background: #ffd166;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+    z-index: 10;
 }
 
-@keyframes loadingShine {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+@keyframes pulse {
+    0% { transform: scale(0.8); opacity: 0.7; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(0.8); opacity: 0.7; }
+}
+
+/* إدخال التاريخ يدوياً */
+#manualDateInput {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 12px;
+    text-align: center;
+    font-family: 'Cairo', sans-serif;
+}
+
+#manualDateInput:focus {
+    outline: none;
+    border-color: #066d4d;
+    box-shadow: 0 0 0 2px rgba(6, 109, 77, 0.2);
 }
 </style>
 </head>
@@ -1316,16 +1332,20 @@ user-select: none;
 
 <div class="control-bar">
     <div class="header-controls">
-        <!-- حاوية التاريخ الجديدة مع الإدخال اليدوي -->
-        <div class="date-manual-container">
-            <div class="date-label">التاريخ</div>
-            <input type="text" class="date-input" id="manualDateInput" placeholder="أدخل التاريخ يدوياً">
-        </div>
-        
-        <!-- العنوان المعدل - تم توسيطه -->
+        <!-- العنوان بدون مفتاح Gemini - توسيط في المنتصف -->
         <div class="app-title">
             <i class="fas fa-user-tie"></i>
             <span>تنفيذ: المعلم فهد الخالدي</span>
+        </div>
+        
+        <!-- حاوية التاريخ الجديدة - إدخال يدوي -->
+        <div class="date-toggle-container">
+            <div class="date-display" id="currentDateDisplay">
+                التاريخ الحالي
+            </div>
+            <input type="text" id="manualDateInput" 
+                   placeholder="أدخل التاريخ يدوياً" 
+                   onchange="updateManualDate()">
         </div>
         
         <!-- مجموعة الأزرار المعدلة والمرتبة في صفين -->
@@ -1934,8 +1954,13 @@ const defaultTexts = {
 let counters = {goal:0,summary:0,steps:0,strategies:0,strengths:0,improve:0,recomm:0};
 let currentReportType = "";
 
-// متغير للتحكم بالتاريخ اليدوي
-let manualDate = '';
+// متغيرات للتحكم بالتاريخ
+let dateMode = 'hijri'; // hijri أو gregorian
+let currentHijriDate = '';
+let currentGregorianDate = '';
+
+// رابط خادم الذكاء الاصطناعي B الصحيح
+const backendAIUrl = 'https://gemini-backend-x1r2.onrender.com/ask';
 
 function getCurrentTexts() {
     const reportType = document.getElementById('reportType').value;
@@ -2102,6 +2127,24 @@ function updateManualTitle() {
     updateReport();
 }
 
+// ==================== دالة تحديث التاريخ اليدوي ====================
+function updateManualDate() {
+    const manualDate = document.getElementById('manualDateInput').value;
+    if (manualDate) {
+        currentHijriDate = manualDate;
+        currentGregorianDate = manualDate;
+        
+        // تحديث العرض في الهيدر
+        document.getElementById('currentDateDisplay').textContent = manualDate;
+        
+        // تحديث التواريخ في PDF
+        document.getElementById('gDate').innerText = manualDate;
+        document.getElementById('hDate').innerText = manualDate;
+        
+        showNotification('تم تحديث التاريخ يدوياً ✓');
+    }
+}
+
 // دالة تبديل حالة الأداة
 function toggleTool(toolElement) {
     const checkbox = toolElement.querySelector('input[type="checkbox"]');
@@ -2149,9 +2192,6 @@ function updateReport(){
     
     // تحديث الأدوات والوسائل التعليمية
     updateToolsDisplay();
-    
-    // تحديث التاريخ في PDF
-    updatePDFDate();
 }
 
 function getReportTypeText() {
@@ -2242,8 +2282,6 @@ function saveTeacherData(){
         term: document.getElementById('term').value,
         count: document.getElementById('count').value,
         manualTitle: document.getElementById('manualReportTitle').value,
-        // حفظ التاريخ اليدوي
-        manualDate: document.getElementById('manualDateInput').value,
         // حفظ الأدوات المختارة
         tools: []
     };
@@ -2299,7 +2337,6 @@ function loadTeacherData() {
         document.getElementById('term').value = teacherData.term || '';
         document.getElementById('count').value = teacherData.count || '';
         document.getElementById('manualReportTitle').value = teacherData.manualTitle || '';
-        document.getElementById('manualDateInput').value = teacherData.manualDate || '';
         
         // تحميل النصوص
         const textFields = ['goal', 'summary', 'steps', 'strategies', 'strengths', 'improve', 'recomm'];
@@ -2326,22 +2363,19 @@ function loadTeacherData() {
             }
         }
         
+        // تحميل التاريخ اليدوي المحفوظ
+        if (teacherData.manualDate) {
+            document.getElementById('manualDateInput').value = teacherData.manualDate;
+            updateManualDate();
+        }
+        
         updateReport();
-        updatePDFDate();
+        updateToolsDisplay();
         console.log('بيانات المعلم المحملة:', teacherData);
     }
 }
 
-// ==================== دالة تحديث التاريخ في PDF ====================
-function updatePDFDate() {
-    const manualDate = document.getElementById('manualDateInput').value;
-    if (manualDate) {
-        document.getElementById('hDate').innerText = manualDate;
-        document.getElementById('gDate').innerText = manualDate;
-    }
-}
-
-// ==================== دالة الذكاء الاصطناعي المعدلة ====================
+// ==================== دالة الذكاء الاصطناعي المعدلة مع المؤشر ====================
 async function fillWithAI() {
     // التحقق من اتصال الإنترنت
     if (!navigator.onLine) {
@@ -2364,16 +2398,19 @@ async function fillWithAI() {
     const place = document.getElementById('place').value || '';
     const count = document.getElementById('count').value || '';
     
-    // التحقق من اتصال الإنترنت
-    if (!navigator.onLine) {
-        alert('لا يوجد اتصال بالإنترنت. الرجاء التأكد من الاتصال');
-        return;
-    }
-    
     // عرض مؤشر التحميل
     const aiButton = document.getElementById('aiFillBtn');
     const originalText = aiButton.querySelector('.btn-text').textContent;
     const originalIcon = aiButton.querySelector('.btn-icon').className;
+    
+    // إضافة مؤشر التحميل
+    let loadingIndicator = aiButton.querySelector('.ai-loading-indicator');
+    if (!loadingIndicator) {
+        loadingIndicator = document.createElement('div');
+        loadingIndicator.className = 'ai-loading-indicator';
+        aiButton.appendChild(loadingIndicator);
+    }
+    loadingIndicator.style.display = 'block';
     
     aiButton.querySelector('.btn-text').textContent = 'جارٍ التعبئة...';
     aiButton.querySelector('.btn-icon').className = 'fas fa-spinner fa-spin btn-icon';
@@ -2461,6 +2498,11 @@ ${count ? `عدد الحضور: ${count}` : ''}
         console.error('خطأ في الذكاء الاصطناعي:', error);
         alert(`خطأ: ${error.message}\n\nتأكد من:\n1. اتصال الإنترنت\n2. أن خادم Backend يعمل على الرابط: ${backendAIUrl}`);
     } finally {
+        // إخفاء مؤشر التحميل
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'none';
+        }
+        
         // استعادة الحالة الأصلية
         aiButton.querySelector('.btn-text').textContent = originalText;
         aiButton.querySelector('.btn-icon').className = originalIcon;
@@ -2810,35 +2852,31 @@ async function sharePDFWhatsApp(){
     });
 }
 
-// ==================== دالة تحميل التواريخ ====================
 async function loadDates(){
     let g = new Date();
-    let gregorianDate = g.toLocaleDateString('ar-EG') + " م";
+    currentGregorianDate = g.toLocaleDateString('ar-EG') + " م";
     
     try {
         let r = await fetch(`https://api.aladhan.com/v1/gToH?date=${g.getDate()}-${g.getMonth()+1}-${g.getFullYear()}`);
         let j = await r.json();
         let h = j.data.hijri;
-        let hijriDate = `${h.weekday.ar} ${h.day} ${h.month.ar} ${h.year} هـ`;
+        currentHijriDate = `${h.weekday.ar} ${h.day} ${h.month.ar} ${h.year} هـ`;
         
-        // تعيين التاريخ الافتراضي في حقل الإدخال (التاريخ الهجري)
-        document.getElementById('manualDateInput').value = hijriDate;
+        // تعيين التاريخ الافتراضي في الحقل اليدوي
+        document.getElementById('manualDateInput').value = currentHijriDate;
+        document.getElementById('currentDateDisplay').textContent = currentHijriDate;
         
         // تحديث التواريخ في PDF
-        document.getElementById('gDate').innerText = gregorianDate;
-        document.getElementById('hDate').innerText = hijriDate;
+        document.getElementById('gDate').innerText = currentGregorianDate;
+        document.getElementById('hDate').innerText = currentHijriDate;
     } catch {
-        // في حالة فشل الاتصال، ضع تاريخ افتراضي
-        document.getElementById('manualDateInput').value = '--';
-        document.getElementById('gDate').innerText = gregorianDate;
-        document.getElementById('hDate').innerText = '--';
+        currentHijriDate = "--";
+        document.getElementById('currentDateDisplay').textContent = "تعذر تحميل التاريخ";
+        document.getElementById('manualDateInput').value = "";
+        document.getElementById('gDate').innerText = currentGregorianDate;
+        document.getElementById('hDate').innerText = "--";
     }
 }
-
-// ==================== حدث عند تغيير التاريخ اليدوي ====================
-document.getElementById('manualDateInput').addEventListener('input', function() {
-    updatePDFDate();
-});
 
 // عند تحميل الصفحة
 window.onload = function() {
@@ -2896,6 +2934,12 @@ window.onload = function() {
             e.preventDefault();
         }
     }, { passive: false });
+    
+    // إضافة مؤشر التحميل لزر الذكاء الاصطناعي
+    const aiButton = document.getElementById('aiFillBtn');
+    const loadingIndicator = document.createElement('div');
+    loadingIndicator.className = 'ai-loading-indicator';
+    aiButton.appendChild(loadingIndicator);
 }
 </script>
 
