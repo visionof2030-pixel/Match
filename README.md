@@ -1344,7 +1344,7 @@ user-select: none;
                 التاريخ الحالي
             </div>
             <input type="text" id="manualDateInput" 
-                   placeholder="أدخل التاريخ يدوياً" 
+                   placeholder="أدخل التاريخ الهجري (مثال: ١٤٤٦/٠٦/١٥)" 
                    onchange="updateManualDate()">
         </div>
         
@@ -1962,6 +1962,52 @@ let currentGregorianDate = '';
 // رابط خادم الذكاء الاصطناعي B الصحيح
 const backendAIUrl = 'https://gemini-backend-x1r2.onrender.com/ask';
 
+// ==================== دالة لتحويل التاريخ الهجري إلى ميلادي ====================
+async function convertHijriToGregorian(hijriDate) {
+    if (!hijriDate || hijriDate.trim() === '') return '';
+    
+    try {
+        // تحليل التاريخ الهجري (توقع تنسيق مثل: ١٤٤٦/٠٦/١٥ أو 1446/06/15)
+        // تحويل الأرقام العربية إلى إنجليزية للتعامل مع API
+        const arabicToEnglish = {
+            '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',
+            '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9'
+        };
+        
+        let cleanDate = hijriDate;
+        for (let arabic in arabicToEnglish) {
+            cleanDate = cleanDate.replace(new RegExp(arabic, 'g'), arabicToEnglish[arabic]);
+        }
+        
+        // محاولة استخراج اليوم والشهر والسنة
+        const dateParts = cleanDate.split(/[-\/]/);
+        if (dateParts.length === 3) {
+            const day = parseInt(dateParts[2]);
+            const month = parseInt(dateParts[1]);
+            const year = parseInt(dateParts[0]);
+            
+            if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+                // استدعاء API للتحويل
+                const response = await fetch(`https://api.aladhan.com/v1/hToG?date=${day}-${month}-${year}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.data && data.data.gregorian) {
+                        const g = data.data.gregorian;
+                        return `${g.day}/${g.month.number}/${g.year}`;
+                    }
+                }
+            }
+        }
+        
+        // إذا فشل التحويل، ارجع التاريخ الهجري مع إضافة "(تقريبي)"
+        return hijriDate;
+        
+    } catch (error) {
+        console.error('خطأ في تحويل التاريخ:', error);
+        return hijriDate;
+    }
+}
+
 function getCurrentTexts() {
     const reportType = document.getElementById('reportType').value;
     return autoTextsByReportType[reportType] || defaultTexts;
@@ -2127,21 +2173,43 @@ function updateManualTitle() {
     updateReport();
 }
 
-// ==================== دالة تحديث التاريخ اليدوي ====================
-function updateManualDate() {
+// ==================== دالة تحديث التاريخ اليدوي المعدلة ====================
+async function updateManualDate() {
     const manualDate = document.getElementById('manualDateInput').value;
-    if (manualDate) {
-        currentHijriDate = manualDate;
-        currentGregorianDate = manualDate;
+    if (manualDate && manualDate.trim() !== '') {
+        // حفظ التاريخ الهجري المدخل
+        const hijriDate = manualDate.trim();
+        currentHijriDate = hijriDate;
         
-        // تحديث العرض في الهيدر
-        document.getElementById('currentDateDisplay').textContent = manualDate;
+        // محاولة تحويل التاريخ إلى ميلادي
+        try {
+            const gregorianDate = await convertHijriToGregorian(hijriDate);
+            currentGregorianDate = gregorianDate;
+            
+            // تحديث العرض في الهيدر
+            document.getElementById('currentDateDisplay').textContent = `هجري: ${hijriDate}`;
+            
+            // تحديث التواريخ في PDF
+            document.getElementById('hDate').innerHTML = hijriDate + " هـ";
+            document.getElementById('gDate').innerHTML = gregorianDate + " م";
+            
+            showNotification('تم تحديث التاريخين (الهجري والميلادي) ✓');
+        } catch (error) {
+            // إذا فشل التحويل، استخدم التاريخ الهجري فقط
+            document.getElementById('currentDateDisplay').textContent = `هجري: ${hijriDate}`;
+            document.getElementById('hDate').innerHTML = hijriDate + " هـ";
+            document.getElementById('gDate').innerHTML = hijriDate + " هـ";
+            showNotification('تم تحديث التاريخ الهجري ✓ (تعذر تحويل التاريخ الميلادي)');
+        }
         
-        // تحديث التواريخ في PDF
-        document.getElementById('gDate').innerText = manualDate;
-        document.getElementById('hDate').innerText = manualDate;
-        
-        showNotification('تم تحديث التاريخ يدوياً ✓');
+        // حفظ التاريخ المحدث في بيانات المعلم
+        const savedData = localStorage.getItem('teacherData');
+        if (savedData) {
+            const teacherData = JSON.parse(savedData);
+            teacherData.manualHijriDate = currentHijriDate;
+            teacherData.manualGregorianDate = currentGregorianDate;
+            localStorage.setItem('teacherData', JSON.stringify(teacherData));
+        }
     }
 }
 
@@ -2282,6 +2350,8 @@ function saveTeacherData(){
         term: document.getElementById('term').value,
         count: document.getElementById('count').value,
         manualTitle: document.getElementById('manualReportTitle').value,
+        manualHijriDate: currentHijriDate,
+        manualGregorianDate: currentGregorianDate,
         // حفظ الأدوات المختارة
         tools: []
     };
@@ -2338,6 +2408,18 @@ function loadTeacherData() {
         document.getElementById('count').value = teacherData.count || '';
         document.getElementById('manualReportTitle').value = teacherData.manualTitle || '';
         
+        // تحميل التاريخ المحفوظ إن وجد
+        if (teacherData.manualHijriDate) {
+            currentHijriDate = teacherData.manualHijriDate;
+            currentGregorianDate = teacherData.manualGregorianDate || '';
+            document.getElementById('manualDateInput').value = currentHijriDate;
+            document.getElementById('currentDateDisplay').textContent = `هجري: ${currentHijriDate}`;
+            
+            // تحديث التواريخ في PDF
+            document.getElementById('hDate').innerHTML = currentHijriDate + " هـ";
+            document.getElementById('gDate').innerHTML = currentGregorianDate ? currentGregorianDate + " م" : currentHijriDate + " هـ";
+        }
+        
         // تحميل النصوص
         const textFields = ['goal', 'summary', 'steps', 'strategies', 'strengths', 'improve', 'recomm'];
         textFields.forEach(field => {
@@ -2361,12 +2443,6 @@ function loadTeacherData() {
                     }
                 }
             }
-        }
-        
-        // تحميل التاريخ اليدوي المحفوظ
-        if (teacherData.manualDate) {
-            document.getElementById('manualDateInput').value = teacherData.manualDate;
-            updateManualDate();
         }
         
         updateReport();
@@ -2438,13 +2514,14 @@ ${count ? `عدد الحضور: ${count}` : ''}
 - ركّز على جودة التعليم وأثر الممارسات على تعلم الطلاب  
 - التزم بلغة عربية فصيحة سليمة وخالية من الأخطاء  
 
-**شروط المحتوى:**
-1. لا تكتب أبداً عنوان الحقل في المحتوى (مثل "الهدف التربوي هو:" أو "النبذة المختصرة:")
-2. كل حقل يجب أن يحتوي على 25 كلمة تقريباً
-3. المحتوى النهائي يجب أن يُصدر من قبل (المعلم)
-4. اجعل الهدف النهائي هو تحسين الممارسة التعليمية ودعم التطوير المهني المستدام
-
-**الحقول المطلوبة:**
+**شروط المحتوى:**اكتب محتوى كل حقل بصيغة تقريرية مهنية وكأنه صادر عن المعلم.
+لا تكتب أبداً عنوان الحقل داخل المحتوى ولا تعِد صياغته بصيغة مباشرة (مثل: الهدف التربوي هو، النبذة المختصرة).
+يجب أن يحتوي كل حقل على ما يقارب 25 كلمة.
+ابدأ بالمضمون مباشرة دون تمهيد أو عبارات إنشائية.
+يمكن الاستفادة من معنى العنوان أو أحد مفاهيمه بشكل غير مباشر فقط عند الحاجة وبما يخدم الفكرة دون تكرار أو حشو.
+اجعل الهدف النهائي للمحتوى تحسين الممارسة التعليمية ودعم التطوير المهني المستدام.
+راعِ الوضوح والترابط، واجعل كل جملة تضيف قيمة تعليمية فعلية.
+الحقول المطلوبة:**
 1. الهدف التربوي
 2. نبذة مختصرة  
 3. إجراءات التنفيذ
@@ -2852,29 +2929,63 @@ async function sharePDFWhatsApp(){
     });
 }
 
+// ==================== دالة تحميل التواريخ المعدلة ====================
 async function loadDates(){
+    // إذا كان هناك تاريخ هجري محفوظ، استخدمه
+    const savedData = localStorage.getItem('teacherData');
+    if (savedData) {
+        const teacherData = JSON.parse(savedData);
+        if (teacherData.manualHijriDate) {
+            currentHijriDate = teacherData.manualHijriDate;
+            currentGregorianDate = teacherData.manualGregorianDate || '';
+            document.getElementById('manualDateInput').value = currentHijriDate;
+            document.getElementById('currentDateDisplay').textContent = `هجري: ${currentHijriDate}`;
+            document.getElementById('hDate').innerHTML = currentHijriDate + " هـ";
+            document.getElementById('gDate').innerHTML = currentGregorianDate ? currentGregorianDate + " م" : currentHijriDate + " هـ";
+            return;
+        }
+    }
+    
+    // إذا لم يكن هناك تاريخ محفوظ، استخدم التاريخ الحالي
     let g = new Date();
-    currentGregorianDate = g.toLocaleDateString('ar-EG') + " م";
+    currentGregorianDate = `${g.getDate()}/${g.getMonth()+1}/${g.getFullYear()}`;
     
     try {
         let r = await fetch(`https://api.aladhan.com/v1/gToH?date=${g.getDate()}-${g.getMonth()+1}-${g.getFullYear()}`);
         let j = await r.json();
         let h = j.data.hijri;
-        currentHijriDate = `${h.weekday.ar} ${h.day} ${h.month.ar} ${h.year} هـ`;
+        
+        // تحويل الأرقام العربية
+        const englishToArabic = {
+            '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤',
+            '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
+        };
+        
+        let arabicDay = h.day.toString();
+        let arabicMonth = h.month.number.toString();
+        let arabicYear = h.year.toString();
+        
+        for (let english in englishToArabic) {
+            arabicDay = arabicDay.replace(new RegExp(english, 'g'), englishToArabic[english]);
+            arabicMonth = arabicMonth.replace(new RegExp(english, 'g'), englishToArabic[english]);
+            arabicYear = arabicYear.replace(new RegExp(english, 'g'), englishToArabic[english]);
+        }
+        
+        currentHijriDate = `${arabicYear}/${arabicMonth}/${arabicDay}`;
         
         // تعيين التاريخ الافتراضي في الحقل اليدوي
         document.getElementById('manualDateInput').value = currentHijriDate;
-        document.getElementById('currentDateDisplay').textContent = currentHijriDate;
+        document.getElementById('currentDateDisplay').textContent = `هجري: ${currentHijriDate}`;
         
         // تحديث التواريخ في PDF
-        document.getElementById('gDate').innerText = currentGregorianDate;
-        document.getElementById('hDate').innerText = currentHijriDate;
+        document.getElementById('gDate').innerHTML = currentGregorianDate + " م";
+        document.getElementById('hDate').innerHTML = currentHijriDate + " هـ";
     } catch {
-        currentHijriDate = "--";
+        currentHijriDate = "١٤٤٦/٠٦/٠١";
         document.getElementById('currentDateDisplay').textContent = "تعذر تحميل التاريخ";
-        document.getElementById('manualDateInput').value = "";
-        document.getElementById('gDate').innerText = currentGregorianDate;
-        document.getElementById('hDate').innerText = "--";
+        document.getElementById('manualDateInput').value = currentHijriDate;
+        document.getElementById('gDate').innerHTML = currentGregorianDate + " م";
+        document.getElementById('hDate').innerHTML = currentHijriDate + " هـ";
     }
 }
 
