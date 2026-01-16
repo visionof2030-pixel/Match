@@ -1015,7 +1015,7 @@ user-select: none;
   text-align:right;
 }
 
-/* مربعات المعلومات - تم التعديل هنا لزيادة حجم العناوين */
+/* مربعات المعلومات - تم التعديل هنا حسب طلبك: تبديل نوع التقرير والمستهدفون */
 .info-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -1035,7 +1035,7 @@ user-select: none;
   padding:14px 4px 6px;
   position:relative;
   text-align:center;
-  font-size:11px; /* تم تصغير الخط للمحتوى */
+  font-size:13px; /* تم تكبير الخط من 11px إلى 13px */
   min-height:34px;
   overflow:hidden;
 }
@@ -1044,18 +1044,24 @@ user-select: none;
   top:4px;
   right:50%;
   transform:translateX(50%);
-  font-size:8px;
+  font-size:10px; /* تم تكبير الخط من 8px إلى 10px */
   font-weight:800;
   color:var(--main);
   white-space:nowrap;
 }
 .info-value{
-  font-size:11px; /* تم تصغير خط المحتوى */
+  font-size:13px; /* تم تكبير الخط من 11px إلى 13px */
   font-weight:600;
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
 }
+
+/* التعديل: إزالة التصغير الخاص لنوع التقرير */
+/* #reportTypeBox{
+  font-size: 9px;     
+  font-weight: 600;
+} */
 
 /* مادة | درس - تم التعديل هنا */
 .subject-lesson-box{
@@ -1064,13 +1070,16 @@ user-select: none;
   position:relative;
   padding:14px 4px 6px;
   overflow:hidden;
+  height: 48px;          /* ارتفاع ثابت */
+  min-height: 48px;
+  max-height: 48px;
 }
 .subject-lesson-title{
   position:absolute;
   top:4px;
   right:50%;
   transform:translateX(50%);
-  font-size:8px;
+  font-size:10px; /* تم تكبير الخط من 8px إلى 10px */
   font-weight:800;
   color:var(--main);
 }
@@ -1079,7 +1088,8 @@ user-select: none;
   grid-template-columns:1fr 1px 1fr;
   align-items:center;
   text-align:center;
-  font-size:11px; /* تم تصغير خط المحتوى */
+  font-size:13px; /* تم تكبير الخط من 11px إلى 13px */
+  height: 100%;
 }
 .subject-divider{
   background:var(--border);
@@ -1087,7 +1097,7 @@ user-select: none;
   margin:auto;
 }
 
-/* الهدف التربوي */
+/* الهدف التربوي - تم التعديل لجعل المحتوى متكيف */
 .box-objective{
   border:1px solid var(--border);
   border-radius:8px;
@@ -1102,14 +1112,22 @@ user-select: none;
   text-align:center;
   color:var(--main);
   font-weight:800;
-  font-size:8px;
+  font-size:17px; /* العنوان الكبير كما هو */
   margin-bottom:4px;
 }
 .box-objective .box-content{
-  font-size:14px; /* تم تكبير الخط 3 درجات من 11px إلى 14px */
+  font-size:14px; /* الحجم الأساسي */
   line-height:1.5;
   text-align:center;
   overflow:hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 5px;
+  transition: all 0.3s ease;
 }
 
 /* المربعات الكبيرة */
@@ -1317,6 +1335,23 @@ user-select: none;
     outline: none;
     border-color: #066d4d;
     box-shadow: 0 0 0 2px rgba(6, 109, 77, 0.2);
+}
+
+/* منع النص من دفع المربع للتمدد - تم تعديلها */
+#subjectBox,
+#lessonBox,
+#goalBox {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 5px;
+  transition: all 0.3s ease;
 }
 </style>
 </head>
@@ -1704,7 +1739,7 @@ user-select: none;
 </div>
 </div>
 
-<!-- قسم PDF المعدل -->
+<!-- قسم PDF المعدل - تم تبديل نوع التقرير والمستهدفون حسب طلبك -->
 <div id="report-content" class="pdf-export" style="display:none;">
 
 <div class="header">
@@ -1718,15 +1753,19 @@ user-select: none;
   </div>
 </div>
 
+<!-- تم تبديل المستهدفون مكان نوع التقرير هنا -->
 <div class="info-grid">
   <div class="info-box"><div class="info-title">الفصل الدراسي</div><div class="info-value" id="termBox"></div></div>
   <div class="info-box"><div class="info-title">الصف</div><div class="info-value" id="gradeBox"></div></div>
   <div class="info-box"><div class="info-title">العدد</div><div class="info-value" id="countBox"></div></div>
-  <div class="info-box"><div class="info-title">نوع التقرير</div><div class="info-value" id="reportTypeBox"></div></div>
+  <!-- التعديل: المستهدفون الآن في الصف الأول بدلاً من نوع التقرير -->
+  <div class="info-box"><div class="info-title">المستهدفون</div><div class="info-value" id="targetBox"></div></div>
 </div>
 
+<!-- تم تبديل نوع التقرير مكان المستهدفون هنا -->
 <div class="info-grid2">
-  <div class="info-box"><div class="info-title">المستهدفون</div><div class="info-value" id="targetBox"></div></div>
+  <!-- التعديل: نوع التقرير الآن في الصف الثاني بدلاً من المستهدفون -->
+  <div class="info-box"><div class="info-title">نوع التقرير</div><div class="info-value" id="reportTypeBox"></div></div>
 
   <div class="subject-lesson-box">
     <div class="subject-lesson-title">المادة | الدرس</div>
@@ -2254,6 +2293,114 @@ function updateManualTitle() {
     updateReport();
 }
 
+// ==================== دالة تكيف الخطوط المضافة ====================
+function adaptSubjectLessonFont() {
+  const elements = [
+    document.getElementById('subjectBox'),
+    document.getElementById('lessonBox'),
+    document.getElementById('goalBox') // إضافة الهدف التربوي
+  ];
+
+  elements.forEach(el => {
+    if (!el || !el.parentElement) return;
+
+    const text = el.innerText.trim();
+    const textLength = text.length;
+    const container = el.parentElement;
+    const containerWidth = container.clientWidth - 30;
+    const containerHeight = container.clientHeight - 20;
+
+    // إزالة أي محاذاة أو تكرار سابق
+    el.style.whiteSpace = 'nowrap';
+    el.style.overflow = 'hidden';
+    el.style.textOverflow = 'ellipsis';
+    el.style.textAlign = 'center';
+    el.style.display = 'flex';
+    el.style.alignItems = 'center';
+    el.style.justifyContent = 'center';
+    el.style.padding = '0 5px';
+    el.style.width = '100%';
+    el.style.height = '100%';
+
+    // قواعد تكيف الخط بناءً على طول النص وعرض الحاوية
+    let fontSize, fontWeight, lineHeight;
+    
+    // حالة النص الفارغ
+    if (!text || text === 'غير محدد' || text === 'لم يتم تحديد الهدف التربوي' || textLength === 0) {
+      if (el.id === 'goalBox') {
+        el.style.fontSize = '14px';
+        el.style.fontWeight = '600';
+      } else {
+        el.style.fontSize = '13px';
+        el.style.fontWeight = '600';
+      }
+      el.style.lineHeight = '1.2';
+      return;
+    }
+
+    // حساب نسبة ملء النص في الحاوية
+    const approxCharWidth = el.id === 'goalBox' ? 8 : 7; // خط أكبر للهدف التربوي
+    const approxTextWidth = textLength * approxCharWidth;
+    const widthRatio = approxTextWidth / containerWidth;
+    
+    if (widthRatio > 2.0) {
+      // النص طويل جداً
+      fontSize = el.id === 'goalBox' ? '10px' : '8px';
+      fontWeight = '600';
+      lineHeight = '1.0';
+      el.style.whiteSpace = 'normal';
+      el.style.overflow = 'hidden';
+      el.style.display = '-webkit-box';
+      el.style.WebkitLineClamp = '2';
+      el.style.WebkitBoxOrient = 'vertical';
+    } else if (widthRatio > 1.2) {
+      // النص طويل
+      fontSize = el.id === 'goalBox' ? '11px' : '9px';
+      fontWeight = '600';
+      lineHeight = '1.1';
+    } else if (widthRatio > 0.8) {
+      // النص متوسط
+      fontSize = el.id === 'goalBox' ? '12px' : '10px';
+      fontWeight = '700';
+      lineHeight = '1.2';
+    } else if (widthRatio > 0.5) {
+      // النص مناسب
+      fontSize = el.id === 'goalBox' ? '13px' : '11px';
+      fontWeight = '800';
+      lineHeight = '1.3';
+    } else {
+      // النص قصير
+      fontSize = el.id === 'goalBox' ? '14px' : '13px';
+      fontWeight = '900';
+      lineHeight = '1.4';
+    }
+
+    // ضبط للارتفاع
+    if (containerHeight < 30) {
+      fontSize = Math.min(parseInt(fontSize), (el.id === 'goalBox' ? 12 : 10)) + 'px';
+      lineHeight = '1.1';
+    }
+
+    // تطبيق التنسيقات
+    el.style.fontSize = fontSize;
+    el.style.fontWeight = fontWeight;
+    el.style.lineHeight = lineHeight;
+  });
+}
+
+// دالة للمحاولة مرة أخرى بعد فترة قصيرة
+function adaptSubjectLessonFontWithRetry() {
+  adaptSubjectLessonFont();
+  
+  // المحاولة مرة أخرى بعد 100 مللي ثانية لضمان تحميل الأبعاد
+  setTimeout(adaptSubjectLessonFont, 100);
+  
+  // محاولة ثانية بعد تحميل الصفحة بالكامل
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', adaptSubjectLessonFont);
+  }
+}
+
 // ==================== دالة تحديث التاريخ اليدوي المعدلة ====================
 async function updateManualDate() {
     const manualDate = document.getElementById('manualDateInput').value;
@@ -2268,7 +2415,7 @@ async function updateManualDate() {
             currentGregorianDate = gregorianDate;
             
             // تحديث العرض في الهيدر
-            document.getElementById('currentDateDisplay').textContent = `هجري: ${hijriDate}`;
+            document.getElementById('currentDateDisplay').textContent = `هـ: ${hijriDate}`;
             
             // تحديث التواريخ في PDF
             document.getElementById('hDate').innerHTML = hijriDate + " هـ";
@@ -2313,7 +2460,7 @@ function updateReport(){
     document.getElementById('educationBox').innerText = document.getElementById('education').value;
     document.getElementById('schoolBox').innerText = document.getElementById('school').value;
     
-    // تحديث المربعات الصغيرة
+    // تحديث المربعات الصغيرة - بدون تغيير لأن الأماكن تغيرت في HTML فقط
     const termValue = document.getElementById('term').value;
     document.getElementById('termBox').innerText = termValue ? `الفصل الدراسي ${termValue}` : 'غير محدد';
     document.getElementById('gradeBox').innerText = document.getElementById('grade').value || 'غير محدد';
@@ -2341,6 +2488,9 @@ function updateReport(){
     
     // تحديث الأدوات والوسائل التعليمية
     updateToolsDisplay();
+    
+    // استدعاء دالة تكيف الخطوط بعد التحديث
+    setTimeout(adaptSubjectLessonFontWithRetry, 10);
 }
 
 function getReportTypeText() {
@@ -2388,7 +2538,7 @@ function updateToolsDisplay() {
         const noToolsMessage = document.createElement('div');
         noToolsMessage.style.textAlign = 'center';
         noToolsMessage.style.color = '#666';
-        noToolsMessage.style.fontSize = '9px';
+        noToolsMessage.style.fontSize = '11px'; // تكبير الخط
         noToolsMessage.style.padding = '4px';
         noToolsMessage.textContent = 'لم يتم اختيار أي أدوات';
         toolsListBox.appendChild(noToolsMessage);
@@ -2725,13 +2875,13 @@ function parseAIResponseProfessional(response) {
 // دالة لإزالة عناوين الحقول من النص
 function removeFieldTitles(content) {
     const fieldTitles = [
-        'الهدف التربوي', 'الهدف', 'التربوي',
-        'نبذة مختصرة', 'نبذة', 'مختصرة',
-        'إجراءات التنفيذ', 'إجراءات', 'التنفيذ',
-        'الاستراتيجيات', 'استراتيجيات',
-        'نقاط القوة', 'نقاط', 'القوة',
-        'نقاط التحسين', 'تحسين',
-        'التوصيات', 'توصيات',
+        'الهدف التربوي', 'الهدف التربوي', ,
+        'نبذة مختصرة', 'نبذة مختصرة', ,
+        'إجراءات التنفيذ', 'إجراءات التنفيذ', ,
+        'الاستراتيجيات', 'الاستراتيجيات',
+        'نقاط القوة', 'نقاط القوة',
+        'نقاط التحسين', 'نقاط تحسين',
+        'التوصيات', 'التوصيات',
         'هو:', 'تشمل:', 'تشمل', 'يتضمن:', 'يتضمن',
         'يتمثل في', 'يتمثل', 'يمثل', 'يتم',
         'يشمل', 'تحتوي', 'تتضمن'
@@ -2957,7 +3107,7 @@ async function downloadPDF(){
 
 async function sharePDFWhatsApp(){
     document.querySelector('.control-bar').style.visibility = 'hidden';
-    document.querySelector('.top-marquee').style.visibility = 'hidden';
+    document.querySelector('.top-marquee').style.visibility = 'visible';
     document.body.style.margin = "0";
     document.body.style.background = "white";
 
@@ -3068,7 +3218,7 @@ async function loadDates(){
         document.getElementById('currentDateDisplay').textContent = "تعذر تحميل التاريخ";
         document.getElementById('manualDateInput').value = currentHijriDate;
         document.getElementById('gDate').innerHTML = currentGregorianDate + " م";
-        document.getElementById('hDate').innerHTML = currentHijriDate + " هـ";
+        document.getElementById('hDate').innerHTML = currentHijriDate + " هجري";
     }
 }
 
@@ -3134,6 +3284,21 @@ window.onload = function() {
     const loadingIndicator = document.createElement('div');
     loadingIndicator.className = 'ai-loading-indicator';
     aiButton.appendChild(loadingIndicator);
+    
+    // إضافة مستمعات لأحداث تكيف الخطوط
+    window.addEventListener('resize', adaptSubjectLessonFont);
+    
+    document.addEventListener('input', function(e) {
+        if (e.target.id === 'subject' || e.target.id === 'lesson' || e.target.id === 'goal') {
+            setTimeout(adaptSubjectLessonFont, 50);
+        }
+    });
+    
+    document.addEventListener('change', function(e) {
+        if (e.target.matches('select, input[type="text"], input[type="file"]')) {
+            setTimeout(adaptSubjectLessonFont, 100);
+        }
+    });
 }
 </script>
 
