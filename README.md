@@ -106,6 +106,298 @@ box-shadow: 0 3px 8px rgba(6, 109, 77, 0.15);
 flex: 1;
 text-align: center;
 justify-content: center;
+cursor: pointer;
+transition: all 0.3s;
+position: relative;
+}
+
+.app-title:hover {
+transform: translateY(-2px);
+box-shadow: 0 5px 12px rgba(6, 109, 77, 0.25);
+}
+
+/* زر تنفيذ المعلم - قابل للنقر */
+.app-title {
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.app-title:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(6, 109, 77, 0.25);
+}
+
+/* نافذة الإدارة المخفية */
+.admin-panel {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    z-index: 2000;
+    width: 90%;
+    max-width: 500px;
+    max-height: 85vh;
+    overflow-y: auto;
+    border: 3px solid #ffd166;
+}
+
+.admin-panel.show {
+    display: block;
+    animation: fadeIn 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -60%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1999;
+}
+
+.overlay.show {
+    display: block;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0f0ea;
+}
+
+.admin-header h3 {
+    color: #044a35;
+    font-size: 20px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.close-admin {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #066d4d;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.close-admin:hover {
+    background-color: #e8f4f0;
+}
+
+/* تصميم حقول المفاتيح */
+.key-field {
+    margin-bottom: 20px;
+    background: #f8fdfa;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #d4ebe2;
+    transition: all 0.3s;
+}
+
+.key-field:hover {
+    border-color: #066d4d;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(6, 109, 77, 0.1);
+}
+
+.key-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.key-header label {
+    font-weight: 800;
+    color: #044a35;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.key-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.check-key-btn, .toggle-key-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.check-key-btn {
+    background: linear-gradient(135deg, #5a67d8 0%, #4c51bf 100%);
+    color: white;
+}
+
+.check-key-btn:hover {
+    background: linear-gradient(135deg, #4c51bf 0%, #434190 100%);
+}
+
+.toggle-key-btn {
+    background: linear-gradient(135deg, #ffd166 0%, #f0ad4e 100%);
+    color: #333;
+}
+
+.toggle-key-btn:hover {
+    background: linear-gradient(135deg, #f0ad4e 0%, #ec971f 100%);
+}
+
+.toggle-key-btn.active {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: white;
+}
+
+.key-status {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-top: 8px;
+    display: none;
+    align-items: center;
+    gap: 5px;
+}
+
+.key-status.active {
+    display: flex;
+    background: #e8f4f0;
+    color: #044a35;
+    border-right: 3px solid #25D366;
+}
+
+.key-status.inactive {
+    display: flex;
+    background: #fee;
+    color: #d9534f;
+    border-right: 3px solid #d9534f;
+}
+
+.key-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #d4ebe2;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: monospace;
+    background: white;
+    transition: all 0.3s;
+}
+
+.key-input:focus {
+    outline: none;
+    border-color: #066d4d;
+    box-shadow: 0 0 0 3px rgba(6, 109, 77, 0.15);
+}
+
+/* إجراءات المفاتيح */
+.key-actions-global {
+    display: flex;
+    gap: 10px;
+    margin: 25px 0;
+    flex-wrap: wrap;
+}
+
+.global-action-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.activate-all-btn {
+    background: linear-gradient(135deg, #066d4d 0%, #05553d 100%);
+    color: white;
+}
+
+.activate-all-btn:hover {
+    background: linear-gradient(135deg, #05553d 0%, #044a35 100%);
+    transform: translateY(-3px);
+}
+
+.deactivate-all-btn {
+    background: linear-gradient(135deg, #f0ad4e 0%, #ec971f 100%);
+    color: #333;
+}
+
+.deactivate-all-btn:hover {
+    background: linear-gradient(135deg, #ec971f 0%, #d58512 100%);
+    transform: translateY(-3px);
+}
+
+.save-keys-btn {
+    background: linear-gradient(135deg, #5a67d8 0%, #4c51bf 100%);
+    color: white;
+}
+
+.save-keys-btn:hover {
+    background: linear-gradient(135deg, #4c51bf 0%, #434190 100%);
+    transform: translateY(-3px);
+}
+
+/* زر التعبئة الذكية ٢ */
+#aiFillBtn2 {
+    background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+    position: relative;
+    display: none; /* مخفي بشكل افتراضي */
+}
+
+#aiFillBtn2:hover {
+    background: linear-gradient(135deg, #8e44ad 0%, #7d3c98 100%);
+}
+
+#aiFillBtn2.show {
+    display: flex;
+}
+
+/* زر خاص يظهر بعد 3 نقرات على عنوان المعلم */
+#specialBtn {
+    display: none;
+}
+
+#specialBtn.show {
+    display: flex;
 }
 
 /* مجموعة الأزرار المعدلة - مرتبة في صفين */
@@ -1035,7 +1327,7 @@ user-select: none;
   padding:14px 4px 6px;
   position:relative;
   text-align:center;
-  font-size:13px; /* تم تكبير الخط من 11px إلى 13px */
+  font-size:11px; /* تم تصغير الخط للمحتوى */
   min-height:34px;
   overflow:hidden;
 }
@@ -1044,24 +1336,24 @@ user-select: none;
   top:4px;
   right:50%;
   transform:translateX(50%);
-  font-size:10px; /* تم تكبير الخط من 8px إلى 10px */
+  font-size:8px;
   font-weight:800;
   color:var(--main);
   white-space:nowrap;
 }
 .info-value{
-  font-size:13px; /* تم تكبير الخط من 11px إلى 13px */
+  font-size:11px; /* تم تصغير خط المحتوى */
   font-weight:600;
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
 }
 
-/* التعديل: إزالة التصغير الخاص لنوع التقرير */
-/* #reportTypeBox{
-  font-size: 9px;     
+/* التعديل الخاص: تصغير محتوى نوع التقرير فقط */
+#reportTypeBox{
+  font-size: 9px;     /* تصغير المحتوى */
   font-weight: 600;
-} */
+}
 
 /* مادة | درس - تم التعديل هنا */
 .subject-lesson-box{
@@ -1079,7 +1371,7 @@ user-select: none;
   top:4px;
   right:50%;
   transform:translateX(50%);
-  font-size:10px; /* تم تكبير الخط من 8px إلى 10px */
+  font-size:8px;
   font-weight:800;
   color:var(--main);
 }
@@ -1088,7 +1380,7 @@ user-select: none;
   grid-template-columns:1fr 1px 1fr;
   align-items:center;
   text-align:center;
-  font-size:13px; /* تم تكبير الخط من 11px إلى 13px */
+  font-size:11px; /* تم تصغير خط المحتوى */
   height: 100%;
 }
 .subject-divider{
@@ -1097,7 +1389,7 @@ user-select: none;
   margin:auto;
 }
 
-/* الهدف التربوي - تم التعديل لجعل المحتوى متكيف */
+/* الهدف التربوي */
 .box-objective{
   border:1px solid var(--border);
   border-radius:8px;
@@ -1112,22 +1404,20 @@ user-select: none;
   text-align:center;
   color:var(--main);
   font-weight:800;
-  font-size:17px; /* العنوان الكبير كما هو */
+  font-size:8px;
   margin-bottom:4px;
 }
 .box-objective .box-content{
-  font-size:14px; /* الحجم الأساسي */
+  font-size:14px; /* تم تكبير الخط 3 درجات من 11px إلى 14px */
   line-height:1.5;
   text-align:center;
   overflow:hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  width: 100%;
-  height: 100%;
-  padding: 0 5px;
-  transition: all 0.3s ease;
+}
+
+/* التعديل الخاص: تكبير عنوان الهدف التربوي فقط */
+.box-objective .box-title{
+  font-size: 17px;      /* كبّر العنوان */
+  font-weight: 900;
 }
 
 /* المربعات الكبيرة */
@@ -1339,8 +1629,7 @@ user-select: none;
 
 /* منع النص من دفع المربع للتمدد - تم تعديلها */
 #subjectBox,
-#lessonBox,
-#goalBox {
+#lessonBox{
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1371,7 +1660,7 @@ user-select: none;
 <div class="control-bar">
     <div class="header-controls">
         <!-- العنوان بدون مفتاح Gemini - توسيط في المنتصف -->
-        <div class="app-title">
+        <div class="app-title" onclick="handleTeacherTitleClick()">
             <i class="fas fa-user-tie"></i>
             <span>تنفيذ: المعلم فهد الخالدي</span>
         </div>
@@ -1404,8 +1693,12 @@ user-select: none;
                 </button>
             </div>
             
-            <!-- الصف الثاني: 3 أزرار -->
+            <!-- الصف الثاني: 4 أزرار (تمت إضافة زر التعبئة الذكية ٢) -->
             <div class="btn-row">
+                <button class="main-btn" id="aiFillBtn2" onclick="fillWithAI2()" title="تعبئة ذكية متقدمة باستخدام مفاتيح جيمني المتعددة">
+                    <i class="fas fa-magic btn-icon"></i>
+                    <span class="btn-text">تعبئة ذكية ٢</span>
+                </button>
                 <button class="main-btn" id="clearBtn" onclick="clearData()" title="مسح جميع البيانات المدخلة">
                     <i class="fas fa-trash-alt btn-icon"></i>
                     <span class="btn-text">مسح البيانات</span>
@@ -1419,6 +1712,108 @@ user-select: none;
                     <span class="btn-text">مشاركة واتساب</span>
                 </button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة التحكم الإداري المخفية -->
+<div class="overlay" id="adminOverlay" onclick="closeAdminPanel()"></div>
+
+<div class="admin-panel" id="adminPanel">
+    <div class="admin-header">
+        <h3><i class="fas fa-key"></i> لوحة التحكم الإداري - مفاتيح Gemini</h3>
+        <button class="close-admin" onclick="closeAdminPanel()">×</button>
+    </div>
+    
+    <div class="admin-content">
+        <!-- مفتاح 1 -->
+        <div class="key-field">
+            <div class="key-header">
+                <label><i class="fas fa-key"></i> المفتاح 1</label>
+                <div class="key-actions">
+                    <button class="check-key-btn" onclick="checkKey(1)">
+                        <i class="fas fa-check"></i> تحقق
+                    </button>
+                    <button class="toggle-key-btn" id="toggleKey1" onclick="toggleKey(1)">
+                        <i class="fas fa-power-off"></i> تفعيل
+                    </button>
+                </div>
+            </div>
+            <input type="password" class="key-input" id="keyInput1" placeholder="أدخل مفتاح Gemini API الأول">
+            <div class="key-status" id="keyStatus1"></div>
+        </div>
+        
+        <!-- مفتاح 2 -->
+        <div class="key-field">
+            <div class="key-header">
+                <label><i class="fas fa-key"></i> المفتاح 2</label>
+                <div class="key-actions">
+                    <button class="check-key-btn" onclick="checkKey(2)">
+                        <i class="fas fa-check"></i> تحقق
+                    </button>
+                    <button class="toggle-key-btn" id="toggleKey2" onclick="toggleKey(2)">
+                        <i class="fas fa-power-off"></i> تفعيل
+                    </button>
+                </div>
+            </div>
+            <input type="password" class="key-input" id="keyInput2" placeholder="أدخل مفتاح Gemini API الثاني">
+            <div class="key-status" id="keyStatus2"></div>
+        </div>
+        
+        <!-- مفتاح 3 -->
+        <div class="key-field">
+            <div class="key-header">
+                <label><i class="fas fa-key"></i> المفتاح 3</label>
+                <div class="key-actions">
+                    <button class="check-key-btn" onclick="checkKey(3)">
+                        <i class="fas fa-check"></i> تحقق
+                    </button>
+                    <button class="toggle-key-btn" id="toggleKey3" onclick="toggleKey(3)">
+                        <i class="fas fa-power-off"></i> تفعيل
+                    </button>
+                </div>
+            </div>
+            <input type="password" class="key-input" id="keyInput3" placeholder="أدخل مفتاح Gemini API الثالث">
+            <div class="key-status" id="keyStatus3"></div>
+        </div>
+        
+        <!-- مفتاح 4 -->
+        <div class="key-field">
+            <div class="key-header">
+                <label><i class="fas fa-key"></i> المفتاح 4</label>
+                <div class="key-actions">
+                    <button class="check-key-btn" onclick="checkKey(4)">
+                        <i class="fas fa-check"></i> تحقق
+                    </button>
+                    <button class="toggle-key-btn" id="toggleKey4" onclick="toggleKey(4)">
+                        <i class="fas fa-power-off"></i> تفعيل
+                    </button>
+                </div>
+            </div>
+            <input type="password" class="key-input" id="keyInput4" placeholder="أدخل مفتاح Gemini API الرابع">
+            <div class="key-status" id="keyStatus4"></div>
+        </div>
+        
+        <!-- إجراءات عامة للمفاتيح -->
+        <div class="key-actions-global">
+            <button class="global-action-btn activate-all-btn" onclick="activateAllKeys()">
+                <i class="fas fa-play"></i> تفعيل الكل
+            </button>
+            <button class="global-action-btn deactivate-all-btn" onclick="deactivateAllKeys()">
+                <i class="fas fa-stop"></i> إيقاف الكل
+            </button>
+            <button class="global-action-btn save-keys-btn" onclick="saveKeys()">
+                <i class="fas fa-save"></i> حفظ المفاتيح
+            </button>
+        </div>
+        
+        <div class="admin-info" style="background: #f8fdfa; padding: 15px; border-radius: 10px; margin-top: 20px; border-right: 4px solid #ffd166;">
+            <p style="font-size: 12px; color: #044a35; margin-bottom: 8px;">
+                <i class="fas fa-info-circle"></i> النظام سيتحول تلقائيًا بين المفاتيح عند تجاوز الحد اليومي
+            </p>
+            <p style="font-size: 12px; color: #044a35;">
+                <i class="fas fa-sync-alt"></i> زر "التعبئة الذكية ٢" سيستخدم المفاتيح المفعّلة بالتناوب
+            </p>
         </div>
     </div>
 </div>
@@ -1829,6 +2224,16 @@ user-select: none;
 </div>
 
 <script>
+// ==================== متغيرات إدارة المفاتيح ====================
+let teacherClickCount = 0;
+let aiFill2ClickCount = 0;
+let geminiKeys = [
+    { id: 1, key: '', active: false, lastUsed: 0, dailyCount: 0, maxDaily: 1500 },
+    { id: 2, key: '', active: false, lastUsed: 0, dailyCount: 0, maxDaily: 1500 },
+    { id: 3, key: '', active: false, lastUsed: 0, dailyCount: 0, maxDaily: 1500 },
+    { id: 4, key: '', active: false, lastUsed: 0, dailyCount: 0, maxDaily: 1500 }
+];
+
 // كائن يحتوي على جميع التقارير مصنفة
 const allReportsByCategory = {
   "التقارير التعليمية الصفية": [
@@ -1887,8 +2292,7 @@ const allReportsByCategory = {
     "تقرير برنامج الدعم النفسي",
     "تقرير تحسين نتائج العلوم في الاختبارات الوطنية (نافس)",
     "تقرير تحسين نتائج الرياضيات في الاختبارات الوطنية (نافس)",
-    "تقرير تحسين نتائج اللغة العربية في الاختبارات الوطنية (نافس)",
-    "تقرير الانضباط المدرسي",
+    "تقرير تحسين نتائج اللغة العربية في الاختبارات الوطنية (navigate)تقرير الانضباط المدرسي",
     "تقرير معالجة السلوكيات السلبية",
     "تقرير تعزيز الدافعية للتعلم",
     "تقرير بناء الاتجاهات الإيجابية",
@@ -2038,7 +2442,8 @@ const allReportsByCategory = {
     "تقرير الإسعافات الأولية",
     "تقرير جاهزية المباني"
   ]
-}
+};
+
 // إنشاء قائمة بجميع التقارير لاستخدامها في البحث العام
 const allReports = [];
 for (const category in allReportsByCategory) {
@@ -2047,7 +2452,7 @@ for (const category in allReportsByCategory) {
     });
 }
 
-// كائن يحتوي على النصوص الذكية لكل نوع تقرير (تم إزالة المحتوى الخاص بتقرير نشاط إثرائي)
+// كائن يحتوي على النصوص الذكية لكل نوع تقرير
 const autoTextsByReportType = {
     'تقرير نشاط إثرائي': {
         goal: [""],
@@ -2075,20 +2480,409 @@ let counters = {goal:0,summary:0,steps:0,strategies:0,strengths:0,improve:0,reco
 let currentReportType = "";
 
 // متغيرات للتحكم بالتاريخ
-let dateMode = 'hijri'; // hijri أو gregorian
+let dateMode = 'hijri';
 let currentHijriDate = '';
 let currentGregorianDate = '';
 
+// ==================== دالة استعلام جيمني المعدلة ====================
 // رابط خادم الذكاء الاصطناعي B الصحيح
 const backendAIUrl = 'https://gemini-backend-x1r2.onrender.com/ask';
 
-// ==================== دالة لتحويل التاريخ الهجري إلى ميلادي ====================
+// دالة استعلام جيمني المباشرة المعدلة
+async function askGemini(prompt, options = {}) {
+    // التحقق من اتصال الإنترنت
+    if (!navigator.onLine) {
+        throw new Error('لا يوجد اتصال بالإنترنت. الرجاء التأكد من الاتصال');
+    }
+    
+    try {
+        // إعداد البيانات للطلب
+        const requestData = {
+            prompt: prompt,
+            model: options.model || "gemini-2.5-flash-lite",
+            ...options.extraData
+        };
+        
+        // إرسال الطلب إلى الخادم الخلفي
+        const response = await fetch(backendAIUrl, {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json",
+                ...options.headers
+            },
+            body: JSON.stringify(requestData)
+        });
+        
+        // التحقق من نجاح الاستجابة
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`خطأ في الخادم: ${response.status} - ${errorText}`);
+        }
+        
+        // تحليل الاستجابة
+        const data = await response.json();
+        
+        // التحقق من وجود الإجابة
+        if (!data || !data.answer) {
+            throw new Error('لم يتم الحصول على إجابة من الذكاء الاصطناعي');
+        }
+        
+        return data.answer;
+        
+    } catch (error) {
+        console.error('خطأ في استعلام جيمني:', error);
+        throw error;
+    }
+}
+
+// دالة الاستعلام المباشر (نسخة مبسطة للاستخدام العام)
+async function directAskGemini(userInput) {
+    try {
+        const response = await fetch("https://gemini-backend-x1r2.onrender.com/ask", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                prompt: userInput
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`خطأ في الاستجابة: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        return data.answer || data.text || data.response || JSON.stringify(data);
+        
+    } catch (error) {
+        console.error('خطأ في الاستعلام المباشر:', error);
+        throw error;
+    }
+}
+
+// ==================== دوال إدارة المفاتيح ====================
+
+// دالة فتح/إغلاق لوحة التحكم الإداري
+function openAdminPanel() {
+    document.getElementById('adminOverlay').classList.add('show');
+    document.getElementById('adminPanel').classList.add('show');
+    document.body.style.overflow = 'hidden';
+    loadKeysFromStorage();
+}
+
+function closeAdminPanel() {
+    document.getElementById('adminOverlay').classList.remove('show');
+    document.getElementById('adminPanel').classList.remove('show');
+    document.body.style.overflow = 'auto';
+}
+
+// دالة التعامل مع النقر على عنوان المعلم
+function handleTeacherTitleClick() {
+    teacherClickCount++;
+    
+    if (teacherClickCount === 3) {
+        // إظهار زر التعبئة الذكية ٢
+        document.getElementById('aiFillBtn2').classList.add('show');
+        showNotification('تم تفعيل زر التعبئة الذكية ٢! ✓');
+    } else if (teacherClickCount >= 5) {
+        // إظهار لوحة التحكم الإداري
+        openAdminPanel();
+        teacherClickCount = 0;
+    }
+}
+
+// تحميل المفاتيح من التخزين المحلي
+function loadKeysFromStorage() {
+    const savedKeys = localStorage.getItem('geminiKeys');
+    if (savedKeys) {
+        const parsedKeys = JSON.parse(savedKeys);
+        geminiKeys = parsedKeys;
+        
+        // تحديث واجهة المستخدم
+        geminiKeys.forEach(key => {
+            if (key.key) {
+                document.getElementById(`keyInput${key.id}`).value = key.key;
+                updateKeyStatus(key.id, key.active ? 'active' : 'inactive');
+                document.getElementById(`toggleKey${key.id}`).classList.toggle('active', key.active);
+                document.getElementById(`toggleKey${key.id}`).innerHTML = 
+                    key.active ? '<i class="fas fa-power-off"></i> مفعل' : '<i class="fas fa-power-off"></i> تفعيل';
+            }
+        });
+        
+        showNotification('تم تحميل المفاتيح المحفوظة ✓');
+    }
+}
+
+// حفظ المفاتيح في التخزين المحلي
+function saveKeys() {
+    // تحديث قيم المفاتيح من الحقول
+    geminiKeys.forEach(key => {
+        key.key = document.getElementById(`keyInput${key.id}`).value.trim();
+    });
+    
+    localStorage.setItem('geminiKeys', JSON.stringify(geminiKeys));
+    showNotification('تم حفظ المفاتيح بنجاح ✓');
+}
+
+// التحقق من صحة المفتاح
+async function checkKey(keyId) {
+    const keyInput = document.getElementById(`keyInput${keyId}`);
+    const keyValue = keyInput.value.trim();
+    
+    if (!keyValue) {
+        updateKeyStatus(keyId, 'inactive', 'المفتاح فارغ');
+        return;
+    }
+    
+    try {
+        // اختبار المفتاح باستخدام دالة الاستعلام المباشر
+        const testResponse = await directAskGemini("اختبار المفتاح - رد بكلمة 'ناجح' فقط");
+        
+        if (testResponse && testResponse.includes('ناجح')) {
+            updateKeyStatus(keyId, 'active', 'المفتاح صالح');
+            geminiKeys[keyId - 1].key = keyValue;
+        } else {
+            updateKeyStatus(keyId, 'inactive', 'المفتاح غير صالح');
+        }
+    } catch (error) {
+        updateKeyStatus(keyId, 'inactive', 'خطأ في الاتصال');
+    }
+}
+
+// تفعيل/إلغاء تفعيل المفتاح
+function toggleKey(keyId) {
+    const button = document.getElementById(`toggleKey${keyId}`);
+    const keyIndex = keyId - 1;
+    
+    geminiKeys[keyIndex].active = !geminiKeys[keyIndex].active;
+    
+    if (geminiKeys[keyIndex].active) {
+        button.classList.add('active');
+        button.innerHTML = '<i class="fas fa-power-off"></i> مفعل';
+        updateKeyStatus(keyId, 'active', 'المفتاح مفعل');
+    } else {
+        button.classList.remove('active');
+        button.innerHTML = '<i class="fas fa-power-off"></i> تفعيل';
+        updateKeyStatus(keyId, 'inactive', 'المفتاح معطل');
+    }
+}
+
+// تحديث حالة المفتاح في الواجهة
+function updateKeyStatus(keyId, status, message = '') {
+    const statusElement = document.getElementById(`keyStatus${keyId}`);
+    statusElement.className = `key-status ${status}`;
+    statusElement.innerHTML = `<i class="fas fa-${status === 'active' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+}
+
+// تفعيل جميع المفاتيح
+function activateAllKeys() {
+    geminiKeys.forEach((key, index) => {
+        if (key.key) {
+            key.active = true;
+            const button = document.getElementById(`toggleKey${key.id}`);
+            button.classList.add('active');
+            button.innerHTML = '<i class="fas fa-power-off"></i> مفعل';
+            updateKeyStatus(key.id, 'active', 'مفعل');
+        }
+    });
+    showNotification('تم تفعيل جميع المفاتيح ✓');
+}
+
+// إلغاء تفعيل جميع المفاتيح
+function deactivateAllKeys() {
+    geminiKeys.forEach(key => {
+        key.active = false;
+        const button = document.getElementById(`toggleKey${key.id}`);
+        button.classList.remove('active');
+        button.innerHTML = '<i class="fas fa-power-off"></i> تفعيل';
+        updateKeyStatus(key.id, 'inactive', 'معطل');
+    });
+    showNotification('تم إلغاء تفعيل جميع المفاتيح ✓');
+}
+
+// الحصول على المفتاح التالي المتاح
+function getNextAvailableKey() {
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
+    
+    // تصفية المفاتيح النشطة والمرتبة حسب الاستخدام
+    const availableKeys = geminiKeys.filter(key => 
+        key.active && key.key && 
+        (now - key.lastUsed > oneDay || key.dailyCount < key.maxDaily)
+    );
+    
+    if (availableKeys.length === 0) {
+        return null;
+    }
+    
+    // ترتيب المفاتيح حسب عدد الاستخدامات اليومية (الأقل استخدامًا أولاً)
+    availableKeys.sort((a, b) => a.dailyCount - b.dailyCount);
+    
+    return availableKeys[0];
+}
+
+// تحديث استخدام المفتاح
+function updateKeyUsage(keyId) {
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
+    const keyIndex = keyId - 1;
+    
+    // إعادة تعيين العداد اليومي إذا مر يوم
+    if (now - geminiKeys[keyIndex].lastUsed > oneDay) {
+        geminiKeys[keyIndex].dailyCount = 0;
+    }
+    
+    geminiKeys[keyIndex].dailyCount++;
+    geminiKeys[keyIndex].lastUsed = now;
+    
+    // حفظ التحديثات
+    localStorage.setItem('geminiKeys', JSON.stringify(geminiKeys));
+}
+
+// ==================== دالة التعبئة الذكية ٢ (باستخدام المفاتيح المتعددة) ====================
+async function fillWithAI2() {
+    // التحقق من اتصال الإنترنت
+    if (!navigator.onLine) {
+        alert('لا يوجد اتصال بالإنترنت. الرجاء التأكد من الاتصال');
+        return;
+    }
+    
+    // الحصول على نوع التقرير
+    const reportType = getReportTypeText();
+    if (!reportType || reportType === 'تقرير') {
+        alert('الرجاء اختيار أو إدخال نوع التقرير أولاً');
+        return;
+    }
+    
+    // التحقق من وجود مفاتيح مفعلة
+    const availableKey = getNextAvailableKey();
+    if (!availableKey) {
+        alert('لا توجد مفاتيح جيمني مفعلة أو أن جميعها تجاوز الحد اليومي. الرجاء تفعيل مفاتيح جديدة من لوحة التحكم.');
+        return;
+    }
+    
+    // الحصول على معلومات إضافية
+    const subject = document.getElementById('subject').value || '';
+    const lesson = document.getElementById('lesson').value || '';
+    const grade = document.getElementById('grade').value || '';
+    const target = document.getElementById('target').value || '';
+    const place = document.getElementById('place').value || '';
+    const count = document.getElementById('count').value || '';
+    
+    // عرض مؤشر التحميل
+    const aiButton = document.getElementById('aiFillBtn2');
+    const originalText = aiButton.querySelector('.btn-text').textContent;
+    const originalIcon = aiButton.querySelector('.btn-icon').className;
+    
+    // إضافة مؤشر التحميل
+    let loadingIndicator = aiButton.querySelector('.ai-loading-indicator');
+    if (!loadingIndicator) {
+        loadingIndicator = document.createElement('div');
+        loadingIndicator.className = 'ai-loading-indicator';
+        aiButton.appendChild(loadingIndicator);
+    }
+    loadingIndicator.style.display = 'block';
+    
+    aiButton.querySelector('.btn-text').textContent = 'جارٍ التعبئة...';
+    aiButton.querySelector('.btn-icon').className = 'fas fa-spinner fa-spin btn-icon';
+    aiButton.classList.add('ai-loading');
+    aiButton.disabled = true;
+    
+    try {
+        // إعداد النص المطلوب للذكاء الاصطناعي - البرومبت المهني
+        const prompt = `أنت خبير تربوي تعليمي محترف تمتلك خبرة ميدانية واسعة في التعليم العام.  
+اعتمد منظورًا تربويًا مهنيًا احترافيًا يركّز على تحسين جودة التعليم، ودعم المعلم، وتعزيز بيئة التعلّم، وخدمة القيادة المدرسية.  
+
+التقرير المطلوب: "${reportType}"
+${subject ? `المادة: ${subject}` : ''}
+${lesson ? `الدرس: ${lesson}` : ''}
+${grade ? `الصف: ${grade}` : ''}
+${target ? `المستهدفون: ${target}` : ''}
+${place ? `مكان التنفيذ: ${place}` : ''}
+${count ? `عدد الحضور: ${count}` : ''}
+
+**توجيهات مهنية:**
+- كن موضوعيًا ومتزنًا وبنّاءً  
+- قدّم الملاحظات بصيغة تطويرية غير نقدية  
+- راعِ واقع الميدان التعليمي وسياق المدرسة  
+- اربط بين المعلم والطالب والمنهج والبيئة الصفية والقيادة المدرسية  
+- ركّز على جودة التعليم وأثر الممارسات على تعلم الطلاب  
+- التزم بلغة عربية فصيحة سليمة وخالية من الأخطاء  
+
+**شروط المحتوى:**اكتب محتوى كل حقل بصيغة تقريرية مهنية وكأنه صادر عن المعلم.
+لا تكتب أبداً عنوان الحقل داخل المحتوى ولا تعِد صياغته بصيغة مباشرة (مثل: الهدف التربوي هو، النبذة المختصرة).
+يجب أن يحتوي كل حقل على ما يقارب 25 كلمة.
+ابدأ بالمضمون مباشرة دون تمهيد أو عبارات إنشائية.
+يمكن الاستفادة من معنى العنوان أو أحد مفاهيمه بشكل غير مباشر فقط عند الحاجة وبما يخدم الفكرة دون تكرار أو حشو.
+احرص على وجود ترابط منطقي بين الأهداف، النبذة المختصرة، الاستراتيجيات، إجراءات التنفيذ، نقاط القوة، نقاط التحسين، والتوصيات.
+اربط المحتوى بالمادة الدراسية وعنوان الدرس إن وُجد، وكذلك بمكان التنفيذ، بأسلوب مهني متوازن يجمع بين الإشارة المباشرة وغير المباشرة دون تكلف.
+اجعل الهدف النهائي للمحتوى تحسين الممارسة التعليمية ودعم التطوير المهني المستدام.
+راعِ الوضوح والترابط، واجعل كل جملة تضيف قيمة تعليمية فعلية.
+الحقول المطلوبة:**
+1. الهدف التربوي
+2. نبذة مختصرة  
+3. إجراءات التنفيذ
+4. الاستراتيجيات
+5. نقاط القوة
+6. نقاط التحسين
+7. التوصيات
+
+يرجى تقديم الإجابة باللغة العربية الفصحى، وتنظيمها بحيث يكون كل حقل في سطر منفصل يبدأ برقمه فقط دون ذكر العنوان.`;
+
+        // استخدام دالة الاستعلام المباشرة مع المفتاح المحدد
+        const aiResponse = await directAskGemini(prompt);
+        
+        // تحديث استخدام المفتاح
+        updateKeyUsage(availableKey.id);
+        
+        // تحليل الإجابة وتعيينها للحقول
+        parseAIResponseProfessional(aiResponse);
+        
+        showNotification(`تم تعبئة الحقول باستخدام المفتاح ${availableKey.id} ✓ (${availableKey.dailyCount}/${availableKey.maxDaily})`);
+        
+    } catch (error) {
+        console.error('خطأ في الذكاء الاصطناعي:', error);
+        
+        // محاولة استخدام مفتاح آخر إذا فشل الأول
+        if (error.message.includes('خطأ في المفتاح') || error.message.includes('تجاوز')) {
+            // تعطيل المفتاح الحالي
+            geminiKeys[availableKey.id - 1].active = false;
+            localStorage.setItem('geminiKeys', JSON.stringify(geminiKeys));
+            
+            // تحديث الواجهة
+            const button = document.getElementById(`toggleKey${availableKey.id}`);
+            if (button) {
+                button.classList.remove('active');
+                button.innerHTML = '<i class="fas fa-power-off"></i> تفعيل';
+                updateKeyStatus(availableKey.id, 'inactive', 'تجاوز الحد اليومي');
+            }
+            
+            // محاولة مرة أخرى بمفتاح آخر
+            setTimeout(() => {
+                fillWithAI2();
+            }, 1000);
+        } else {
+            alert(`خطأ: ${error.message}\n\nتأكد من:\n1. اتصال الإنترنت\n2. صحة المفاتيح المدخلة`);
+        }
+    } finally {
+        // إخفاء مؤشر التحميل
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'none';
+        }
+        
+        // استعادة الحالة الأصلية
+        aiButton.querySelector('.btn-text').textContent = originalText;
+        aiButton.querySelector('.btn-icon').className = originalIcon;
+        aiButton.classList.remove('ai-loading');
+        aiButton.disabled = false;
+    }
+}
+
+// ==================== دوال التحويل والتواريخ ====================
 async function convertHijriToGregorian(hijriDate) {
     if (!hijriDate || hijriDate.trim() === '') return '';
     
     try {
-        // تحليل التاريخ الهجري (توقع تنسيق مثل: ١٤٤٦/٠٦/١٥ أو 1446/06/15)
-        // تحويل الأرقام العربية إلى إنجليزية للتعامل مع API
+        // تحويل الأرقام العربية إلى إنجليزية
         const arabicToEnglish = {
             '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',
             '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9'
@@ -2099,7 +2893,6 @@ async function convertHijriToGregorian(hijriDate) {
             cleanDate = cleanDate.replace(new RegExp(arabic, 'g'), arabicToEnglish[arabic]);
         }
         
-        // محاولة استخراج اليوم والشهر والسنة
         const dateParts = cleanDate.split(/[-\/]/);
         if (dateParts.length === 3) {
             const day = parseInt(dateParts[2]);
@@ -2107,7 +2900,6 @@ async function convertHijriToGregorian(hijriDate) {
             const year = parseInt(dateParts[0]);
             
             if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
-                // استدعاء API للتحويل
                 const response = await fetch(`https://api.aladhan.com/v1/hToG?date=${day}-${month}-${year}`);
                 if (response.ok) {
                     const data = await response.json();
@@ -2119,7 +2911,6 @@ async function convertHijriToGregorian(hijriDate) {
             }
         }
         
-        // إذا فشل التحويل، ارجع التاريخ الهجري مع إضافة "(تقريبي)"
         return hijriDate;
         
     } catch (error) {
@@ -2268,37 +3059,16 @@ function handleReportSearch() {
     }
 }
 
-// إضافة مستمع حدث للبحث عند الكتابة
-document.getElementById('reportSearch').addEventListener('input', handleReportSearch);
-
-// إخفاء نتائج البحث عند النقر خارجها
-document.addEventListener('click', function(event) {
-    const searchResults = document.getElementById('searchResults');
-    const reportSearch = document.getElementById('reportSearch');
-    
-    if (!event.target.closest('#reportSearchContainer')) {
-        searchResults.style.display = 'none';
-    }
-});
-
-function handleReportType(){
-    const reportTypeSelect = document.getElementById('reportType');
-    currentReportType = reportTypeSelect.value;
-    counters = {goal:0,summary:0,steps:0,strategies:0,strengths:0,improve:0,recomm:0};
-    updateReport();
-}
-
 // دالة لتحديث عنوان التقرير اليدوي
 function updateManualTitle() {
     updateReport();
 }
 
-// ==================== دالة تكيف الخطوط المضافة ====================
+// دالة تكيف الخطوط
 function adaptSubjectLessonFont() {
   const elements = [
     document.getElementById('subjectBox'),
-    document.getElementById('lessonBox'),
-    document.getElementById('goalBox') // إضافة الهدف التربوي
+    document.getElementById('lessonBox')
   ];
 
   elements.forEach(el => {
@@ -2310,7 +3080,6 @@ function adaptSubjectLessonFont() {
     const containerWidth = container.clientWidth - 30;
     const containerHeight = container.clientHeight - 20;
 
-    // إزالة أي محاذاة أو تكرار سابق
     el.style.whiteSpace = 'nowrap';
     el.style.overflow = 'hidden';
     el.style.textOverflow = 'ellipsis';
@@ -2322,30 +3091,21 @@ function adaptSubjectLessonFont() {
     el.style.width = '100%';
     el.style.height = '100%';
 
-    // قواعد تكيف الخط بناءً على طول النص وعرض الحاوية
-    let fontSize, fontWeight, lineHeight;
-    
-    // حالة النص الفارغ
-    if (!text || text === 'غير محدد' || text === 'لم يتم تحديد الهدف التربوي' || textLength === 0) {
-      if (el.id === 'goalBox') {
-        el.style.fontSize = '14px';
-        el.style.fontWeight = '600';
-      } else {
-        el.style.fontSize = '13px';
-        el.style.fontWeight = '600';
-      }
+    if (!text || text === 'غير محدد' || textLength === 0) {
+      el.style.fontSize = '11px';
+      el.style.fontWeight = '600';
       el.style.lineHeight = '1.2';
       return;
     }
 
-    // حساب نسبة ملء النص في الحاوية
-    const approxCharWidth = el.id === 'goalBox' ? 8 : 7; // خط أكبر للهدف التربوي
+    const approxCharWidth = 7;
     const approxTextWidth = textLength * approxCharWidth;
     const widthRatio = approxTextWidth / containerWidth;
     
+    let fontSize, fontWeight, lineHeight;
+    
     if (widthRatio > 2.0) {
-      // النص طويل جداً
-      fontSize = el.id === 'goalBox' ? '10px' : '8px';
+      fontSize = '7px';
       fontWeight = '600';
       lineHeight = '1.0';
       el.style.whiteSpace = 'normal';
@@ -2354,83 +3114,66 @@ function adaptSubjectLessonFont() {
       el.style.WebkitLineClamp = '2';
       el.style.WebkitBoxOrient = 'vertical';
     } else if (widthRatio > 1.2) {
-      // النص طويل
-      fontSize = el.id === 'goalBox' ? '11px' : '9px';
+      fontSize = '8px';
       fontWeight = '600';
       lineHeight = '1.1';
     } else if (widthRatio > 0.8) {
-      // النص متوسط
-      fontSize = el.id === 'goalBox' ? '12px' : '10px';
+      fontSize = '9px';
       fontWeight = '700';
       lineHeight = '1.2';
     } else if (widthRatio > 0.5) {
-      // النص مناسب
-      fontSize = el.id === 'goalBox' ? '13px' : '11px';
+      fontSize = '10px';
       fontWeight = '800';
       lineHeight = '1.3';
     } else {
-      // النص قصير
-      fontSize = el.id === 'goalBox' ? '14px' : '13px';
+      fontSize = '12px';
       fontWeight = '900';
       lineHeight = '1.4';
     }
 
-    // ضبط للارتفاع
     if (containerHeight < 30) {
-      fontSize = Math.min(parseInt(fontSize), (el.id === 'goalBox' ? 12 : 10)) + 'px';
+      fontSize = Math.min(parseInt(fontSize), 9) + 'px';
       lineHeight = '1.1';
     }
 
-    // تطبيق التنسيقات
     el.style.fontSize = fontSize;
     el.style.fontWeight = fontWeight;
     el.style.lineHeight = lineHeight;
   });
 }
 
-// دالة للمحاولة مرة أخرى بعد فترة قصيرة
 function adaptSubjectLessonFontWithRetry() {
   adaptSubjectLessonFont();
-  
-  // المحاولة مرة أخرى بعد 100 مللي ثانية لضمان تحميل الأبعاد
   setTimeout(adaptSubjectLessonFont, 100);
   
-  // محاولة ثانية بعد تحميل الصفحة بالكامل
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', adaptSubjectLessonFont);
   }
 }
 
-// ==================== دالة تحديث التاريخ اليدوي المعدلة ====================
+// دالة تحديث التاريخ اليدوي
 async function updateManualDate() {
     const manualDate = document.getElementById('manualDateInput').value;
     if (manualDate && manualDate.trim() !== '') {
-        // حفظ التاريخ الهجري المدخل
         const hijriDate = manualDate.trim();
         currentHijriDate = hijriDate;
         
-        // محاولة تحويل التاريخ إلى ميلادي
         try {
             const gregorianDate = await convertHijriToGregorian(hijriDate);
             currentGregorianDate = gregorianDate;
             
-            // تحديث العرض في الهيدر
             document.getElementById('currentDateDisplay').textContent = `هـ: ${hijriDate}`;
-            
-            // تحديث التواريخ في PDF
             document.getElementById('hDate').innerHTML = hijriDate + " هـ";
             document.getElementById('gDate').innerHTML = gregorianDate + " م";
             
             showNotification('تم تحديث التاريخين (الهجري والميلادي) ✓');
         } catch (error) {
-            // إذا فشل التحويل، استخدم التاريخ الهجري فقط
             document.getElementById('currentDateDisplay').textContent = `هجري: ${hijriDate}`;
             document.getElementById('hDate').innerHTML = hijriDate + " هـ";
             document.getElementById('gDate').innerHTML = hijriDate + " هـ";
             showNotification('تم تحديث التاريخ الهجري ✓ (تعذر تحويل التاريخ الميلادي)');
         }
         
-        // حفظ التاريخ المحدث في بيانات المعلم
         const savedData = localStorage.getItem('teacherData');
         if (savedData) {
             const teacherData = JSON.parse(savedData);
@@ -2456,11 +3199,9 @@ function toggleTool(toolElement) {
 }
 
 function updateReport(){
-    // تحديث الهيدر مع إضافة عنوان المدرسة
     document.getElementById('educationBox').innerText = document.getElementById('education').value;
     document.getElementById('schoolBox').innerText = document.getElementById('school').value;
     
-    // تحديث المربعات الصغيرة - بدون تغيير لأن الأماكن تغيرت في HTML فقط
     const termValue = document.getElementById('term').value;
     document.getElementById('termBox').innerText = termValue ? `الفصل الدراسي ${termValue}` : 'غير محدد';
     document.getElementById('gradeBox').innerText = document.getElementById('grade').value || 'غير محدد';
@@ -2471,13 +3212,11 @@ function updateReport(){
     document.getElementById('subjectBox').innerText = document.getElementById('subject').value || 'غير محدد';
     document.getElementById('lessonBox').innerText = document.getElementById('lesson').value || 'غير محدد';
     
-    // تحديث التوقيعات
     document.getElementById('teacherBox').innerText = document.getElementById('teacher').value;
     document.getElementById('principalBox').innerText = document.getElementById('principal').value;
     document.getElementById('teacherTypeBox').innerText = document.getElementById('teacherType').value;
     document.getElementById('principalTypeBox').innerText = document.getElementById('principalType').value;
     
-    // تحديث المحتوى
     document.getElementById('goalBox').innerText = document.getElementById('goal').value || 'لم يتم تحديد الهدف التربوي';
     document.getElementById('summaryBox').innerText = document.getElementById('summary').value || 'لم يتم إضافة نبذة مختصرة';
     document.getElementById('stepsBox').innerText = document.getElementById('steps').value || 'لم يتم تحديد إجراءات التنفيذ';
@@ -2486,10 +3225,7 @@ function updateReport(){
     document.getElementById('improveBox').innerText = document.getElementById('improve').value || 'لم يتم تحديد نقاط التحسين';
     document.getElementById('recommBox').innerText = document.getElementById('recomm').value || 'لم يتم تحديد التوصيات';
     
-    // تحديث الأدوات والوسائل التعليمية
     updateToolsDisplay();
-    
-    // استدعاء دالة تكيف الخطوط بعد التحديث
     setTimeout(adaptSubjectLessonFontWithRetry, 10);
 }
 
@@ -2499,7 +3235,6 @@ function getReportTypeText() {
     const manualTitleInput = document.getElementById('manualReportTitle');
     const categorySelect = document.getElementById('reportCategory');
     
-    // الأولوية للعنوان اليدوي
     if (manualTitleInput && manualTitleInput.value.trim()) {
         return manualTitleInput.value.trim();
     }
@@ -2517,7 +3252,6 @@ function updateToolsDisplay() {
     
     const selectedTools = [];
     
-    // جمع الأدوات المختارة
     for (let i = 1; i <= 10; i++) {
         const toolCheckbox = document.getElementById(`tool${i}`);
         if (toolCheckbox && toolCheckbox.checked) {
@@ -2525,7 +3259,6 @@ function updateToolsDisplay() {
         }
     }
     
-    // عرض الأدوات المختارة مع علامة ✓
     selectedTools.forEach(tool => {
         const toolElement = document.createElement('div');
         toolElement.className = 'tool';
@@ -2533,19 +3266,17 @@ function updateToolsDisplay() {
         toolsListBox.appendChild(toolElement);
     });
     
-    // إذا لم يتم اختيار أي أداة
     if (selectedTools.length === 0) {
         const noToolsMessage = document.createElement('div');
         noToolsMessage.style.textAlign = 'center';
         noToolsMessage.style.color = '#666';
-        noToolsMessage.style.fontSize = '11px'; // تكبير الخط
+        noToolsMessage.style.fontSize = '9px';
         noToolsMessage.style.padding = '4px';
         noToolsMessage.textContent = 'لم يتم اختيار أي أدوات';
         toolsListBox.appendChild(noToolsMessage);
     }
 }
 
-// ==================== دالة تحميل الصور - الإصدار الجديد المبسط ====================
 function loadImage(input, target) {
     if (input.files && input.files[0]) {
         const reader = new FileReader();
@@ -2555,8 +3286,8 @@ function loadImage(input, target) {
 
             const img = document.createElement('img');
             img.src = e.target.result;
-            img.loading = "eager";   // مهم: تحميل فوري
-            img.decoding = "sync";   // مهم: فك الترميز متزامن
+            img.loading = "eager";
+            img.decoding = "sync";
 
             imgBox.appendChild(img);
         };
@@ -2583,11 +3314,9 @@ function saveTeacherData(){
         manualTitle: document.getElementById('manualReportTitle').value,
         manualHijriDate: currentHijriDate,
         manualGregorianDate: currentGregorianDate,
-        // حفظ الأدوات المختارة
         tools: []
     };
     
-    // جمع الأدوات المختارة
     for (let i = 1; i <= 10; i++) {
         const toolCheckbox = document.getElementById(`tool${i}`);
         if (toolCheckbox && toolCheckbox.checked) {
@@ -2595,7 +3324,6 @@ function saveTeacherData(){
         }
     }
     
-    // حفظ النصوص
     const textFields = ['goal', 'summary', 'steps', 'strategies', 'strengths', 'improve', 'recomm'];
     textFields.forEach(field => {
         teacherData[field] = document.getElementById(field).value;
@@ -2603,7 +3331,6 @@ function saveTeacherData(){
     
     localStorage.setItem('teacherData', JSON.stringify(teacherData));
     showNotification('تم حفظ بيانات المعلم بنجاح!');
-    console.log('بيانات المعلم المحفوظة:', teacherData);
 }
 
 // دالة لعرض الإشعارات
@@ -2639,19 +3366,16 @@ function loadTeacherData() {
         document.getElementById('count').value = teacherData.count || '';
         document.getElementById('manualReportTitle').value = teacherData.manualTitle || '';
         
-        // تحميل التاريخ المحفوظ إن وجد
         if (teacherData.manualHijriDate) {
             currentHijriDate = teacherData.manualHijriDate;
             currentGregorianDate = teacherData.manualGregorianDate || '';
             document.getElementById('manualDateInput').value = currentHijriDate;
             document.getElementById('currentDateDisplay').textContent = `هجري: ${currentHijriDate}`;
             
-            // تحديث التواريخ في PDF
             document.getElementById('hDate').innerHTML = currentHijriDate + " هـ";
             document.getElementById('gDate').innerHTML = currentGregorianDate ? currentGregorianDate + " م" : currentHijriDate + " هـ";
         }
         
-        // تحميل النصوص
         const textFields = ['goal', 'summary', 'steps', 'strategies', 'strengths', 'improve', 'recomm'];
         textFields.forEach(field => {
             if (teacherData[field]) {
@@ -2659,7 +3383,6 @@ function loadTeacherData() {
             }
         });
         
-        // تحميل الأدوات المختارة
         if (teacherData.tools && Array.isArray(teacherData.tools)) {
             for (let i = 1; i <= 10; i++) {
                 const toolCheckbox = document.getElementById(`tool${i}`);
@@ -2678,11 +3401,10 @@ function loadTeacherData() {
         
         updateReport();
         updateToolsDisplay();
-        console.log('بيانات المعلم المحملة:', teacherData);
     }
 }
 
-// ==================== دالة الذكاء الاصطناعي المعدلة مع المؤشر ====================
+// دالة الذكاء الاصطناعي الأصلية
 async function fillWithAI() {
     // التحقق من اتصال الإنترنت
     if (!navigator.onLine) {
@@ -2710,7 +3432,6 @@ async function fillWithAI() {
     const originalText = aiButton.querySelector('.btn-text').textContent;
     const originalIcon = aiButton.querySelector('.btn-icon').className;
     
-    // إضافة مؤشر التحميل
     let loadingIndicator = aiButton.querySelector('.ai-loading-indicator');
     if (!loadingIndicator) {
         loadingIndicator = document.createElement('div');
@@ -2725,7 +3446,6 @@ async function fillWithAI() {
     aiButton.disabled = true;
     
     try {
-        // إعداد النص المطلوب للذكاء الاصطناعي - البرومبت المهني
         const prompt = `أنت خبير تربوي تعليمي محترف تمتلك خبرة ميدانية واسعة في التعليم العام.  
 اعتمد منظورًا تربويًا مهنيًا احترافيًا يركّز على تحسين جودة التعليم، ودعم المعلم، وتعزيز بيئة التعلّم، وخدمة القيادة المدرسية.  
 
@@ -2765,39 +3485,8 @@ ${count ? `عدد الحضور: ${count}` : ''}
 
 يرجى تقديم الإجابة باللغة العربية الفصحى، وتنظيمها بحيث يكون كل حقل في سطر منفصل يبدأ برقمه فقط دون ذكر العنوان.`;
 
-        // استدعاء خادم Backend
-        const response = await fetch(backendAIUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                prompt: prompt,
-                model: "gemini-2.5-flash-lite",
-                reportData: {
-                    reportType: reportType,
-                    subject: subject,
-                    lesson: lesson,
-                    grade: grade,
-                    target: target,
-                    place: place,
-                    count: count
-                }
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error(`خطأ في الاتصال بالخادم: ${response.status}`);
-        }
-
-        const data = await response.json();
-        
-        // فحص الاستجابة حسب هيكل data.answer
-        if (!data || !data.answer) {
-            throw new Error('لم يتم الحصول على إجابة من الذكاء الاصطناعي');
-        }
-        
-        const aiResponse = data.answer;
+        // استخدام دالة الاستعلام المباشرة الجديدة
+        const aiResponse = await directAskGemini(prompt);
         
         // تحليل الإجابة وتعيينها للحقول
         parseAIResponseProfessional(aiResponse);
@@ -2808,12 +3497,10 @@ ${count ? `عدد الحضور: ${count}` : ''}
         console.error('خطأ في الذكاء الاصطناعي:', error);
         alert(`خطأ: ${error.message}\n\nتأكد من:\n1. اتصال الإنترنت\n2. أن خادم Backend يعمل على الرابط: ${backendAIUrl}`);
     } finally {
-        // إخفاء مؤشر التحميل
         if (loadingIndicator) {
             loadingIndicator.style.display = 'none';
         }
         
-        // استعادة الحالة الأصلية
         aiButton.querySelector('.btn-text').textContent = originalText;
         aiButton.querySelector('.btn-icon').className = originalIcon;
         aiButton.classList.remove('ai-loading');
@@ -2825,7 +3512,6 @@ ${count ? `عدد الحضور: ${count}` : ''}
 function parseAIResponseProfessional(response) {
     const lines = response.split('\n').filter(line => line.trim());
     
-    // حقل التعيينات
     const fieldMapping = {
         '1': 'goal',
         '2': 'summary', 
@@ -2839,22 +3525,16 @@ function parseAIResponseProfessional(response) {
     let foundFields = 0;
     
     lines.forEach(line => {
-        // البحث عن الأرقام في بداية السطر (مثل "1." أو "1-")
         const match = line.match(/^(\d+)[\.\-]\s*(.+)/);
         if (match) {
             const fieldNumber = match[1];
             let content = match[2].trim();
             
-            // تنظيف النص من الكلمات الدالة على العنوان
             content = removeFieldTitles(content);
             
             if (fieldMapping[fieldNumber]) {
                 const fieldId = fieldMapping[fieldNumber];
-                
-                // تأكد من أن المحتوى يحتوي على كلمات كافية
                 content = ensureWordCount(content, 25);
-                
-                // إضافة لمسة مهنية إذا كان المحتوى قصيراً
                 content = addProfessionalTouch(content, fieldId);
                 
                 document.getElementById(fieldId).value = content;
@@ -2863,12 +3543,10 @@ function parseAIResponseProfessional(response) {
         }
     });
     
-    // إذا لم يتم التحليل بنجاح، استخدم نهج بديل
     if (foundFields < 3) {
         fallbackProfessionalAIParsing(response);
     }
     
-    // تحديث التقرير
     updateReport();
 }
 
@@ -2890,19 +3568,16 @@ function removeFieldTitles(content) {
     let cleanedContent = content;
     
     fieldTitles.forEach(title => {
-        // إزالة العناوين مع أي علامات ترقيم بعدها
         const regex = new RegExp(`^${title}[:\\.\\-]?\\s*`, 'i');
         cleanedContent = cleanedContent.replace(regex, '');
         
-        // إزالة العناوين في منتصف الجملة
         const regex2 = new RegExp(`\\s*${title}[:\\.\\-]?\\s*`, 'gi');
         cleanedContent = cleanedContent.replace(regex2, ' ');
     });
     
-    // تنظيف المسافات الزائدة
     cleanedContent = cleanedContent.trim().replace(/\s+/g, ' ');
     
-    return cleanedContent || content; // إرجاع المحتوى الأصلي إذا أصبح فارغاً
+    return cleanedContent || content;
 }
 
 // دالة لتأكيد عدد الكلمات مع لمسة مهنية
@@ -2910,11 +3585,10 @@ function ensureWordCount(content, targetWords) {
     const words = content.split(' ');
     
     if (words.length >= targetWords - 5 && words.length <= targetWords + 5) {
-        return content; // المحتوى ضمن النطاق المطلوب
+        return content;
     }
     
     if (words.length < targetWords - 5) {
-        // إضافة كلمات تربوية مهنية لتكملة العدد المطلوب
         const professionalPhrases = [
             'مع التركيز على تحقيق أهداف التعلم وتنمية المهارات الأساسية',
             'بما يسهم في رفع مستوى التحصيل الدراسي وتحسين المخرجات التعليمية',
@@ -2931,7 +3605,6 @@ function ensureWordCount(content, targetWords) {
             extendedContent += ' ' + randomPhrase;
         }
         
-        // قص المحتوى إذا تجاوز الحد
         const extendedWords = extendedContent.split(' ');
         if (extendedWords.length > targetWords + 5) {
             return extendedWords.slice(0, targetWords).join(' ');
@@ -2941,7 +3614,6 @@ function ensureWordCount(content, targetWords) {
     }
     
     if (words.length > targetWords + 5) {
-        // قص المحتوى إذا كان طويلاً جداً
         return words.slice(0, targetWords).join(' ');
     }
     
@@ -2951,7 +3623,7 @@ function ensureWordCount(content, targetWords) {
 // دالة لإضافة لمسة مهنية للمحتوى
 function addProfessionalTouch(content, fieldId) {
     const words = content.split(' ');
-    if (words.length >= 20) return content; // المحتوى كافٍ
+    if (words.length >= 20) return content;
     
     const professionalAdditions = {
         'goal': ' بما يعزز من جودة التعليم ويدعم تحقيق رؤية المدرسة التعليمية',
@@ -2972,34 +3644,25 @@ function addProfessionalTouch(content, fieldId) {
 
 // نهج بديل محسن لتحليل الاستجابة المهنية
 function fallbackProfessionalAIParsing(response) {
-    // تقسيم النص إلى جمل
     const sentences = response.split(/[\.\n]/).filter(s => {
         const trimmed = s.trim();
         return trimmed.length > 20 && 
                !trimmed.match(/الهدف التربوي|نبذة مختصرة|إجراءات التنفيذ|الاستراتيجيات|نقاط القوة|نقاط التحسين|التوصيات|الحقل|المطلوب|يجب|يرجى/i);
     });
     
-    // تعيين الحقول بالترتيب
     const fields = ['goal', 'summary', 'steps', 'strategies', 'strengths', 'improve', 'recomm'];
     
     let sentenceIndex = 0;
     fields.forEach((field, index) => {
         if (sentenceIndex < sentences.length) {
             let content = sentences[sentenceIndex].trim();
-            
-            // تنظيف المحتوى من العناوين
             content = removeFieldTitles(content);
-            
-            // التأكد من أن النص مناسب الطول (25 كلمة)
             content = ensureWordCount(content, 25);
-            
-            // إضافة لمسة مهنية
             content = addProfessionalTouch(content, field);
             
             document.getElementById(field).value = content;
             sentenceIndex++;
         } else if (sentenceIndex > 0) {
-            // إذا نفدت الجمل، أعد استخدام الجملة السابقة مع تعديل مهني
             const previousContent = document.getElementById(fields[sentenceIndex-1]).value;
             if (previousContent) {
                 const words = previousContent.split(' ');
@@ -3073,7 +3736,6 @@ async function downloadPDF(){
 
     const cleanFileName = getReportTypeText().replace(/[\/\\:*?"<>|]/g, '_');
 
-    // ========== الحل الجذري: الانتظار حتى اكتمال تحميل الصور ==========
     await new Promise(resolve => setTimeout(resolve, 300));
 
     html2pdf().set({
@@ -3121,7 +3783,6 @@ async function sharePDFWhatsApp(){
 
     const reportName = getReportTypeText();
 
-    // ========== الحل الجذري: الانتظار حتى اكتمال تحميل الصور ==========
     await new Promise(resolve => setTimeout(resolve, 300));
 
     await html2pdf().set({
@@ -3162,9 +3823,8 @@ async function sharePDFWhatsApp(){
     });
 }
 
-// ==================== دالة تحميل التواريخ المعدلة ====================
+// دالة تحميل التواريخ
 async function loadDates(){
-    // إذا كان هناك تاريخ هجري محفوظ، استخدمه
     const savedData = localStorage.getItem('teacherData');
     if (savedData) {
         const teacherData = JSON.parse(savedData);
@@ -3179,7 +3839,6 @@ async function loadDates(){
         }
     }
     
-    // إذا لم يكن هناك تاريخ محفوظ، استخدم التاريخ الحالي
     let g = new Date();
     currentGregorianDate = `${g.getDate()}/${g.getMonth()+1}/${g.getFullYear()}`;
     
@@ -3188,7 +3847,6 @@ async function loadDates(){
         let j = await r.json();
         let h = j.data.hijri;
         
-        // تحويل الأرقام العربية
         const englishToArabic = {
             '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤',
             '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
@@ -3206,11 +3864,9 @@ async function loadDates(){
         
         currentHijriDate = `${arabicYear}/${arabicMonth}/${arabicDay}`;
         
-        // تعيين التاريخ الافتراضي في الحقل اليدوي
         document.getElementById('manualDateInput').value = currentHijriDate;
         document.getElementById('currentDateDisplay').textContent = `هجري: ${currentHijriDate}`;
         
-        // تحديث التواريخ في PDF
         document.getElementById('gDate').innerHTML = currentGregorianDate + " م";
         document.getElementById('hDate').innerHTML = currentHijriDate + " هـ";
     } catch {
@@ -3226,14 +3882,27 @@ async function loadDates(){
 window.onload = function() {
     loadDates();
     loadTeacherData();
+    loadKeysFromStorage();
     updateReport();
     
-    // تحسين تجربة اللمس
+    // إضافة مستمع البحث
+    document.getElementById('reportSearch').addEventListener('input', handleReportSearch);
+    
+    // إخفاء نتائج البحث عند النقر خارجها
+    document.addEventListener('click', function(event) {
+        const searchResults = document.getElementById('searchResults');
+        const reportSearch = document.getElementById('reportSearch');
+        
+        if (!event.target.closest('#reportSearchContainer')) {
+            searchResults.style.display = 'none';
+        }
+    });
+    
+    // تحسينات للهواتف
     if ('ontouchstart' in window) {
         document.body.classList.add('touch-device');
     }
     
-    // إضافة تأخير للتعامل مع الأزرار على الأجهزة المحمولة
     document.querySelectorAll('button').forEach(btn => {
         btn.addEventListener('touchstart', function() {
             this.style.transform = 'scale(0.95)';
@@ -3281,15 +3950,17 @@ window.onload = function() {
     
     // إضافة مؤشر التحميل لزر الذكاء الاصطناعي
     const aiButton = document.getElementById('aiFillBtn');
+    const aiButton2 = document.getElementById('aiFillBtn2');
     const loadingIndicator = document.createElement('div');
     loadingIndicator.className = 'ai-loading-indicator';
-    aiButton.appendChild(loadingIndicator);
+    aiButton.appendChild(loadingIndicator.cloneNode(true));
+    aiButton2.appendChild(loadingIndicator.cloneNode(true));
     
     // إضافة مستمعات لأحداث تكيف الخطوط
     window.addEventListener('resize', adaptSubjectLessonFont);
     
     document.addEventListener('input', function(e) {
-        if (e.target.id === 'subject' || e.target.id === 'lesson' || e.target.id === 'goal') {
+        if (e.target.id === 'subject' || e.target.id === 'lesson') {
             setTimeout(adaptSubjectLessonFont, 50);
         }
     });
