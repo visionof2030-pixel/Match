@@ -1,0 +1,337 @@
+/* ============================================================
+   استجابة
+   ============================================================ */
+@media (max-width: 640px) {
+    .top-bar {
+        min-height: 90px;
+        padding: 8px 12px;
+    }
+    .top-bar .top-bar-content {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .top-bar .top-bar-title {
+        font-size: 0.8rem;
+        padding: 4px 14px;
+        gap: 6px;
+    }
+    .top-bar .top-bar-title .icon {
+        font-size: 1rem;
+    }
+    .top-bar .top-bar-sub {
+        font-size: 0.7rem;
+        padding: 4px 12px;
+    }
+    .app-container {
+        padding: 0 8px 32px;
+    }
+    .sticky-header {
+        padding: 10px 14px;
+        margin: 0 -8px 16px;
+        border-radius: 0 0 20px 20px;
+    }
+    .sticky-header .brand h1 {
+        font-size: 1rem;
+    }
+    .sticky-header .brand .sub {
+        font-size: 0.5rem;
+    }
+    .sticky-header .header-btn {
+        padding: 6px 12px;
+        font-size: 0.6rem;
+    }
+    .controls-bar {
+        padding: 12px 16px;
+    }
+    .controls-bar .control-group {
+        min-width: 100%;
+    }
+    .controls-bar select,
+    .controls-bar input {
+        font-size: 0.7rem;
+        padding: 6px 12px;
+    }
+    .share-all-container {
+        flex-direction: column;
+        text-align: center;
+        padding: 12px 16px;
+    }
+    .share-all-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    .admin-controls {
+        flex-direction: column;
+        text-align: center;
+        padding: 12px 14px;
+    }
+    .admin-btn {
+        width: 100%;
+        justify-content: center;
+        font-size: 0.7rem;
+        padding: 6px 14px;
+    }
+    .tabs-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .tabs {
+        justify-content: center;
+    }
+    .day-filter-tabs {
+        justify-content: center;
+    }
+    .leaderboard-section {
+        padding: 16px;
+        margin: 0 0 20px 0;
+    }
+    .leaderboard-section .lb-header .title {
+        font-size: 1.1rem;
+    }
+    .leaderboard-section .lb-header .lb-stats {
+        font-size: 0.6rem;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .lb-period-tabs {
+        justify-content: center;
+    }
+    .champion-card {
+        padding: 16px 18px;
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+    .champion-card .rank-badge {
+        font-size: 2.2rem;
+        min-width: auto;
+    }
+    .champion-card .avatar {
+        width: 56px;
+        height: 56px;
+        font-size: 1.4rem;
+    }
+    .champion-card .info .name {
+        font-size: 1rem;
+        justify-content: center;
+    }
+    .champion-card .info .stats-row {
+        justify-content: center;
+        gap: 12px;
+    }
+    .players-list {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    .players-list.compact-mode {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4px;
+    }
+    .player-card {
+        padding: 10px 12px;
+    }
+    .player-card .info-sm .name-sm {
+        font-size: 0.75rem;
+    }
+    .player-card .points-sm {
+        font-size: 0.7rem;
+        padding: 2px 10px;
+    }
+    .player-card .progress-mini {
+        width: 40px;
+    }
+    .tab-btn {
+        padding: 8px 14px;
+        font-size: 0.65rem;
+    }
+    .day-filter-tabs .day-btn {
+        padding: 4px 10px;
+        font-size: 0.6rem;
+    }
+    .matches-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+    .match-team {
+        font-size: 0.75rem;
+    }
+    .match-team .flag {
+        font-size: 1.1rem;
+    }
+    .team-stats-info {
+        flex-wrap: wrap;
+    }
+    .team-stat-item {
+        min-width: 45%;
+    }
+    .groups-container {
+        grid-template-columns: 1fr;
+    }
+    .standings-table {
+        font-size: 0.55rem;
+    }
+    .standings-table th,
+    .standings-table td {
+        padding: 4px 2px;
+    }
+    .predictions-grid {
+        grid-template-columns: 1fr;
+    }
+    .modal-content {
+        padding: 20px;
+        max-width: 95%;
+    }
+    .modal-content.compact-mode {
+        padding: 8px !important;
+        max-width: 320px !important;
+    }
+    .modal-content.compact-mode .modal-teams .m-team {
+        font-size: 0.45rem !important;
+    }
+    .modal-content.compact-mode .predictions-table {
+        font-size: 0.4rem !important;
+    }
+    .modal-content.compact-mode .predictions-table th {
+        font-size: 0.35rem !important;
+        padding: 2px 1px !important;
+    }
+    .modal-content.compact-mode .predictions-table td {
+        font-size: 0.35rem !important;
+        padding: 1px 1px !important;
+    }
+    .modal-content.compact-mode .predictions-table .time-cell {
+        font-size: 0.3rem !important;
+    }
+    .modal-teams {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .modal-teams .m-team {
+        font-size: 0.8rem;
+    }
+    .modal-options label {
+        padding: 10px 14px;
+    }
+    .password-box {
+        padding: 24px 20px;
+    }
+    .predictions-stats {
+        gap: 8px;
+    }
+    .predictions-stats .stat-item {
+        font-size: 0.65rem;
+        padding: 4px 10px;
+    }
+    .modal-compact-btn {
+        top: 8px;
+        right: 36px;
+        padding: 3px 8px;
+        font-size: 0.45rem;
+    }
+    .modal-content.compact-mode .modal-compact-btn {
+        top: 2px;
+        right: 24px;
+        padding: 1px 5px;
+        font-size: 0.35rem !important;
+    }
+    .scorers-table {
+        font-size: 0.65rem;
+    }
+    .scorers-table th,
+    .scorers-table td {
+        padding: 6px 4px;
+    }
+    .team-stats-table {
+        font-size: 0.55rem;
+    }
+    .team-stats-table th,
+    .team-stats-table td {
+        padding: 4px 2px;
+    }
+    .predict-btn-wrap .predict-btn,
+    .predict-btn-wrap .view-btn,
+    .predict-btn-wrap .edit-btn {
+        font-size: 0.55rem !important;
+        padding: 6px 8px !important;
+        min-width: 50px !important;
+    }
+    .predict-btn-wrap .btn-group {
+        flex-wrap: wrap;
+    }
+    .duplicates-table {
+        font-size: 0.5rem;
+    }
+    .duplicates-table th,
+    .duplicates-table td {
+        padding: 3px 2px;
+    }
+    .modal-content .player-prediction-item {
+        font-size: 0.65rem !important;
+        padding: 6px 8px !important;
+    }
+    .name-modal-content {
+        padding: 20px;
+    }
+    .archive-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+    }
+    .archive-item .stats {
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .compare-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .compare-vs {
+        padding: 6px 0;
+        justify-content: center;
+    }
+    .compare-select {
+        flex-direction: column;
+    }
+    .compare-select select {
+        min-width: 100%;
+    }
+    .bracket-tree {
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding: 12px 6px;
+    }
+    .bracket-round {
+        min-width: 100%;
+        gap: 8px;
+        padding: 10px 6px;
+    }
+    .bracket-match-item {
+        font-size: 0.55rem;
+        padding: 6px 8px;
+    }
+    .bracket-match-item .teams .team .flag {
+        font-size: 0.7rem;
+    }
+    .bracket-round-title {
+        font-size: 0.65rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .matches-grid {
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    }
+    .players-list {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+    .players-list.compact-mode {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .matches-grid {
+        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    }
+}
