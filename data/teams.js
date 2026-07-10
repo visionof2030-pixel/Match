@@ -225,4 +225,163 @@ const nameMapping = new Map([
     ["الكونغو", "الكونغو الديمقراطية"],
     ["كوريا", "كوريا الجنوبية"],
     ["التشيك", "التشيك"],
-    ["
+    ["كندا", "كندا"],
+    ["البوسنة", "البوسنة والهرسك"],
+    ["الهرسك", "البوسنة والهرسك"],
+    ["أمريكا", "أمريكا"],
+    ["العراق", "العراق"],
+    ["سويسرا", "سويسرا"],
+    ["البرازيل", "البرازيل"],
+    ["المغرب", "المغرب"],
+    ["هايتي", "هايتي"],
+    ["إسكتلندا", "إسكتلندا"],
+    ["أستراليا", "أستراليا"],
+    ["تركيا", "تركيا"],
+    ["ألمانيا", "ألمانيا"],
+    ["كوراساو", "كوراساو"],
+    ["اليابان", "اليابان"],
+    ["هولندا", "هولندا"],
+    ["الإكوادور", "الإكوادور"],
+    ["ساحل العاج", "ساحل العاج"],
+    ["السويد", "السويد"],
+    ["تونس", "تونس"],
+    ["إسبانيا", "إسبانيا"],
+    ["الرأس الأخضر", "الرأس الأخضر"],
+    ["مصر", "مصر"],
+    ["بلجيكا", "بلجيكا"],
+    ["السعودية", "السعودية"],
+    ["أوروغواي", "أوروغواي"],
+    ["إيران", "إيران"],
+    ["نيوزيلندا", "نيوزيلندا"],
+    ["السنغال", "السنغال"],
+    ["فرنسا", "فرنسا"],
+    ["النرويج", "النرويج"],
+    ["إنجلترا", "إنجلترا"],
+    ["كرواتيا", "كرواتيا"],
+    ["بنما", "بنما"],
+    ["كولومبيا", "كولومبيا"],
+    ["أوزبكستان", "أوزبكستان"],
+    ["غانا", "غانا"],
+    ["باراغواي", "باراغواي"],
+    ["جمهورية الكونغو الديمقراطية", "الكونغو الديمقراطية"],
+    ["جمهورية الكونغو", "الكونغو الديمقراطية"],
+    ["الكونغو الديمقراطية", "الكونغو الديمقراطية"],
+    ["البوسنة والهرسك", "البوسنة والهرسك"],
+    ["الرأس الأخضر", "الرأس الأخضر"],
+    ["باراجواي", "باراغواي"],
+    ["باراغواي", "باراغواي"],
+    ["السنغال", "السنغال"],
+    ["جمهورية الكونغو الديمقراطية", "الكونغو الديمقراطية"]
+]);
+
+function normalizeName(str) {
+    if (!str) return "";
+    str = str.normalize("NFD").replace(/[\u064B-\u065F]/g, "");
+    str = str.replace(/[ى]/g, "ا").replace(/[أإآ]/g, "ا").replace(/ة/g, "ه").replace(/[ک]/g, "ك").replace(/[ی]/g, "ي")
+        .replace(/[ي]/g, "ي").replace(/[ئ]/g, "ي").replace(/[ؤ]/g, "و").replace(/[إ]/g, "ا").replace(/[آ]/g, "ا");
+    return str.trim().replace(/\s+/g, ' ');
+}
+
+function translateToArabic(raw) {
+    if (!raw) return "";
+    let trimmed = raw.trim();
+    if (nameMapping.has(trimmed)) return nameMapping.get(trimmed);
+    let normalized = normalizeName(trimmed);
+    for (let [key, value] of nameMapping) {
+        if (normalizeName(key) === normalized) return value;
+    }
+    let lower = trimmed.toLowerCase();
+    for (let [key, value] of nameMapping) {
+        if (key.toLowerCase() === lower) return value;
+    }
+    for (let [key, value] of nameMapping) {
+        if (normalized.includes(normalizeName(key)) || normalizeName(key).includes(normalized)) {
+            return value;
+        }
+    }
+    console.warn(`⚠️ لم يتم العثور على ترجمة لـ: "${raw}"`);
+    return trimmed;
+}
+
+function translateBracketTeamName(name) {
+    if (!name) return name;
+    let match = name.match(/^Winner\s+Group\s+([A-L])$/i);
+    if (match) {
+        let groupLetter = match[1].toUpperCase();
+        let arabicLetter = groupLetters[groupLetter] || groupLetter;
+        return `متصدر المجموعة (${arabicLetter})`;
+    }
+    match = name.match(/^Runner-up\s+Group\s+([A-L])$/i);
+    if (match) {
+        let groupLetter = match[1].toUpperCase();
+        let arabicLetter = groupLetters[groupLetter] || groupLetter;
+        return `وصيف المجموعة (${arabicLetter})`;
+    }
+    match = name.match(/^3rd\s+Group\s+([A-L\/]+)$/i);
+    if (match) {
+        let groups = match[1].toUpperCase().split('/');
+        let arabicGroups = groups.map(g => groupLetters[g] || g).join('/');
+        return `ثالث المجموعة (${arabicGroups})`;
+    }
+    match = name.match(/^Group\s+([A-L])$/i);
+    if (match) {
+        let groupLetter = match[1].toUpperCase();
+        let arabicLetter = groupLetters[groupLetter] || groupLetter;
+        return `المجموعة (${arabicLetter})`;
+    }
+    return translateToArabic(name);
+}
+
+function getFlag(name) {
+    const map = {
+        "المكسيك": "🇲🇽",
+        "جنوب أفريقيا": "🇿🇦",
+        "الأرجنتين": "🇦🇷",
+        "الجزائر": "🇩🇿",
+        "النمسا": "🇦🇹",
+        "الأردن": "🇯🇴",
+        "البرتغال": "🇵🇹",
+        "الكونغو الديمقراطية": "🇨🇩",
+        "كوريا الجنوبية": "🇰🇷",
+        "التشيك": "🇨🇿",
+        "كندا": "🇨🇦",
+        "البوسنة والهرسك": "🇧🇦",
+        "أمريكا": "🇺🇸",
+        "العراق": "🇮🇶",
+        "سويسرا": "🇨🇭",
+        "قطر": "🇶🇦",
+        "البرازيل": "🇧🇷",
+        "المغرب": "🇲🇦",
+        "هايتي": "🇭🇹",
+        "إسكتلندا": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+        "أستراليا": "🇦🇺",
+        "تركيا": "🇹🇷",
+        "ألمانيا": "🇩🇪",
+        "كوراساو": "🇨🇼",
+        "اليابان": "🇯🇵",
+        "هولندا": "🇳🇱",
+        "الإكوادور": "🇪🇨",
+        "ساحل العاج": "🇨🇮",
+        "السويد": "🇸🇪",
+        "تونس": "🇹🇳",
+        "إسبانيا": "🇪🇸",
+        "الرأس الأخضر": "🇨🇻",
+        "مصر": "🇪🇬",
+        "بلجيكا": "🇧🇪",
+        "السعودية": "🇸🇦",
+        "أوروغواي": "🇺🇾",
+        "إيران": "🇮🇷",
+        "نيوزيلندا": "🇳🇿",
+        "السنغال": "🇸🇳",
+        "فرنسا": "🇫🇷",
+        "النرويج": "🇳🇴",
+        "إنجلترا": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+        "كرواتيا": "🇭🇷",
+        "بنما": "🇵🇦",
+        "كولومبيا": "🇨🇴",
+        "أوزبكستان": "🇺🇿",
+        "غانا": "🇬🇭",
+        "باراغواي": "🇵🇾"
+    };
+    return map[name] || "🏁";
+}
