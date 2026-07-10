@@ -463,3 +463,126 @@ async function openMatchPredictions(matchId, team1, team2, homeScore, awayScore)
                 <td class="status-pending">⏳ لم تحدد</td>
                 <td class="time-cell">${p.created_at ? formatDate(p.created_at) : 'تاريخ غير معروف'}</td>
             </tr>`;
+        });
+        tbody.innerHTML = rows;
+        correctSpan.textContent = '0';
+        wrongSpan.textContent = '0';
+        document.getElementById('matchPredictionsModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        return;
+    }
+    let correctCount = 0,
+        wrongCount = 0;
+    let rows = '';
+    matchPredictions.forEach((p, idx) => {
+        const isCorrect = p.prediction === correctResult;
+        if (isCorrect) correctCount++;
+        else wrongCount++;
+        let predictionText = p.prediction === 'DRAW' ? 'تعادل' : `فوز ${p.prediction}`;
+        const statusText = isCorrect ? 'صحيح' : 'خاطئ';
+        const statusClass = isCorrect ? 'status-correct' : 'status-wrong';
+        const predClass = isCorrect ? 'correct' : 'wrong';
+        const timeStr = p.created_at ? formatDate(p.created_at) : 'تاريخ غير معروف';
+        rows += `<tr>
+            <td class="user-name" onclick="openPlayerPredictions('${p.user_name || ''}')">${p.user_name || 'مجهول'}</td>
+            <td class="prediction-text ${predClass}">${predictionText}</td>
+            <td class="${statusClass}">${statusText}</td>
+            <td class="time-cell">${timeStr}</td>
+        </tr>`;
+    });
+    correctSpan.textContent = correctCount;
+    wrongSpan.textContent = wrongCount;
+    tbody.innerHTML = rows;
+    document.getElementById('matchPredictionsModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeMatchPredictionsModal() {
+    document.getElementById('matchPredictionsModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// ============================================================
+//  نافذة توقعات اللاعب
+// ============================================================
+async function openPlayerPredictions(userName) {
+    if (!userName) { showCopyToast('⚠️ اسم المستخدم غير معروف'); return; }
+    document.getElementById('playerModalName').textContent = userName;
+    const listContainer = document.getElementById('playerPredictionsList');
+    const correctSpan = document.getElementById('playerCorrectCount');
+    const wrongSpan = document.getElementById('playerWrongCount');
+    const totalSpan = document.getElementById('playerTotalCount');
+    listContainer.innerHTML = `<div class="empty-state"><span class="icon">⏳</span> جاري التحميل...</div>`;
+    correctSpan.textContent = '...';
+    wrongSpan.textContent = '...';
+    totalSpan.textContent = '...';
+
+    const predictions = await getPredictionsForUserFull(userName);
+    let correct = 0,
+        wrong = 0;
+    for (let p of predictions) {
+        const status = getPredictionStatus(p);
+        if (status.status === 'correct') correct++;
+        else if (status.status === 'wrong') wrong++;
+    }
+    correctSpan.textContent = correct;
+    wrongSpan.textContent = wrong;
+    totalSpan.textContent = predictions.length;
+
+    if (!predictions || predictions.length === 0) {
+        listContainer.innerHTML =
+            `<div class="empty-state"><span class="icon">📭</span> لا توجد توقعات لهذا اللاعب</div>`;
+        document.getElementById('playerPredictionsModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        return;
+    }
+
+    predictions.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+    let html = '';
+    predictions.forEach((p, idx) => {
+        const parts = p.match_id ? p.match_id.split('_') : [];
+        const team1 = parts.length > 1 ? parts[1] : '?';
+        const team2 = parts.length > 2 ? parts[2] : '?';
+        let predText = '';
+        if (p.prediction === 'DRAW') {
+            predText = `تعادل`;
+        } else if (p.prediction === team1) {
+            predText = `فوز ${team1}`;
+        } else if (p.prediction === team2) {
+            predText = `فوز ${team2}`;
+        } else {
+            predText = p.prediction;
+        }
+        const status = getPredictionStatus(p);
+        let statusClass = 'pending';
+        let statusText = '⏳ لم تحدد';
+        if (status.status === 'correct') { statusClass = 'correct';
+            statusText = '✅ صحيح'; } else if (status.status === 'wrong') { statusClass = 'wrong';
+            statusText = '❌ خاطئ'; } else { statusClass = 'pending';
+            statusText = '⏳ قيد الانتظار'; }
+
+        html += `
+            <div class="player-prediction-item">
+                <div class="num">#${idx + 1}</div>
+                <div class="match-info">
+                    <div class="teams">
+                        <span class="flag">${getFlag(team1)}</span> ${team1} 🆚 <span class="flag">${getFlag(team2)}</span> ${team2}
+                    </div>
+                    <div class="pred">🔮 ${predText}</div>
+                    <span class="status ${statusClass}">${statusText}</span>
+                </div>
+                <div class="time">🕒 ${p.created_at ? formatDate(p.created_at) : 'تاريخ غير معروف'}</div>
+            </div>
+        `;
+    });
+
+    listContainer.innerHTML = html;
+    document.getElementById('playerPredictionsModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closePlayerPredictionsModal() {
+    document.getElementById('playerPredictionsModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
