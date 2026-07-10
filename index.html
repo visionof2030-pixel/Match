@@ -6,6 +6,7 @@
     <title>🏆 كأس العالم 2026 — التوقع التفاعلي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <!-- CSS -->
     <link rel="stylesheet" href="css/variables.css" />
@@ -23,7 +24,7 @@
 
     <!-- ===== الهيدر ===== -->
     <div class="top-bar">
-        <img class="trophy-image" src="assets/images/trophy.png" alt="كأس العالم 2026" />
+        <img class="trophy-image" src="assets/images/trophy.png" alt="كأس العالم 2026" onerror="this.style.display='none'" />
         <div class="overlay"></div>
         <div class="top-bar-content">
             <div class="top-bar-title"><span class="icon">🏆</span><span class="gold-text">كأس العالم 2026</span></div>
@@ -398,35 +399,32 @@
 
     <div class="copy-toast" id="copyToast">✅ تم نسخ الرابط!</div>
 
-    <!-- ===== JavaScript ===== -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- ===== JavaScript - ترتيب التحميل مهم جداً ===== -->
     
     <!-- Data -->
     <script src="data/stadiums.js"></script>
     <script src="data/teams.js"></script>
-    <script src="data/matches.js"></script>
     <script src="data/standings.js"></script>
+    <script src="data/matches.js"></script>
     
-    <!-- Utilities -->
+    <!-- Utilities (الأهم - يجب تحميلها أولاً) -->
     <script src="js/utils.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/api.js"></script>
     <script src="js/theme.js"></script>
     
-    <!-- Core -->
-    <script src="js/matches.js"></script>
-    <script src="js/predictions.js"></script>
+    <!-- Core Functions -->
     <script src="js/leaderboard.js"></script>
     <script src="js/groups.js"></script>
     <script src="js/scorers.js"></script>
     <script src="js/bracket.js"></script>
-    <script src="js/admin.js"></script>
     <script src="js/archive.js"></script>
     <script src="js/duplicate.js"></script>
     <script src="js/share.js"></script>
-    <script src="js/modal.js"></script>
+    <script src="js/compare.js"></script>
+    <script src="js/analytics.js"></script>
     
-    <!-- Main -->
+    <!-- Main (يجب أن يكون آخر ملف) -->
     <script src="js/main.js"></script>
 </body>
 </html>
