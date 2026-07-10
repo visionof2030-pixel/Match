@@ -214,4 +214,107 @@ function renderMatchCard(m, isUpcoming) {
           </div>
           
           <!-- بار نسبة الفوز -->
-          <div class="win-probability" style="margin:8
+          <div class="win-probability" style="margin:8px 0 6px 0;padding:6px 12px;">
+            <div class="prob-title" style="font-size:0.6rem;">📊 نسبة الفوز المتوقعة وفقاً لتحليل الذكاء الاصطناعي</div>
+            <div class="prob-bar" style="height:18px;">
+              <div class="segment home" style="width:${Math.round(smartWinRate1)}%;background:${smartWinRate1 >= 50 ? 'var(--success)' : 'var(--danger)'};">${Math.round(smartWinRate1)}%</div>
+              <div class="segment away" style="width:${Math.round(smartWinRate2)}%;background:${smartWinRate2 >= 50 ? 'var(--success)' : 'var(--danger)'};">${Math.round(smartWinRate2)}%</div>
+            </div>
+            <div class="prob-labels" style="font-size:0.5rem;">
+              <span class="label"><span class="dot home" style="background:${smartWinRate1 >= 50 ? 'var(--success)' : 'var(--danger)'};"></span> ${m.team1}</span>
+              <span class="label"><span class="dot away" style="background:${smartWinRate2 >= 50 ? 'var(--success)' : 'var(--danger)'};"></span> ${m.team2}</span>
+            </div>
+          </div>
+          
+          <!-- زر عرض إحصائيات الفريقين -->
+          <div style="display:flex;justify-content:center;margin:6px 0 8px 0;">
+            <button class="admin-btn secondary" onclick="event.stopPropagation();openTeamStatsModal('${m.team1}','${m.team2}')" style="padding:4px 16px;font-size:0.6rem;background:var(--info-bg);border:1px solid rgba(74,158,255,0.15);color:var(--info);">
+              📊 عرض إحصائيات الفريقين
+            </button>
+          </div>
+          
+          <div class="match-meta">
+            <span class="tag">🏅 ${m.roundLabel}</span>
+            ${isUpcoming ? `<span class="timer ${isLive ? 'live' : ''}">${isLive ? '🔴 تُلعب الآن' : st.text}</span>` : `<span class="tag finished-tag">✅ انتهت - اضغط لعرض التوقعات</span>`}
+          </div>
+          <div class="match-meta" style="margin-top:4px;">
+            <span class="tag">${getDay(m.timeISO)}</span>
+            <span class="tag">${getDateTimeDisplay(m.timeISO)}</span>
+            ${dayLabel ? `<span class="tag" style="color:var(--gold-light);">${dayLabel}</span>` : ''}
+            ${ground ? `<span class="tag stadium-tag">🏟️ ${ground}</span>` : ''}
+          </div>
+          ${isUpcoming ? `
+            <div class="predict-btn-wrap">
+              <div class="btn-group">
+                <button class="${predictBtnClass}" ${predictBtnExtra} data-matchid="${matchId}">
+                  ${predictBtnHtml}
+                </button>
+                ${showEdit ? `<button class="${editBtnClass}" ${editBtnExtra} data-matchid="${matchId}">✏️ ${editBtnHtml}</button>` : (isAuthorized ? `<button class="${editBtnClass}" ${editBtnExtra} data-matchid="${matchId}" style="display:none;">✏️ ${editBtnHtml}</button>` : '')}
+              </div>
+              <button class="view-btn" onclick="openViewPredictionsModal('${matchId}','${m.team1}','${m.team2}')">
+                📋 استعراض التوقعات
+              </button>
+              <button class="share-link-btn" onclick="copyMatchLink('${m.id}', '${m.team1}', '${m.team2}')">
+                🔗 مشاركة
+              </button>
+            </div>
+          ` : ''}
+        </div>
+      `;
+}
+
+// ============================================================
+//  عرض المباريات القادمة
+// ============================================================
+function renderUpcoming() {
+    try {
+        const groupFilter = document.getElementById('groupFilter')?.value || 'all';
+        let active = [];
+        
+        if (groupFilter === 'all') {
+            active = upcomingMatches(matchesData);
+        } else {
+            const teams = finalGroups[groupFilter] || [];
+            const allMatchesForGroup = matchesData.filter(m => teams.includes(m.team1) || teams.includes(m.team2));
+            active = allMatchesForGroup;
+        }
+        
+        // ترتيب المباريات حسب التاريخ (الأقرب أولاً)
+        active.sort((a, b) => matchTime(a.timeISO) - matchTime(b.timeISO));
+        
+        // تطبيق فلاتر اليوم/غداً/الأسبوع
+        if (groupFilter === 'all') {
+            if (currentDayFilter === 'today') {
+                active = active.filter(m => isTodaySaudi(m.timeISO));
+            } else if (currentDayFilter === 'tomorrow') {
+                active = active.filter(m => isTomorrowSaudi(m.timeISO));
+            } else if (currentDayFilter === 'week') {
+                const today = getSaudiNow();
+                const weekLater = new Date(today);
+                weekLater.setDate(weekLater.getDate() + 7);
+                active = active.filter(m => {
+                    const d = toSaudiTime(m.timeISO);
+                    return d >= today && d <= weekLater;
+                });
+            }
+        }
+        
+        const container = document.getElementById('matchesContainer');
+        document.getElementById('upcomingCount').textContent = active.length;
+        
+        if (!active.length) {
+            container.innerHTML = `<div class="empty-state"><span class="icon">📭</span> لا توجد مباريات تطابق الفلاتر</div>`;
+            return;
+        }
+        
+        container.innerHTML = active.map(m => {
+            const isUpcoming = (matchTime(m.timeISO) + MATCH_DURATION) > now();
+            return renderMatchCard(m, isUpcoming);
+        }).join('');
+        
+        updateShareAllCount();
+    } catch (e) {
+        console.error("renderUpcoming:", e);
+        document.getElementById('matchesContainer').innerHTML = `<div class="empty-state"><span class="icon">⚠️</span> حدث خطأ</div>`;
+    }
+}
