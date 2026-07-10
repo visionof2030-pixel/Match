@@ -3,7 +3,7 @@
 // ============================================================
 
 // ============================================================
-//  الحالة العامة للتطبيق
+//  الحالة العامة للتطبيق (تعريف قبل الاستخدام)
 // ============================================================
 const state = {
     previousGamesData: [],
@@ -14,9 +14,10 @@ const state = {
 };
 
 let currentDayFilter = 'all';
+let isLoadingPrevious = false;
 
 // ============================================================
-//  تحميل البيانات
+//  دوال تحميل البيانات
 // ============================================================
 async function loadPreviousGamesFull() {
     if (isLoadingPrevious) return;
@@ -77,7 +78,7 @@ async function loadPreviousGamesFull() {
         calculateStandings();
         renderTeamStats();
         renderBracket();
-        renderLeaderboard(currentLeaderboardPeriod);
+        renderLeaderboard(currentLeaderboardPeriod || 'all');
         updateScorers();
         updateNewsTicker();
     } catch (e) {
@@ -88,8 +89,6 @@ async function loadPreviousGamesFull() {
         }
     } finally { isLoadingPrevious = false; }
 }
-
-let isLoadingPrevious = false;
 
 async function fetchOpenfootballData() {
     const cached = getCache("openfootball");
@@ -456,7 +455,7 @@ function startAutoUpdate() {
         if (activeTab === 'scorers') renderScorers();
         if (activeTab === 'stats') renderTeamStats();
         if (activeTab === 'predictions') await renderAllPredictions();
-        renderLeaderboard(currentLeaderboardPeriod);
+        renderLeaderboard(currentLeaderboardPeriod || 'all');
         updateShareAllCount();
         updateNewsTicker();
     }, 30000);
@@ -638,16 +637,21 @@ async function renderAllPredictions() {
 //  التهيئة الرئيسية
 // ============================================================
 async function init() {
-    console.log("🚀 INIT START (محسن)");
+    console.log("🚀 INIT START");
+
+    // 1. تهيئة الوضع
     initTheme();
+
+    // 2. تحميل البيانات
     await Promise.all([
         loadPreviousGamesFull(),
         fetchOpenfootballData(),
         getAllPredictions()
     ]);
+
     state.loaded = true;
 
-    // تحديث جميع التوقعات فوراً
+    // 3. تحديث جميع المكونات
     await renderAllPredictions();
     updateScorers();
     renderLeaderboard('all');
@@ -661,7 +665,7 @@ async function init() {
     startAutoUpdate();
     updateNewsTicker();
 
-    // إضافة أحداث المستمعين
+    // 4. إضافة أحداث المستمعين
     document.getElementById('prevSearchInput')?.addEventListener('input', renderPreviousGamesFiltered);
     document.getElementById('groupFilter')?.addEventListener('change', renderUpcoming);
     document.querySelectorAll('.day-btn').forEach(btn => {
@@ -673,17 +677,24 @@ async function init() {
         });
     });
 
+    // 5. زر الفوتر
     document.getElementById('footerTrigger').addEventListener('click', function(e) {
         e.preventDefault();
-        if (isAuthorized) {
+        if (typeof isAuthorized !== 'undefined' && isAuthorized) {
             document.getElementById('shareAllContainer').classList.toggle('visible');
             document.getElementById('adminControls').classList.toggle('visible');
-            if (document.getElementById('shareAllContainer').classList.contains('visible')) { updateShareAllCount();
-                showCopyToast('🔓 تم إظهار لوحة الإدارة'); } else { showCopyToast('🔒 تم إخفاء لوحة الإدارة'); }
-        } else { showPasswordOverlay(); }
+            if (document.getElementById('shareAllContainer').classList.contains('visible')) {
+                updateShareAllCount();
+                showCopyToast('🔓 تم إظهار لوحة الإدارة');
+            } else {
+                showCopyToast('🔒 تم إخفاء لوحة الإدارة');
+            }
+        } else {
+            showPasswordOverlay();
+        }
     });
 
-    console.log("✅ INIT DONE (محسن)");
+    console.log("✅ INIT DONE");
 }
 
 // ============================================================
