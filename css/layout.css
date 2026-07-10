@@ -1,0 +1,336 @@
+/* ============================================================
+   حاوية التطبيق
+   ============================================================ */
+.app-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 16px 48px;
+    width: 100%;
+}
+
+/* ============================================================
+   الهيدر العلوي (صورة الكأس)
+   ============================================================ */
+.top-bar {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px 24px;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-secondary);
+    border-bottom: 2px solid var(--gold);
+    box-shadow: 0 8px 40px rgba(212, 167, 69, 0.06);
+    display: flex;
+    align-items: center;
+}
+.top-bar .trophy-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+    filter: brightness(0.6) saturate(0.8);
+}
+.top-bar .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(10, 14, 23, 0.88) 0%, rgba(10, 14, 23, 0.40) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+.top-bar .top-bar-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    position: relative;
+    z-index: 2;
+}
+.top-bar .top-bar-title {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.30);
+    padding: 6px 20px 6px 24px;
+    border-radius: 60px;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    letter-spacing: 0.5px;
+}
+.top-bar .top-bar-title .icon {
+    font-size: 1.4rem;
+}
+.top-bar .top-bar-title .gold-text {
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: none;
+}
+.top-bar .top-bar-sub {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.25);
+    padding: 6px 18px;
+    border-radius: 60px;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.top-bar .top-bar-sub .emoji {
+    font-size: 1.1rem;
+}
+
+[data-theme="light"] .top-bar {
+    background: #ffffff;
+    border-bottom-color: var(--gold);
+    box-shadow: 0 8px 40px rgba(212, 167, 69, 0.10);
+}
+[data-theme="light"] .top-bar .overlay {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.90) 0%, rgba(255, 255, 255, 0.50) 100%);
+}
+[data-theme="light"] .top-bar .top-bar-title,
+[data-theme="light"] .top-bar .top-bar-sub {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.80);
+    border-color: rgba(0, 0, 0, 0.04);
+    text-shadow: none;
+}
+[data-theme="light"] .top-bar .top-bar-title .gold-text {
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* ============================================================
+   الهيدر اللاصق
+   ============================================================ */
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 14, 23, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 0 0 28px 28px;
+    padding: 14px 24px;
+    margin: 0 -16px 24px;
+    border-bottom: 1px solid var(--border-gold);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.40);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    transition: var(--transition);
+}
+[data-theme="light"] .sticky-header {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.04);
+}
+.sticky-header .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.sticky-header .brand h1 {
+    font-size: 1.15rem;
+    font-weight: 900;
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -0.3px;
+}
+.sticky-header .brand .sub {
+    font-size: 0.55rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+    display: block;
+    margin-top: -2px;
+    letter-spacing: 0.3px;
+}
+.sticky-header .header-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.sticky-header .header-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    border-radius: 40px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+    backdrop-filter: blur(4px);
+}
+.sticky-header .header-btn:hover {
+    background: var(--gold-glow);
+    border-color: var(--gold);
+    color: var(--gold-light);
+    transform: translateY(-2px);
+}
+[data-theme="light"] .sticky-header .header-btn {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.06);
+    color: var(--text-secondary);
+}
+[data-theme="light"] .sticky-header .header-btn:hover {
+    background: var(--gold-glow);
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+/* ============================================================
+   شريط الأخبار
+   ============================================================ */
+.news-ticker-wrapper {
+    background: var(--gold-glow);
+    border: 1px solid var(--border-gold);
+    border-radius: 60px;
+    padding: 6px 20px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    box-shadow: var(--shadow-glow);
+    position: relative;
+    min-height: 38px;
+    backdrop-filter: blur(4px);
+}
+.news-ticker {
+    display: inline-block;
+    white-space: nowrap;
+    animation: tickerScroll 70s linear infinite;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+.news-ticker span {
+    display: inline-block;
+    padding: 0 16px;
+}
+.news-ticker .sep {
+    color: var(--gold);
+    opacity: 0.25;
+}
+.news-ticker .today-highlight {
+    color: var(--gold-light);
+    font-weight: 700;
+}
+.news-ticker .match-highlight {
+    color: var(--info);
+    font-weight: 600;
+}
+@keyframes tickerScroll {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+.news-ticker-wrapper:hover .news-ticker {
+    animation-play-state: paused;
+}
+
+/* ============================================================
+   أدوات التحكم
+   ============================================================ */
+.controls-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    border-radius: var(--radius-lg);
+    padding: 16px 24px;
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-card);
+    transition: var(--transition);
+}
+.controls-bar .control-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    flex: 1;
+    min-width: 160px;
+}
+.controls-bar .control-group label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+.controls-bar select,
+.controls-bar input {
+    padding: 8px 16px;
+    border-radius: 40px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-input);
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    outline: none;
+    transition: var(--transition);
+    font-family: inherit;
+    flex: 1;
+    min-width: 120px;
+    backdrop-filter: blur(4px);
+}
+.controls-bar select:focus,
+.controls-bar input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px var(--gold-glow);
+}
+.controls-bar select option {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+/* ============================================================
+   فوتير
+   ============================================================ */
+.footer {
+    margin-top: 48px;
+    text-align: center;
+    font-size: 0.6rem;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 24px;
+    cursor: pointer;
+    transition: var(--transition);
+    user-select: none;
+}
+.footer:hover {
+    color: var(--gold-light);
+}
