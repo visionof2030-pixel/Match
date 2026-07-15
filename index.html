@@ -2971,9 +2971,21 @@
                 <datalist id="pastUsersList"></datalist>
             </div>
             <div class="modal-options" id="pastPredictionOptions">
-                <label><input type="radio" name="pastPrediction" value="HOME" /><span class="opt-label">🏆 <span id="pastOptHome">الفريق الأول</span></span><span class="opt-sub">فوز</span></label>
-                <label><input type="radio" name="pastPrediction" value="AWAY" /><span class="opt-label">🏆 <span id="pastOptAway">الفريق الثاني</span></span><span class="opt-sub">فوز</span></label>
-                <label id="pastDrawOption" style="display:none;"><input type="radio" name="pastPrediction" value="DRAW" /><span class="opt-label">🤝 تعادل</span><span class="opt-sub">تعادل</span></label>
+                <label id="pastHomeOption">
+                    <input type="radio" name="pastPrediction" value="HOME" />
+                    <span class="opt-label" id="pastHomeLabel">🏆 <span id="pastOptHome">الفريق الأول</span></span>
+                    <span class="opt-sub">فوز</span>
+                </label>
+                <label id="pastAwayOption">
+                    <input type="radio" name="pastPrediction" value="AWAY" />
+                    <span class="opt-label" id="pastAwayLabel">🏆 <span id="pastOptAway">الفريق الثاني</span></span>
+                    <span class="opt-sub">فوز</span>
+                </label>
+                <label id="pastDrawOption" style="display:none;">
+                    <input type="radio" name="pastPrediction" value="DRAW" />
+                    <span class="opt-label">🤝 تعادل</span>
+                    <span class="opt-sub">تعادل</span>
+                </label>
             </div>
             <button class="modal-submit" id="pastPredictionSubmitBtn">💾 حفظ التوقع</button>
             <div class="modal-message" id="pastPredictionMessage"></div>
@@ -6842,11 +6854,10 @@
         }
 
         // ============================================================
-        //  ADD PAST PREDICTION (NEW FEATURE)
+        //  ADD PAST PREDICTION (NEW FEATURE) - تم التعديل
         // ============================================================
 
         function getMatchIdFromTeams(team1, team2) {
-            // Try to find the match in matchesData to get the timeISO
             const match = matchesData.find(m => 
                 (m.team1 === team1 && m.team2 === team2) || 
                 (m.team1 === team2 && m.team2 === team1)
@@ -6854,7 +6865,6 @@
             if (match) {
                 return `${match.timeISO}_${match.team1}_${match.team2}`;
             }
-            // Fallback: generate a matchId from team names (without timeISO)
             return `past_${team1}_${team2}`;
         }
 
@@ -6865,7 +6875,7 @@
             const msgEl = document.getElementById('pastPredictionMessage');
             msgEl.textContent = '';
             msgEl.className = 'modal-message';
-            document.getElementById('modalSubmitBtn').disabled = false;
+            document.getElementById('pastPredictionSubmitBtn').disabled = false;
 
             // Load past matches
             const pastMatches = state.previousGamesData || [];
@@ -6885,13 +6895,73 @@
 
             // Reset options
             document.querySelectorAll('input[name="pastPrediction"]').forEach(el => el.checked = false);
+            // Reset labels to default (will be updated when match is selected)
             document.getElementById('pastOptHome').textContent = 'الفريق الأول';
             document.getElementById('pastOptAway').textContent = 'الفريق الثاني';
             document.getElementById('pastDrawOption').style.display = 'block';
 
+            // If a match is already selected (should not happen), update labels
+            const selectedVal = select.value;
+            if (selectedVal) {
+                updatePastMatchLabels(selectedVal);
+            }
+
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
+
+        // دالة مساعدة لتحديث التسميات بناءً على قيمة المباراة
+        function updatePastMatchLabels(val) {
+            if (!val) return;
+            const [team1, team2] = val.split('|');
+            const homeEl = document.getElementById('pastOptHome');
+            const awayEl = document.getElementById('pastOptAway');
+            if (homeEl) {
+                homeEl.textContent = `${getFlag(team1)} ${team1}`;
+            }
+            if (awayEl) {
+                awayEl.textContent = `${getFlag(team2)} ${team2}`;
+            }
+            // تحديث التسميات الكاملة (اختياري)
+            const homeLabel = document.getElementById('pastHomeLabel');
+            const awayLabel = document.getElementById('pastAwayLabel');
+            if (homeLabel) {
+                homeLabel.innerHTML = `🏆 ${getFlag(team1)} ${team1}`;
+            }
+            if (awayLabel) {
+                awayLabel.innerHTML = `🏆 ${getFlag(team2)} ${team2}`;
+            }
+
+            // تحديد ما إذا كانت المباراة إقصائية (لا تعادل)
+            const match = matchesData.find(m => 
+                (m.team1 === team1 && m.team2 === team2) || 
+                (m.team1 === team2 && m.team2 === team1)
+            );
+            const isKnockout = match ? isKnockoutMatch(match) : false;
+            const drawOption = document.getElementById('pastDrawOption');
+            if (drawOption) {
+                drawOption.style.display = isKnockout ? 'none' : 'block';
+                if (isKnockout) {
+                    const drawRadio = document.querySelector('input[name="pastPrediction"][value="DRAW"]');
+                    if (drawRadio) drawRadio.checked = false;
+                }
+            }
+        }
+
+        // ربط حدث التغيير في قائمة المباريات
+        document.getElementById('pastMatchSelect').addEventListener('change', function() {
+            const val = this.value;
+            if (val) {
+                updatePastMatchLabels(val);
+            } else {
+                // إعادة التعيين إلى القيم الافتراضية
+                document.getElementById('pastOptHome').textContent = 'الفريق الأول';
+                document.getElementById('pastOptAway').textContent = 'الفريق الثاني';
+                document.getElementById('pastHomeLabel').innerHTML = '🏆 الفريق الأول';
+                document.getElementById('pastAwayLabel').innerHTML = '🏆 الفريق الثاني';
+                document.getElementById('pastDrawOption').style.display = 'block';
+            }
+        });
 
         async function loadPastUsers() {
             const datalist = document.getElementById('pastUsersList');
@@ -6908,27 +6978,6 @@
                 console.warn("⚠️ فشل تحميل أسماء المستخدمين:", e);
             }
         }
-
-        // When match selection changes, update the option labels
-        document.getElementById('pastMatchSelect').addEventListener('change', function() {
-            const val = this.value;
-            if (val) {
-                const [team1, team2] = val.split('|');
-                document.getElementById('pastOptHome').textContent = team1;
-                document.getElementById('pastOptAway').textContent = team2;
-                // Check if match is knockout (no draw)
-                const match = matchesData.find(m => 
-                    (m.team1 === team1 && m.team2 === team2) || 
-                    (m.team1 === team2 && m.team2 === team1)
-                );
-                const isKnockout = match ? isKnockoutMatch(match) : false;
-                document.getElementById('pastDrawOption').style.display = isKnockout ? 'none' : 'block';
-                if (isKnockout) {
-                    const drawRadio = document.querySelector('input[name="pastPrediction"][value="DRAW"]');
-                    if (drawRadio) drawRadio.checked = false;
-                }
-            }
-        });
 
         document.getElementById('pastPredictionSubmitBtn').addEventListener('click', async function() {
             const select = document.getElementById('pastMatchSelect');
@@ -6962,10 +7011,9 @@
                 prediction = team2;
             }
 
-            // Generate matchId
             const matchId = getMatchIdFromTeams(team1, team2);
 
-            // Check if prediction already exists for this user and match
+            // التحقق من وجود توقع مسبق
             if (supabaseClient) {
                 try {
                     const { data, error } = await supabaseClient
@@ -6977,7 +7025,6 @@
                     if (!error && data && data.length > 0) {
                         msgEl.textContent = `⚠️ المستخدم "${userName}" لديه بالفعل توقع لهذه المباراة. سيتم تحديثه.`;
                         msgEl.className = 'modal-message warning';
-                        // Update existing
                         const { error: updateError } = await supabaseClient
                             .from("predictions")
                             .update({ prediction: prediction, updated_at: new Date().toISOString() })
@@ -6985,7 +7032,6 @@
                         if (updateError) throw updateError;
                         msgEl.textContent = '✅ تم تحديث التوقع بنجاح!';
                         msgEl.className = 'modal-message success';
-                        // Refresh data
                         await getAllPredictions();
                         renderUpcoming();
                         renderAllPredictionsAdmin();
@@ -6998,7 +7044,7 @@
                 }
             }
 
-            // Determine a creation time that is before the match start (or now)
+            // تعيين وقت الإنشاء قبل المباراة بـ 5 دقائق
             let created_at = new Date().toISOString();
             const match = matchesData.find(m => 
                 (m.team1 === team1 && m.team2 === team2) || 
@@ -7006,7 +7052,6 @@
             );
             if (match) {
                 const matchStart = matchTime(match.timeISO);
-                // Set created_at to 5 minutes before match start
                 const predTime = new Date(matchStart - 5 * 60 * 1000);
                 if (predTime > 0) {
                     created_at = predTime.toISOString();
@@ -7025,12 +7070,10 @@
                     if (error) throw error;
                     msgEl.textContent = '✅ تم إضافة التوقع بنجاح! 🎉';
                     msgEl.className = 'modal-message success';
-                    // Refresh data
                     await getAllPredictions();
                     renderUpcoming();
                     renderAllPredictionsAdmin();
                     updateNewsTicker();
-                    // Clear form
                     document.getElementById('pastUserName').value = '';
                     document.querySelectorAll('input[name="pastPrediction"]').forEach(el => el.checked = false);
                     setTimeout(() => closeModal('addPastPredictionModal'), 1000);
