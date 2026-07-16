@@ -492,7 +492,8 @@
         /* ===== ADMIN SECTIONS ===== */
         .archive-section,
         .duplicates-section,
-        .predictions-admin-section {
+        .predictions-admin-section,
+        .player-prediction-admin-section {
             width: 100%;
             margin-top: 10px;
             background: rgba(0, 0, 0, 0.25);
@@ -503,12 +504,14 @@
         }
         .archive-section.visible,
         .duplicates-section.visible,
-        .predictions-admin-section.visible {
+        .predictions-admin-section.visible,
+        .player-prediction-admin-section.visible {
             display: block;
         }
         .archive-section .archive-title,
         .duplicates-section .dup-title,
-        .predictions-admin-section .pred-title {
+        .predictions-admin-section .pred-title,
+        .player-prediction-admin-section .player-pred-title {
             font-size: 0.85rem;
             font-weight: 700;
             display: flex;
@@ -525,9 +528,13 @@
         .predictions-admin-section .pred-title {
             color: var(--gold-light);
         }
+        .player-prediction-admin-section .player-pred-title {
+            color: var(--info);
+        }
         .archive-section .archive-title .count-badge,
         .duplicates-section .dup-title .count-badge,
-        .predictions-admin-section .pred-title .count-badge {
+        .predictions-admin-section .pred-title .count-badge,
+        .player-prediction-admin-section .player-pred-title .count-badge {
             background: rgba(255, 255, 255, 0.04);
             padding: 0 12px;
             border-radius: 40px;
@@ -541,6 +548,9 @@
         }
         .predictions-admin-section .pred-title .count-badge {
             color: var(--gold-light);
+        }
+        .player-prediction-admin-section .player-pred-title .count-badge {
+            color: var(--info);
         }
 
         .archive-item {
@@ -1500,7 +1510,6 @@
             50% { opacity: 0.3; }
         }
 
-        /* ===== COPY TOAST ===== */
         .copy-toast {
             position: fixed;
             bottom: 24px;
@@ -2581,6 +2590,193 @@
                 grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
             }
         }
+
+        /* ===== ADMIN PLAYER PREDICTION FORM ===== */
+        .player-pred-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 10px 0;
+        }
+        .player-pred-form .form-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .player-pred-form .form-row .form-group {
+            flex: 1;
+            min-width: 150px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .player-pred-form .form-row .form-group label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .player-pred-form .form-row .form-group select,
+        .player-pred-form .form-row .form-group input {
+            padding: 8px 14px;
+            border-radius: 40px;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            outline: none;
+            transition: var(--transition);
+            font-family: inherit;
+            width: 100%;
+        }
+        .player-pred-form .form-row .form-group select:focus,
+        .player-pred-form .form-row .form-group input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px var(--gold-glow);
+        }
+        .player-pred-form .form-row .form-group select option {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .player-pred-form .form-row .form-group .search-input {
+            position: relative;
+        }
+        .player-pred-form .form-row .form-group .search-input input {
+            padding-left: 36px;
+        }
+        .player-pred-form .form-row .form-group .search-input .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            pointer-events: none;
+        }
+        .player-pred-form .form-row .form-group select[multiple] {
+            height: 100px;
+            border-radius: var(--radius-sm);
+            padding: 6px;
+        }
+        .player-pred-form .form-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        .player-pred-form .form-actions .admin-btn {
+            padding: 8px 24px;
+            font-size: 0.75rem;
+        }
+        .player-pred-form .form-status {
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: none;
+            margin-top: 4px;
+        }
+        .player-pred-form .form-status.success {
+            display: block;
+            background: var(--success-bg);
+            color: var(--success);
+            border: 1px solid rgba(46, 204, 113, 0.15);
+        }
+        .player-pred-form .form-status.error {
+            display: block;
+            background: var(--danger-bg);
+            color: var(--danger);
+            border: 1px solid rgba(231, 76, 60, 0.15);
+        }
+        .player-pred-form .form-status.info {
+            display: block;
+            background: var(--info-bg);
+            color: var(--info);
+            border: 1px solid rgba(74, 158, 255, 0.15);
+        }
+        .player-pred-form .form-status.warning {
+            display: block;
+            background: var(--gold-glow);
+            color: var(--gold-light);
+            border: 1px solid var(--border-gold);
+        }
+        .player-pred-form .prediction-radio-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            padding: 4px 0;
+        }
+        .player-pred-form .prediction-radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 6px 16px;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+        .player-pred-form .prediction-radio-group label:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .player-pred-form .prediction-radio-group input[type="radio"] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--text-secondary);
+            border-radius: 50%;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+        .player-pred-form .prediction-radio-group input[type="radio"]:checked {
+            border-color: var(--gold);
+            background: var(--gold);
+        }
+        .player-pred-form .prediction-radio-group input[type="radio"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #0a0e1a;
+            font-weight: 900;
+            font-size: 10px;
+        }
+        .player-pred-form .prediction-radio-group label.selected-pred {
+            border-color: var(--gold);
+            background: var(--gold-glow);
+        }
+        .player-pred-form .form-row .form-group .datetime-input {
+            direction: ltr;
+            text-align: left;
+        }
+
+        @media (max-width: 640px) {
+            .player-pred-form .form-row {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .player-pred-form .form-row .form-group {
+                min-width: 100%;
+            }
+            .player-pred-form .form-actions {
+                flex-direction: column;
+            }
+            .player-pred-form .form-actions .admin-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .player-pred-form .prediction-radio-group {
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2658,7 +2854,7 @@
                 <button class="admin-btn secondary" onclick="runTests()">🧪 اختبارات</button>
                 <button class="admin-btn bracket-btn" onclick="toggleBracketAdmin()">🏆 مسار البطولة</button>
                 <button class="admin-btn" onclick="togglePredictionsAdmin()">🗳️ جميع التوقعات</button>
-                <button class="admin-btn success" onclick="openAddPastPredictionModal()">➕ إضافة توقع لمباراة سابقة</button>
+                <button class="admin-btn" onclick="togglePlayerPredictionAdmin()">👑 إدارة توقعات اللاعبين</button>
             </div>
             <!-- جميع التوقعات في لوحة الإدارة -->
             <div class="predictions-admin-section" id="predictionsAdminSection">
@@ -2679,6 +2875,44 @@
                     <button class="admin-btn secondary" style="padding:4px 14px;font-size:0.65rem;" onclick="document.getElementById('bracketWrapper').classList.remove('visible')">✕ إخفاء</button>
                 </div>
                 <div id="bracketContainer"><div class="empty-state"><span class="icon">⏳</span> جاري تحميل المخطط...</div></div>
+            </div>
+            <!-- ===== NEW: PLAYER PREDICTION ADMIN SECTION (FIXED) ===== -->
+            <div class="player-prediction-admin-section" id="playerPredictionAdminSection">
+                <div class="player-pred-title">👑 إدارة توقعات اللاعبين <span class="count-badge" id="playerPredAdminCount">0</span></div>
+                <div class="player-pred-form" id="playerPredForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>👤 اختيار اللاعب</label>
+                            <div class="search-input">
+                                <input type="text" id="playerSearchInput" placeholder="🔍 بحث سريع..." oninput="filterPlayerOptions()" />
+                            </div>
+                            <select id="playerSelect" size="5" onchange="onPlayerMatchSelect()"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>🏟️ اختيار المباراة</label>
+                            <select id="matchSelect" onchange="onPlayerMatchSelect()"></select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>📝 التوقع</label>
+                            <div class="prediction-radio-group" id="predictionRadioGroup">
+                                <label><input type="radio" name="adminPrediction" value="HOME" /> <span id="adminPredTeam1">الفريق الأول</span></label>
+                                <label><input type="radio" name="adminPrediction" value="DRAW" /> 🤝 تعادل</label>
+                                <label><input type="radio" name="adminPrediction" value="AWAY" /> <span id="adminPredTeam2">الفريق الثاني</span></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>🕒 وقت التوقع (اختياري)</label>
+                            <input type="datetime-local" id="adminPredictionTime" class="datetime-input" />
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="admin-btn success" id="adminSavePredBtn" onclick="adminSavePrediction()">➕ إضافة التوقع</button>
+                        <button class="admin-btn danger" id="adminDeletePredBtn" onclick="adminDeletePrediction()" style="display:none;">🗑 حذف التوقع</button>
+                    </div>
+                    <div class="form-status" id="adminPredStatus"></div>
+                </div>
             </div>
         </div>
 
@@ -2950,49 +3184,6 @@
             </div>
         </div>
     </div>
-
-    <!-- ===== ADD PAST PREDICTION MODAL (NEW) ===== -->
-    <div class="modal-overlay" id="addPastPredictionModal">
-        <div class="modal-content" style="max-width:650px;">
-            <button class="modal-close" id="addPastPredictionCloseBtn">✕</button>
-            <div class="modal-title">➕ إضافة توقع لمباراة سابقة</div>
-            <div style="margin-bottom:16px;font-size:0.8rem;color:var(--text-secondary);text-align:center;">
-                اختر مباراة منتهية، المستخدم، والنتيجة المتوقعة.
-            </div>
-            <div class="modal-input">
-                <label style="display:block;font-weight:700;font-size:0.75rem;margin-bottom:4px;">🏟️ المباراة</label>
-                <select id="pastMatchSelect" style="width:100%;padding:12px 18px;border-radius:60px;border:1px solid var(--border-subtle);background:var(--bg-input);color:var(--text-primary);font-size:0.85rem;outline:none;transition:var(--transition);font-family:inherit;">
-                    <option value="">-- اختر مباراة --</option>
-                </select>
-            </div>
-            <div class="modal-input">
-                <label style="display:block;font-weight:700;font-size:0.75rem;margin-bottom:4px;">👤 المستخدم</label>
-                <input type="text" id="pastUserName" placeholder="اكتب اسم المستخدم" list="pastUsersList" style="width:100%;padding:12px 18px;border-radius:60px;border:1px solid var(--border-subtle);background:var(--bg-input);color:var(--text-primary);font-size:0.85rem;outline:none;transition:var(--transition);font-family:inherit;" />
-                <datalist id="pastUsersList"></datalist>
-            </div>
-            <div class="modal-options" id="pastPredictionOptions">
-                <label id="pastHomeOption">
-                    <input type="radio" name="pastPrediction" value="HOME" />
-                    <span class="opt-label" id="pastHomeLabel">🏆 <span id="pastOptHome">الفريق الأول</span></span>
-                    <span class="opt-sub">فوز</span>
-                </label>
-                <label id="pastAwayOption">
-                    <input type="radio" name="pastPrediction" value="AWAY" />
-                    <span class="opt-label" id="pastAwayLabel">🏆 <span id="pastOptAway">الفريق الثاني</span></span>
-                    <span class="opt-sub">فوز</span>
-                </label>
-                <label id="pastDrawOption" style="display:none;">
-                    <input type="radio" name="pastPrediction" value="DRAW" />
-                    <span class="opt-label">🤝 تعادل</span>
-                    <span class="opt-sub">تعادل</span>
-                </label>
-            </div>
-            <button class="modal-submit" id="pastPredictionSubmitBtn">💾 حفظ التوقع</button>
-            <div class="modal-message" id="pastPredictionMessage"></div>
-        </div>
-    </div>
-
-    <!-- ===== STREAM MODAL REMOVED – replaced by Livematch page ===== -->
 
     <div class="copy-toast" id="copyToast">✅ تم نسخ الرابط!</div>
 
@@ -3350,6 +3541,9 @@
             checkUrlForMatch();
             startAutoUpdate();
             updateNewsTicker();
+            // Populate admin player form
+            populatePlayerSelect();
+            populateMatchSelect();
             console.log("✅ INIT DONE (محسن)");
         }
 
@@ -3377,10 +3571,16 @@
         let isNameVerified = false;
         let chartInstances = {};
 
+        // ===== NEW: Admin player prediction state =====
+        let allPlayers = [];
+        let currentAdminPlayer = '';
+        let currentAdminMatchId = '';
+        let currentAdminPrediction = null; // { id, prediction, created_at }
+
         const stadiums = {
             "1": "ملعب آزتيكا (المكسيك)",
             "2": "ملعب سيول (كوريا)",
-            "3": "ملعب تورونتو (كندا)",
+            "3": "ملعب تورنتو (كندا)",
             "4": "ملعب لندن (إنجلترا)",
             "5": "ملعب برلين (ألمانيا)",
             "6": "ملعب بوينس آيرس (الأرجنتين)",
@@ -4171,12 +4371,6 @@
                 content: null,
                 onClose: null
             },
-            'addPastPredictionModal': {
-                overlay: 'addPastPredictionModal',
-                closeBtn: 'addPastPredictionCloseBtn',
-                content: null,
-                onClose: null
-            },
             'nameModal': {
                 overlay: 'nameModal',
                 closeBtn: 'nameCloseBtn',
@@ -4374,12 +4568,6 @@
         document.getElementById('analyticsCloseBtn')?.addEventListener('click', function(e) {
             e.stopPropagation();
             closeModal('analyticsModal');
-        });
-
-        // Fix: Add past prediction modal close
-        document.getElementById('addPastPredictionCloseBtn')?.addEventListener('click', function(e) {
-            e.stopPropagation();
-            closeModal('addPastPredictionModal');
         });
 
         // Close all modals function (emergency)
@@ -4659,7 +4847,7 @@
         }
 
         // ============================================================
-        //  SAVE PREDICTION
+        //  SAVE PREDICTION (USER FACING - DO NOT USE IN ADMIN)
         // ============================================================
         async function savePrediction(userName, matchId, prediction) {
             if (!supabaseClient) return { success: false, message: "Supabase غير متصل" };
@@ -5017,7 +5205,6 @@
         //  STREAM MODAL – now opens Livematch page in new window
         // ============================================================
         function openStreamModal() {
-            // Open Livematch_index.html in a new window with specific features
             window.open('Livematch_index.html', '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
         }
 
@@ -6854,241 +7041,6 @@
         }
 
         // ============================================================
-        //  ADD PAST PREDICTION (NEW FEATURE) - تم التعديل
-        // ============================================================
-
-        function getMatchIdFromTeams(team1, team2) {
-            const match = matchesData.find(m => 
-                (m.team1 === team1 && m.team2 === team2) || 
-                (m.team1 === team2 && m.team2 === team1)
-            );
-            if (match) {
-                return `${match.timeISO}_${match.team1}_${match.team2}`;
-            }
-            return `past_${team1}_${team2}`;
-        }
-
-        function openAddPastPredictionModal() {
-            if (!isAuthorized) { showPasswordOverlay(); return; }
-            const modal = document.getElementById('addPastPredictionModal');
-            const select = document.getElementById('pastMatchSelect');
-            const msgEl = document.getElementById('pastPredictionMessage');
-            msgEl.textContent = '';
-            msgEl.className = 'modal-message';
-            document.getElementById('pastPredictionSubmitBtn').disabled = false;
-
-            // Load past matches
-            const pastMatches = state.previousGamesData || [];
-            select.innerHTML = '<option value="">-- اختر مباراة --</option>';
-            if (pastMatches.length === 0) {
-                select.innerHTML += '<option value="" disabled>⚠️ لا توجد مباريات سابقة (حمل البيانات أولاً)</option>';
-            } else {
-                pastMatches.forEach(g => {
-                    const label = `${getFlag(g.homeAr)} ${g.homeAr} 🆚 ${getFlag(g.awayAr)} ${g.awayAr} (${g.homeScore} - ${g.awayScore})`;
-                    const value = `${g.homeAr}|${g.awayAr}`;
-                    select.innerHTML += `<option value="${value}">${label}</option>`;
-                });
-            }
-
-            // Load users for datalist
-            loadPastUsers();
-
-            // Reset options
-            document.querySelectorAll('input[name="pastPrediction"]').forEach(el => el.checked = false);
-            // Reset labels to default (will be updated when match is selected)
-            document.getElementById('pastOptHome').textContent = 'الفريق الأول';
-            document.getElementById('pastOptAway').textContent = 'الفريق الثاني';
-            document.getElementById('pastDrawOption').style.display = 'block';
-
-            // If a match is already selected (should not happen), update labels
-            const selectedVal = select.value;
-            if (selectedVal) {
-                updatePastMatchLabels(selectedVal);
-            }
-
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        // دالة مساعدة لتحديث التسميات بناءً على قيمة المباراة
-        function updatePastMatchLabels(val) {
-            if (!val) return;
-            const [team1, team2] = val.split('|');
-            const homeEl = document.getElementById('pastOptHome');
-            const awayEl = document.getElementById('pastOptAway');
-            if (homeEl) {
-                homeEl.textContent = `${getFlag(team1)} ${team1}`;
-            }
-            if (awayEl) {
-                awayEl.textContent = `${getFlag(team2)} ${team2}`;
-            }
-            // تحديث التسميات الكاملة (اختياري)
-            const homeLabel = document.getElementById('pastHomeLabel');
-            const awayLabel = document.getElementById('pastAwayLabel');
-            if (homeLabel) {
-                homeLabel.innerHTML = `🏆 ${getFlag(team1)} ${team1}`;
-            }
-            if (awayLabel) {
-                awayLabel.innerHTML = `🏆 ${getFlag(team2)} ${team2}`;
-            }
-
-            // تحديد ما إذا كانت المباراة إقصائية (لا تعادل)
-            const match = matchesData.find(m => 
-                (m.team1 === team1 && m.team2 === team2) || 
-                (m.team1 === team2 && m.team2 === team1)
-            );
-            const isKnockout = match ? isKnockoutMatch(match) : false;
-            const drawOption = document.getElementById('pastDrawOption');
-            if (drawOption) {
-                drawOption.style.display = isKnockout ? 'none' : 'block';
-                if (isKnockout) {
-                    const drawRadio = document.querySelector('input[name="pastPrediction"][value="DRAW"]');
-                    if (drawRadio) drawRadio.checked = false;
-                }
-            }
-        }
-
-        // ربط حدث التغيير في قائمة المباريات
-        document.getElementById('pastMatchSelect').addEventListener('change', function() {
-            const val = this.value;
-            if (val) {
-                updatePastMatchLabels(val);
-            } else {
-                // إعادة التعيين إلى القيم الافتراضية
-                document.getElementById('pastOptHome').textContent = 'الفريق الأول';
-                document.getElementById('pastOptAway').textContent = 'الفريق الثاني';
-                document.getElementById('pastHomeLabel').innerHTML = '🏆 الفريق الأول';
-                document.getElementById('pastAwayLabel').innerHTML = '🏆 الفريق الثاني';
-                document.getElementById('pastDrawOption').style.display = 'block';
-            }
-        });
-
-        async function loadPastUsers() {
-            const datalist = document.getElementById('pastUsersList');
-            if (!supabaseClient) return;
-            try {
-                const { data, error } = await supabaseClient
-                    .from("predictions")
-                    .select("user_name")
-                    .order("user_name");
-                if (error) throw error;
-                const users = [...new Set(data.map(p => p.user_name))].filter(Boolean);
-                datalist.innerHTML = users.map(u => `<option value="${u}">`).join('');
-            } catch (e) {
-                console.warn("⚠️ فشل تحميل أسماء المستخدمين:", e);
-            }
-        }
-
-        document.getElementById('pastPredictionSubmitBtn').addEventListener('click', async function() {
-            const select = document.getElementById('pastMatchSelect');
-            const userNameInput = document.getElementById('pastUserName');
-            const msgEl = document.getElementById('pastPredictionMessage');
-            const selectedRadio = document.querySelector('input[name="pastPrediction"]:checked');
-
-            const matchVal = select.value;
-            if (!matchVal) {
-                msgEl.textContent = '⚠️ الرجاء اختيار مباراة';
-                msgEl.className = 'modal-message warning';
-                return;
-            }
-            const userName = userNameInput.value.trim();
-            if (!userName) {
-                msgEl.textContent = '⚠️ الرجاء إدخال اسم المستخدم';
-                msgEl.className = 'modal-message warning';
-                return;
-            }
-            if (!selectedRadio) {
-                msgEl.textContent = '⚠️ الرجاء اختيار النتيجة المتوقعة';
-                msgEl.className = 'modal-message warning';
-                return;
-            }
-
-            const [team1, team2] = matchVal.split('|');
-            let prediction = selectedRadio.value;
-            if (prediction === 'HOME') {
-                prediction = team1;
-            } else if (prediction === 'AWAY') {
-                prediction = team2;
-            }
-
-            const matchId = getMatchIdFromTeams(team1, team2);
-
-            // التحقق من وجود توقع مسبق
-            if (supabaseClient) {
-                try {
-                    const { data, error } = await supabaseClient
-                        .from("predictions")
-                        .select("id")
-                        .eq("user_name", userName)
-                        .eq("match_id", matchId)
-                        .limit(1);
-                    if (!error && data && data.length > 0) {
-                        msgEl.textContent = `⚠️ المستخدم "${userName}" لديه بالفعل توقع لهذه المباراة. سيتم تحديثه.`;
-                        msgEl.className = 'modal-message warning';
-                        const { error: updateError } = await supabaseClient
-                            .from("predictions")
-                            .update({ prediction: prediction, updated_at: new Date().toISOString() })
-                            .eq("id", data[0].id);
-                        if (updateError) throw updateError;
-                        msgEl.textContent = '✅ تم تحديث التوقع بنجاح!';
-                        msgEl.className = 'modal-message success';
-                        await getAllPredictions();
-                        renderUpcoming();
-                        renderAllPredictionsAdmin();
-                        updateNewsTicker();
-                        setTimeout(() => closeModal('addPastPredictionModal'), 1000);
-                        return;
-                    }
-                } catch (e) {
-                    console.error("❌ فشل التحقق من التوقع المكرر:", e);
-                }
-            }
-
-            // تعيين وقت الإنشاء قبل المباراة بـ 5 دقائق
-            let created_at = new Date().toISOString();
-            const match = matchesData.find(m => 
-                (m.team1 === team1 && m.team2 === team2) || 
-                (m.team1 === team2 && m.team2 === team1)
-            );
-            if (match) {
-                const matchStart = matchTime(match.timeISO);
-                const predTime = new Date(matchStart - 5 * 60 * 1000);
-                if (predTime > 0) {
-                    created_at = predTime.toISOString();
-                }
-            }
-
-            if (supabaseClient) {
-                try {
-                    const { error } = await supabaseClient.from("predictions").insert([{
-                        user_name: userName,
-                        match_id: matchId,
-                        prediction: prediction,
-                        created_at: created_at,
-                        updated_at: created_at
-                    }]);
-                    if (error) throw error;
-                    msgEl.textContent = '✅ تم إضافة التوقع بنجاح! 🎉';
-                    msgEl.className = 'modal-message success';
-                    await getAllPredictions();
-                    renderUpcoming();
-                    renderAllPredictionsAdmin();
-                    updateNewsTicker();
-                    document.getElementById('pastUserName').value = '';
-                    document.querySelectorAll('input[name="pastPrediction"]').forEach(el => el.checked = false);
-                    setTimeout(() => closeModal('addPastPredictionModal'), 1000);
-                } catch (e) {
-                    console.error("❌ فشل حفظ التوقع:", e);
-                    msgEl.textContent = '❌ فشل الحفظ: ' + e.message;
-                    msgEl.className = 'modal-message error';
-                }
-            } else {
-                msgEl.textContent = '❌ Supabase غير متصل';
-                msgEl.className = 'modal-message error';
-            }
-        });
-
-        // ============================================================
         //  PASSWORD (FIXED)
         // ============================================================
         function showPasswordOverlay() {
@@ -7221,6 +7173,492 @@
         }
 
         // ============================================================
+        //  ADMIN PLAYER PREDICTION FUNCTIONS (FIXED - FULLY INDEPENDENT)
+        // ============================================================
+        
+        /**
+         * Toggle the player prediction admin section visibility
+         */
+        function togglePlayerPredictionAdmin() {
+            const section = document.getElementById('playerPredictionAdminSection');
+            section.classList.toggle('visible');
+            if (section.classList.contains('visible')) {
+                populatePlayerSelect();
+                populateMatchSelect();
+                document.getElementById('playerPredAdminCount').textContent = allPlayers.length || '0';
+                showAdminStatus('', '');
+            }
+        }
+
+        /**
+         * Populate the player select dropdown with unique player names from predictions
+         */
+        async function populatePlayerSelect() {
+            const select = document.getElementById('playerSelect');
+            const searchInput = document.getElementById('playerSearchInput');
+            if (!supabaseClient) {
+                select.innerHTML = '<option value="">❌ Supabase غير متصل</option>';
+                return;
+            }
+            try {
+                const { data, error } = await supabaseClient
+                    .from("predictions")
+                    .select("user_name")
+                    .order("user_name", { ascending: true });
+                if (error) throw error;
+                const uniquePlayers = [...new Set((data || []).map(p => p.user_name).filter(name => name && name.trim()))];
+                allPlayers = uniquePlayers;
+                document.getElementById('playerPredAdminCount').textContent = allPlayers.length;
+                renderPlayerOptions(allPlayers);
+            } catch (e) {
+                console.error("❌ جلب قائمة اللاعبين:", e);
+                select.innerHTML = `<option value="">❌ خطأ: ${e.message}</option>`;
+            }
+        }
+
+        /**
+         * Render player options with optional filter
+         */
+        function renderPlayerOptions(players) {
+            const select = document.getElementById('playerSelect');
+            const currentVal = select.value;
+            select.innerHTML = '';
+            if (!players || players.length === 0) {
+                select.innerHTML = '<option value="">📭 لا يوجد لاعبين</option>';
+                return;
+            }
+            players.forEach(name => {
+                const opt = document.createElement('option');
+                opt.value = name;
+                opt.textContent = name;
+                select.appendChild(opt);
+            });
+            if (currentVal && players.includes(currentVal)) {
+                select.value = currentVal;
+            } else if (players.length > 0) {
+                select.value = players[0];
+            }
+            // Trigger change to update form
+            onPlayerMatchSelect();
+        }
+
+        /**
+         * Filter player options based on search input
+         */
+        function filterPlayerOptions() {
+            const searchInput = document.getElementById('playerSearchInput');
+            const query = searchInput.value.trim().toLowerCase();
+            const filtered = allPlayers.filter(name => name.toLowerCase().includes(query));
+            renderPlayerOptions(filtered);
+        }
+
+        /**
+         * Populate the match select dropdown from matchesData
+         */
+        function populateMatchSelect() {
+            const select = document.getElementById('matchSelect');
+            const currentVal = select.value;
+            select.innerHTML = '';
+            if (!matchesData || matchesData.length === 0) {
+                select.innerHTML = '<option value="">📭 لا توجد مباريات</option>';
+                return;
+            }
+            // Sort by time ascending
+            const sorted = [...matchesData].sort((a, b) => matchTime(a.timeISO) - matchTime(b.timeISO));
+            sorted.forEach(m => {
+                const matchId = `${m.timeISO}_${m.team1}_${m.team2}`;
+                const opt = document.createElement('option');
+                opt.value = matchId;
+                const dateTime = getDateTimeDisplay(m.timeISO);
+                opt.textContent = `${getFlag(m.team1)} ${m.team1} 🆚 ${getFlag(m.team2)} ${m.team2} (${dateTime})`;
+                select.appendChild(opt);
+            });
+            if (currentVal && sorted.some(m => `${m.timeISO}_${m.team1}_${m.team2}` === currentVal)) {
+                select.value = currentVal;
+            }
+            // Trigger change to update form
+            onPlayerMatchSelect();
+        }
+
+        /**
+         * Called when player or match selection changes
+         * Uses direct Supabase query (independent from user functions)
+         * Fetches existing prediction and fills the form
+         */
+        async function onPlayerMatchSelect() {
+            const playerSelect = document.getElementById('playerSelect');
+            const matchSelect = document.getElementById('matchSelect');
+            const statusEl = document.getElementById('adminPredStatus');
+            const saveBtn = document.getElementById('adminSavePredBtn');
+            const deleteBtn = document.getElementById('adminDeletePredBtn');
+            const radioGroup = document.getElementById('predictionRadioGroup');
+            const timeInput = document.getElementById('adminPredictionTime');
+            const predTeam1 = document.getElementById('adminPredTeam1');
+            const predTeam2 = document.getElementById('adminPredTeam2');
+            
+            const player = playerSelect.value;
+            const matchId = matchSelect.value;
+            
+            // Reset form
+            currentAdminPlayer = player;
+            currentAdminMatchId = matchId;
+            currentAdminPrediction = null;
+            deleteBtn.style.display = 'none';
+            saveBtn.textContent = '➕ إضافة التوقع';
+            saveBtn.disabled = false;
+            statusEl.className = 'form-status';
+            statusEl.textContent = '';
+            
+            // Update team names in radio buttons (keep values as HOME/AWAY/DRAW)
+            const match = getMatchById(matchId);
+            if (match) {
+                predTeam1.textContent = match.team1;
+                predTeam2.textContent = match.team2;
+                // Update radio button labels (not values)
+                const radios = radioGroup.querySelectorAll('label');
+                radios.forEach(label => {
+                    const radio = label.querySelector('input[type="radio"]');
+                    if (radio) {
+                        const val = radio.value;
+                        const labelText = label.querySelector('span');
+                        if (labelText) {
+                            if (val === 'HOME') labelText.textContent = match.team1;
+                            else if (val === 'AWAY') labelText.textContent = match.team2;
+                            else if (val === 'DRAW') labelText.textContent = 'تعادل';
+                        }
+                    }
+                });
+            } else {
+                predTeam1.textContent = 'الفريق الأول';
+                predTeam2.textContent = 'الفريق الثاني';
+                const radios = radioGroup.querySelectorAll('label');
+                radios.forEach(label => {
+                    const radio = label.querySelector('input[type="radio"]');
+                    if (radio) {
+                        const val = radio.value;
+                        const labelText = label.querySelector('span');
+                        if (labelText) {
+                            if (val === 'HOME') labelText.textContent = 'الفريق الأول';
+                            else if (val === 'AWAY') labelText.textContent = 'الفريق الثاني';
+                            else if (val === 'DRAW') labelText.textContent = 'تعادل';
+                        }
+                    }
+                });
+            }
+            
+            // Clear radio selection
+            radioGroup.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+            timeInput.value = '';
+            
+            if (!player || !matchId) {
+                statusEl.className = 'form-status info';
+                statusEl.textContent = '👈 اختر لاعباً ومباراة';
+                return;
+            }
+            
+            // Fetch existing prediction using direct Supabase query (independent)
+            try {
+                if (!supabaseClient) {
+                    statusEl.className = 'form-status error';
+                    statusEl.textContent = '❌ Supabase غير متصل';
+                    return;
+                }
+                const { data, error } = await supabaseClient
+                    .from("predictions")
+                    .select("*")
+                    .eq("user_name", player)
+                    .eq("match_id", matchId)
+                    .order("created_at", { ascending: false })
+                    .limit(1);
+                    
+                if (error) throw error;
+                
+                const pred = data && data.length > 0 ? data[0] : null;
+                
+                if (pred) {
+                    currentAdminPrediction = pred;
+                    // Fill the form
+                    const radioValue = pred.prediction;
+                    // Determine which radio to select
+                    const matchObj = getMatchById(matchId);
+                    let targetValue = null;
+                    if (radioValue === 'DRAW') {
+                        targetValue = 'DRAW';
+                    } else if (matchObj) {
+                        if (radioValue === matchObj.team1) targetValue = 'HOME';
+                        else if (radioValue === matchObj.team2) targetValue = 'AWAY';
+                    }
+                    // If we couldn't match, try to match by team name
+                    if (!targetValue && matchObj) {
+                        if (radioValue === matchObj.team1) targetValue = 'HOME';
+                        else if (radioValue === matchObj.team2) targetValue = 'AWAY';
+                    }
+                    // If still no match, but it's DRAW
+                    if (!targetValue && radioValue === 'DRAW') targetValue = 'DRAW';
+                    
+                    const radios = radioGroup.querySelectorAll('input[type="radio"]');
+                    radios.forEach(r => {
+                        if (r.value === targetValue) r.checked = true;
+                        else r.checked = false;
+                    });
+                    
+                    if (pred.created_at) {
+                        const d = new Date(pred.created_at);
+                        // Adjust for timezone offset to display correctly
+                        const localStr = d.toISOString().slice(0, 16);
+                        timeInput.value = localStr;
+                    }
+                    saveBtn.textContent = '💾 تحديث التوقع';
+                    deleteBtn.style.display = 'inline-flex';
+                    statusEl.className = 'form-status info';
+                    const displayPred = radioValue === 'DRAW' ? 'تعادل' : radioValue;
+                    statusEl.textContent = `✅ يوجد توقع سابق لهذه المباراة (${displayPred})`;
+                } else {
+                    // No prediction found
+                    currentAdminPrediction = null;
+                    saveBtn.textContent = '➕ إضافة التوقع';
+                    deleteBtn.style.display = 'none';
+                    statusEl.className = 'form-status info';
+                    statusEl.textContent = '📝 لا يوجد توقع سابق، يمكنك إضافة جديد';
+                }
+            } catch (e) {
+                console.error("❌ جلب توقع اللاعب للمباراة (إدارة):", e);
+                statusEl.className = 'form-status error';
+                statusEl.textContent = '❌ حدث خطأ أثناء جلب التوقع';
+            }
+        }
+
+        /**
+         * Save or update a player's prediction (Admin) - FULLY INDEPENDENT
+         * No time checks, no user restrictions, direct Supabase operations
+         */
+        async function adminSavePrediction() {
+            const playerSelect = document.getElementById('playerSelect');
+            const matchSelect = document.getElementById('matchSelect');
+            const statusEl = document.getElementById('adminPredStatus');
+            const saveBtn = document.getElementById('adminSavePredBtn');
+            const timeInput = document.getElementById('adminPredictionTime');
+            const radioGroup = document.getElementById('predictionRadioGroup');
+            
+            const player = playerSelect.value;
+            const matchId = matchSelect.value;
+            
+            if (!player) {
+                statusEl.className = 'form-status error';
+                statusEl.textContent = '⚠️ الرجاء اختيار لاعب';
+                return;
+            }
+            if (!matchId) {
+                statusEl.className = 'form-status error';
+                statusEl.textContent = '⚠️ الرجاء اختيار مباراة';
+                return;
+            }
+            
+            // Get selected prediction (value is HOME, AWAY, or DRAW)
+            let selectedValue = null;
+            const radios = radioGroup.querySelectorAll('input[type="radio"]');
+            radios.forEach(r => {
+                if (r.checked) selectedValue = r.value;
+            });
+            
+            if (!selectedValue) {
+                statusEl.className = 'form-status error';
+                statusEl.textContent = '⚠️ الرجاء اختيار توقع';
+                return;
+            }
+            
+            // Convert to actual prediction (team name or 'DRAW')
+            const matchObj = getMatchById(matchId);
+            let prediction = null;
+            if (selectedValue === 'HOME' && matchObj) {
+                prediction = matchObj.team1;
+            } else if (selectedValue === 'AWAY' && matchObj) {
+                prediction = matchObj.team2;
+            } else if (selectedValue === 'DRAW') {
+                prediction = 'DRAW';
+            } else {
+                // Fallback: use the value directly (if somehow it's already a team name)
+                prediction = selectedValue;
+            }
+            
+            if (!prediction) {
+                statusEl.className = 'form-status error';
+                statusEl.textContent = '⚠️ حدث خطأ في تحديد التوقع';
+                return;
+            }
+            
+            // Prepare created_at
+            const created_at = timeInput.value ? new Date(timeInput.value).toISOString() : new Date().toISOString();
+            
+            saveBtn.disabled = true;
+            statusEl.className = 'form-status info';
+            statusEl.textContent = '⏳ جاري الحفظ...';
+            
+            try {
+                if (!supabaseClient) {
+                    throw new Error('Supabase غير متصل');
+                }
+                
+                // Check if prediction exists using direct query
+                const { data: existingData, error: checkError } = await supabaseClient
+                    .from("predictions")
+                    .select("id")
+                    .eq("user_name", player)
+                    .eq("match_id", matchId)
+                    .limit(1);
+                    
+                if (checkError) throw checkError;
+                
+                const exists = existingData && existingData.length > 0;
+                let result;
+                
+                if (exists) {
+                    // UPDATE
+                    const { error: updateError } = await supabaseClient
+                        .from("predictions")
+                        .update({ 
+                            prediction: prediction, 
+                            created_at: created_at,
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq("user_name", player)
+                        .eq("match_id", matchId);
+                    if (updateError) throw updateError;
+                    result = { success: true, updated: true };
+                } else {
+                    // INSERT
+                    const { error: insertError } = await supabaseClient
+                        .from("predictions")
+                        .insert([{ 
+                            user_name: player, 
+                            match_id: matchId, 
+                            prediction: prediction,
+                            created_at: created_at
+                        }]);
+                    if (insertError) throw insertError;
+                    result = { success: true, updated: false };
+                }
+                
+                if (result.success) {
+                    statusEl.className = 'form-status success';
+                    statusEl.textContent = result.updated ? '✅ تم تحديث التوقع بنجاح!' : '✅ تم إضافة التوقع بنجاح!';
+                    
+                    // Refresh data
+                    await getAllPredictions();
+                    await renderAllPredictionsAdmin();
+                    renderUpcoming();
+                    updateNewsTicker();
+                    
+                    // Reload the form to reflect changes
+                    await onPlayerMatchSelect();
+                    
+                    // Refresh player list (to update count)
+                    populatePlayerSelect();
+                }
+            } catch (e) {
+                console.error("❌ حفظ توقع اللاعب (إدارة):", e);
+                statusEl.className = 'form-status error';
+                statusEl.textContent = `❌ فشل الحفظ: ${e.message}`;
+            } finally {
+                saveBtn.disabled = false;
+            }
+        }
+
+        /**
+         * Delete a player's prediction (Admin) - FULLY INDEPENDENT
+         * Direct Supabase DELETE without any time checks
+         */
+        async function adminDeletePrediction() {
+            const player = document.getElementById('playerSelect').value;
+            const matchId = document.getElementById('matchSelect').value;
+            const statusEl = document.getElementById('adminPredStatus');
+            const deleteBtn = document.getElementById('adminDeletePredBtn');
+            const saveBtn = document.getElementById('adminSavePredBtn');
+            
+            if (!player || !matchId) {
+                statusEl.className = 'form-status error';
+                statusEl.textContent = '⚠️ الرجاء اختيار لاعب ومباراة';
+                return;
+            }
+            
+            if (!currentAdminPrediction) {
+                statusEl.className = 'form-status error';
+                statusEl.textContent = '⚠️ لا يوجد توقع لهذه المباراة';
+                return;
+            }
+            
+            if (!confirm(`🗑 هل أنت متأكد من حذف توقع "${player}" لهذه المباراة؟`)) {
+                return;
+            }
+            
+            deleteBtn.disabled = true;
+            statusEl.className = 'form-status info';
+            statusEl.textContent = '⏳ جاري الحذف...';
+            
+            try {
+                if (!supabaseClient) {
+                    throw new Error('Supabase غير متصل');
+                }
+                
+                const { error } = await supabaseClient
+                    .from("predictions")
+                    .delete()
+                    .eq("user_name", player)
+                    .eq("match_id", matchId);
+                
+                if (error) throw error;
+                
+                statusEl.className = 'form-status success';
+                statusEl.textContent = '✅ تم حذف التوقع بنجاح!';
+                
+                // Reset form
+                currentAdminPrediction = null;
+                deleteBtn.style.display = 'none';
+                saveBtn.textContent = '➕ إضافة التوقع';
+                document.getElementById('predictionRadioGroup').querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+                document.getElementById('adminPredictionTime').value = '';
+                
+                // Refresh data
+                await getAllPredictions();
+                await renderAllPredictionsAdmin();
+                renderUpcoming();
+                updateNewsTicker();
+                populatePlayerSelect();
+                
+                // Re-check if there's still a prediction (should be none)
+                const { data: checkData, error: checkError } = await supabaseClient
+                    .from("predictions")
+                    .select("id")
+                    .eq("user_name", player)
+                    .eq("match_id", matchId)
+                    .limit(1);
+                    
+                if (checkError) throw checkError;
+                
+                if (checkData && checkData.length > 0) {
+                    // If somehow still exists, reload form
+                    await onPlayerMatchSelect();
+                }
+            } catch (e) {
+                console.error("❌ حذف توقع اللاعب (إدارة):", e);
+                statusEl.className = 'form-status error';
+                statusEl.textContent = `❌ فشل الحذف: ${e.message}`;
+            } finally {
+                deleteBtn.disabled = false;
+            }
+        }
+
+        /**
+         * Show status message in admin form
+         */
+        function showAdminStatus(message, type = '') {
+            const statusEl = document.getElementById('adminPredStatus');
+            statusEl.textContent = message;
+            statusEl.className = 'form-status';
+            if (type) statusEl.classList.add(type);
+        }
+
+        // ============================================================
         //  GLOBAL EXPOSURE
         // ============================================================
         window.openViewPredictionsModal = openViewPredictionsModal;
@@ -7250,7 +7688,14 @@
         window.openStreamModal = openStreamModal;
         window.closeModal = closeModal;
         window.closeAllModals = closeAllModals;
-        window.openAddPastPredictionModal = openAddPastPredictionModal;
+        // NEW admin player functions (FIXED)
+        window.togglePlayerPredictionAdmin = togglePlayerPredictionAdmin;
+        window.populatePlayerSelect = populatePlayerSelect;
+        window.populateMatchSelect = populateMatchSelect;
+        window.onPlayerMatchSelect = onPlayerMatchSelect;
+        window.adminSavePrediction = adminSavePrediction;
+        window.adminDeletePrediction = adminDeletePrediction;
+        window.filterPlayerOptions = filterPlayerOptions;
 
         // ============================================================
         //  START
